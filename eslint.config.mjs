@@ -8,6 +8,5 @@ export default [
   {languageOptions: {globals: globals.browser}},
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
-  pluginReactConfig,
-  {rules: {"react/react-in-jsx-scope": "off"}}
+  pluginReactConfig
 ];
