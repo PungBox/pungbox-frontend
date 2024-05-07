@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { fileDescriptions } from '../../../utils/dummyData';
+
+import { FileDescription } from '../../../utils/interface';
 
 function getIconByFileExtension(extension: string) {
   // TODO: 이미지를 반환하도록 변경할 예정.
@@ -95,11 +96,12 @@ function downloadFile(url: string): void {
   window.location.href = url;
 }
 
-function deleteFile(fileId: number): void {
-  // do nothing;
+interface FileListProps {
+  fileDescriptions: FileDescription[];
+  deleteFile: (fileId: number) => void;
 }
 
-export const FileList = () => {
+export const FileList = ({ fileDescriptions, deleteFile }: FileListProps) => {
   const initialSelected: { [key: number]: boolean } = {};
   fileDescriptions.forEach((file) => {
     initialSelected[file.fileId] = false;
@@ -112,14 +114,13 @@ export const FileList = () => {
     setSelected(newSelected);
   };
 
-  // TODO: dummy json 사용 중이지만, backend로부터 가져오도록 변경해야 함
   return fileDescriptions.map((file) => {
     const splitted = file.fileName.split('.');
     const extension = splitted[splitted.length - 1];
     return (
       <tr key={file.fileId} onClick={() => toggleSelectFile(file.fileId)}>
         <td>
-          <input type="checkbox" checked={selected[file.fileId]} />
+          <input type="checkbox" checked={selected[file.fileId]} onChange={() => toggleSelectFile(file.fileId)} />
         </td>
         <td>{getIconByFileExtension(extension)}</td>
         <td>{file.fileName}</td>
