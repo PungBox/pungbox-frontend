@@ -5,12 +5,20 @@ import { FileListTableHeader } from './FileListTableHeader';
 import { FileListTableBody } from './FileListTableBody';
 import { fileListConfig } from '../../../utils/config';
 
+function getIsDefaultSortingOrderAscending(columnName: string): boolean {
+  return fileListConfig.headers.filter((column) => {
+    return column.name === columnName;
+  })[0].ascending as boolean;
+}
+
 const View = () => {
   const storageNumber = 192837;
   const expirationDate = `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`;
   const [fileDescriptions, setFileDescriptions] = useState([] as FileDescription[]);
   const [isFileDescriptionsLoaded, setIsFileDescriptionsLoaded] = useState(false);
   const [sortingCriteria, setSortingCriteria] = useState(fileListConfig.defaultSortingCriteria);
+  const isDefaultSortingOrderAscending = getIsDefaultSortingOrderAscending(fileListConfig.defaultSortingCriteria);
+  const [isSortingAscending, setIsSortingAscending] = useState(!isDefaultSortingOrderAscending);
 
   useEffect(() => {
     (async (): Promise<FileDescription[]> => {
@@ -18,8 +26,32 @@ const View = () => {
     })().then((fileDescriptions) => {
       setFileDescriptions(fileDescriptions);
       setIsFileDescriptionsLoaded(true);
+
+      const isDefaultSortingOrderAscending = getIsDefaultSortingOrderAscending(fileListConfig.defaultSortingCriteria);
+      setIsSortingAscending(isDefaultSortingOrderAscending);
     });
   }, []);
+
+  useEffect(() => {
+    const newFileDescriptions = fileDescriptions.slice();
+    const mappings: { [key: string]: 'fileName' | 'fileSize' | 'created' } = {
+      name: 'fileName',
+      size: 'fileSize',
+      date: 'created',
+    };
+    newFileDescriptions.sort((a, b) => {
+      const sortingCriteriaMapping = mappings[sortingCriteria];
+      const [aContent, bContent] = [a[sortingCriteriaMapping], b[sortingCriteriaMapping]];
+      if (aContent < bContent) {
+        return isSortingAscending ? -1 : 1;
+      } else if (aContent > bContent) {
+        return isSortingAscending ? 1 : -1;
+      } else {
+        return 0;
+      }
+    });
+    setFileDescriptions(newFileDescriptions);
+  }, [sortingCriteria, isSortingAscending]);
 
   function addFile(e: ChangeEvent<HTMLInputElement>) {
     if (e.target.files === null) return;
@@ -45,8 +77,16 @@ const View = () => {
     setFileDescriptions(newFileDescriptions);
   }
 
-  function handleSorting(event: MouseEvent) {
-    console.log(event);
+  function handleSorting(e: React.MouseEvent<HTMLElement>) {
+    const target = e.target as HTMLElement;
+    const newSortingCriteria = target.className;
+    if (sortingCriteria !== newSortingCriteria) {
+      setSortingCriteria(newSortingCriteria);
+      setIsSortingAscending(getIsDefaultSortingOrderAscending(newSortingCriteria));
+      return;
+    }
+    const newIsSortingAscending = !isSortingAscending;
+    setIsSortingAscending(newIsSortingAscending);
   }
 
   // TODO: dummy json 사용 중이지만, backend로부터 가져오도록 변경해야 함
@@ -58,7 +98,11 @@ const View = () => {
       </div>
       <table className="file-list-table">
         <thead>
-          <FileListTableHeader sortingHandler={handleSorting} />
+          <FileListTableHeader
+            sortingHandler={handleSorting}
+            sortingCriteria={sortingCriteria}
+            isSortingAscending={isSortingAscending}
+          />
         </thead>
         <tbody>
           <FileListTableBody

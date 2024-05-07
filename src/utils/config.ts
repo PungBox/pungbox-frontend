@@ -7,6 +7,8 @@ interface HeaderConfig {
 
 const defaultSortingCriteria = 'date';
 const headers: HeaderConfig[] = [
+  // `name` field is used for internal logic implementation, so it must be unique
+  // however, `displayName` don't need to be unique
   {
     name: 'checkbox',
     displayName: '',
