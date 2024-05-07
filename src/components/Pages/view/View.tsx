@@ -1,11 +1,10 @@
 import React from 'react';
 import { FileList } from './FileList';
 
-
 const View = () => {
   const storageNumber = 192837;
   const expirationDate = `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`;
-  
+
   return (
     <div className="view-panel">
       <div className="view-panel-header">
@@ -14,17 +13,18 @@ const View = () => {
       </div>
       <table className="file-list-table">
         <thead>
-        <tr>
-          <th>{/*checkbox*/}</th>
-          <th>{/*icon*/}</th>
-          <th>name</th>
-          <th>size</th>
-          <th>upload date</th>
-          <th>{/*download*/}</th>
-        </tr>
+          <tr>
+            <th>{/*checkbox*/}</th>
+            <th>{/*icon*/}</th>
+            <th>name</th>
+            <th>size</th>
+            <th>upload date</th>
+            <th>{/*download*/}</th>
+            <th>{/*delete*/}</th>
+          </tr>
         </thead>
         <tbody>
-        <FileList />
+          <FileList />
         </tbody>
       </table>
     </div>

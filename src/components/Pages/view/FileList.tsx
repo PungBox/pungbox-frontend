@@ -10,7 +10,7 @@ function getIconByFileExtension(extension: string) {
     case 'hwp':
     case 'odt':
     case 'pages':
-      return '문서';
+      return <span className="material-symbols-outlined">description</span>;
     case 'png':
     case 'jpg':
     case 'jpeg':
@@ -19,12 +19,12 @@ function getIconByFileExtension(extension: string) {
     case 'svg':
     case 'heic':
     case 'psd':
-      return '사진';
+      return <span className="material-symbols-outlined">image</span>;
     case 'zip':
     case 'gz':
     case '7z':
     case 'rar':
-      return '압축';
+      return <span className="material-symbols-outlined">folder_zip</span>;
     case 'mov':
     case 'mp4':
     case 'mpg':
@@ -33,25 +33,25 @@ function getIconByFileExtension(extension: string) {
     case 'm4v':
     case 'flv':
     case 'wmv':
-      return '동영상';
+      return <span className="material-symbols-outlined">movie</span>;
     case 'mp3':
     case 'wav':
     case 'ogg':
     case 'flac':
-      return '음악';
+      return <span className="material-symbols-outlined">music_note</span>;
     case 'xls':
     case 'xlsx':
     case 'csv':
     case 'numbers':
     case 'ods':
-      return '시트';
+      return <span className="material-symbols-outlined">table_view</span>;
     case 'ppt':
     case 'pptx':
-      return '발표';
+      return <span className="material-symbols-outlined">present_to_all</span>;
     case 'pdf':
-      return 'PDF';
+      return <span className="material-symbols-outlined">picture_as_pdf</span>;
     default:
-      return '파일';
+      return <span className="material-symbols-outlined">draft</span>;
   }
 }
 
@@ -95,8 +95,11 @@ function downloadFile(url: string): void {
   window.location.href = url;
 }
 
+function deleteFile(fileId: number): void {
+  // do nothing;
+}
+
 export const FileList = () => {
-  // TODO: dummy json 사용 중이지만, backend로부터 가져오도록 변경해야 함
   const initialSelected: { [key: number]: boolean } = {};
   fileDescriptions.forEach((file) => {
     initialSelected[file.fileId] = false;
@@ -109,6 +112,7 @@ export const FileList = () => {
     setSelected(newSelected);
   };
 
+  // TODO: dummy json 사용 중이지만, backend로부터 가져오도록 변경해야 함
   return fileDescriptions.map((file) => {
     const splitted = file.fileName.split('.');
     const extension = splitted[splitted.length - 1];
@@ -123,7 +127,12 @@ export const FileList = () => {
         <td>{getUploadedDatetimeExpression(file.created)}</td>
         <td>
           <button onClick={() => downloadFile(file.fileUrl)}>
-            <img src="src/assets/download.png" alt="download" width={20} />
+            <span className="material-symbols-outlined">download</span>
+          </button>
+        </td>
+        <td>
+          <button onClick={() => deleteFile(file.fileId)}>
+            <span className="material-symbols-outlined">delete</span>
           </button>
         </td>
       </tr>
