@@ -49,9 +49,16 @@ const headers: HeaderConfig[] = [
   },
 ];
 
+const mappings: { [key: string]: 'fileName' | 'fileSize' | 'created' } = {
+  name: 'fileName',
+  size: 'fileSize',
+  date: 'created',
+};
+
 const fileListConfig = {
   headers,
   defaultSortingCriteria,
+  mappings,
 };
 
 export type { HeaderConfig };
