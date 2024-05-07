@@ -9,14 +9,13 @@ const Layout = ({ children }: {
   return (
     <div className={styles.layout}>
       <TopBar />
-      <div className={styles.content}>
-        <Sidebar />
-        <div className={styles.main}>
-          {/* Main content */}
-          {children}
-        </div>
+      <Sidebar />
+      <div className={styles.main}>
+        {/* Main content */}
+        {children} 
       </div>
     </div>
+    /* <Footer /> */
   );
 };
 

@@ -3,10 +3,9 @@ import styles from './Sidebar.module.css'; // CSS 모듈 불러오기
 
 const Sidebar = () => {
   return (
-    <div className={styles.Sidebar}>
+    <div className={styles.sidebar}>
         Sidebar     
     </div>
-    
   );
 };
 
