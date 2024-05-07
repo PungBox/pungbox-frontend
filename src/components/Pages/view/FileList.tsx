@@ -91,6 +91,10 @@ function getUploadedDatetimeExpression(created: string) {
   return `${dateExpression} ${timeExpression}`;
 }
 
+function downloadFile(url: string): void {
+  window.location.href = url;
+}
+
 export const FileList = () => {
   // TODO: dummy json 사용 중이지만, backend로부터 가져오도록 변경해야 함
   const initialSelected: { [key: number]: boolean } = {};
@@ -98,9 +102,7 @@ export const FileList = () => {
     initialSelected[file.fileId] = false;
   });
   const [selected, setSelected] = useState(initialSelected);
-  const downloadFile = (url: string) => {
-    window.location.href = url;
-  };
+
   const toggleSelectFile = (fileId: number) => {
     const newSelected = JSON.parse(JSON.stringify(selected));
     newSelected[fileId] = !newSelected[fileId];
