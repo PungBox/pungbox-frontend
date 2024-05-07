@@ -1,9 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { FileList } from './FileList';
 import { fetchFileDescriptions } from '../../../utils/dummyData';
 import { FileDescription } from '../../../utils/interface';
-import { EmptyFileList } from './EmptyFileList';
-import { LoadingFileList } from './LoadingFileList';
 import { FileListTableHeader } from './FileListTableHeader';
 import { FileListTableBody } from './FileListTableBody';
 
@@ -48,6 +45,10 @@ const View = () => {
     setFileDescriptions(newFileDescriptions);
   }
 
+  function handleSorting(event: MouseEvent) {
+    console.log(event);
+  }
+
   // TODO: dummy json 사용 중이지만, backend로부터 가져오도록 변경해야 함
   return (
     <div className="view-panel">
@@ -57,7 +58,7 @@ const View = () => {
       </div>
       <table className="file-list-table">
         <thead>
-          <FileListTableHeader />
+          <FileListTableHeader sortingHandler={handleSorting} />
         </thead>
         <tbody>
           <FileListTableBody
