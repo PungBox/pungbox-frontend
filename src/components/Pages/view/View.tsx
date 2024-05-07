@@ -4,12 +4,16 @@ import { fetchFileDescriptions } from '../../../utils/dummyData';
 import { FileDescription } from '../../../utils/interface';
 import { EmptyFileList } from './EmptyFileList';
 import { LoadingFileList } from './LoadingFileList';
+import { FileListTableHeader } from './FileListTableHeader';
+import { FileListTableBody } from './FileListTableBody';
 
 const View = () => {
   const storageNumber = 192837;
   const expirationDate = `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`;
   const [fileDescriptions, setFileDescriptions] = useState([] as FileDescription[]);
   const [isFileDescriptionsLoaded, setIsFileDescriptionsLoaded] = useState(false);
+  const [sortingCriteria, setSortingCriteria] = useState('date');
+  const [isSortingAscending, setIsSortingAscending] = useState(false);
 
   useEffect(() => {
     (async (): Promise<FileDescription[]> => {
@@ -44,15 +48,6 @@ const View = () => {
     setFileDescriptions(newFileDescriptions);
   }
 
-  let fileList = <FileList fileDescriptions={fileDescriptions} deleteFile={deleteFile} />;
-  if (fileDescriptions.length === 0) {
-    if (isFileDescriptionsLoaded) {
-      fileList = <EmptyFileList />;
-    } else {
-      fileList = <LoadingFileList />;
-    }
-  }
-
   // TODO: dummy json 사용 중이지만, backend로부터 가져오도록 변경해야 함
   return (
     <div className="view-panel">
@@ -62,17 +57,15 @@ const View = () => {
       </div>
       <table className="file-list-table">
         <thead>
-          <tr>
-            <th>{/*checkbox*/}</th>
-            <th>{/*icon*/}</th>
-            <th>name</th>
-            <th>size</th>
-            <th>upload date</th>
-            <th>{/*download*/}</th>
-            <th>{/*delete*/}</th>
-          </tr>
+          <FileListTableHeader />
         </thead>
-        <tbody>{fileList}</tbody>
+        <tbody>
+          <FileListTableBody
+            fileDescriptions={fileDescriptions}
+            deleteFile={deleteFile}
+            isFileDescriptionsLoaded={isFileDescriptionsLoaded}
+          />
+        </tbody>
         <tfoot>
           <tr>
             <td colSpan={6}>

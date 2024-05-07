@@ -4,7 +4,6 @@ import { FileDescription } from '../../../utils/interface';
 import { EmptyFileList } from './EmptyFileList';
 
 function getIconByFileExtension(extension: string) {
-  // TODO: 이미지를 반환하도록 변경할 예정.
   switch (extension) {
     case 'doc':
     case 'docx':
