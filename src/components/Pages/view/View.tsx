@@ -11,6 +11,7 @@ const View = () => {
   function addFile(e: ChangeEvent<HTMLInputElement>) {
     if (e.target.files === null) return;
     const file = e.target.files[0];
+
     const newFileDescriptions = fileDescriptions.slice();
     newFileDescriptions.push({
       fileId: fileDescriptions.length + 1,
@@ -20,10 +21,16 @@ const View = () => {
       created: new Date().toISOString(),
       modified: new Date().toISOString(),
     } as FileDescription);
+
     setFileDescriptions(newFileDescriptions);
   }
 
-  function deleteFile() {}
+  function deleteFile(fileId: number) {
+    const newFileDescriptions = fileDescriptions.slice().filter((file) => {
+      return file.fileId !== fileId;
+    });
+    setFileDescriptions(newFileDescriptions);
+  }
 
   // TODO: dummy json 사용 중이지만, backend로부터 가져오도록 변경해야 함
   return (
