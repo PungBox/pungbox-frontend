@@ -19,7 +19,7 @@ const View = () => {
           <th>name</th>
           <th>size</th>
           <th>upload date</th>
-          <th></th>
+          <th>download</th>
         </tr>
         </thead>
         <tbody>

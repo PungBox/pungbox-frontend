@@ -97,12 +97,18 @@ export const FileList = () => {
   return fileDescriptions.map((file) => {
     const splitted = file.fileName.split('.');
     const extension = splitted[splitted.length - 1];
+    const downloadFile = () => {
+      window.location.href = file.fileUrl;
+    };
     return (
       <tr key={file.fileId}>
         <td>{getIconByFileExtension(extension)}</td>
         <td>{file.fileName}</td>
         <td>{getFileSizeExpression(file.fileSize)}</td>
         <td>{getUploadedDatetimeExpression(file.created)}</td>
+        <td>
+          <button onClick={downloadFile}>⭳</button>
+        </td>
       </tr>
     );
   });

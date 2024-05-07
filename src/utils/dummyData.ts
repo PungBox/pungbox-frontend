@@ -3,8 +3,8 @@ import { FileDescription } from './interface';
 const fileDescriptions: FileDescription[] = [
   {
     fileId: 1,
-    fileName: 'file1',
-    file: '',
+    fileName: 'file1.pdf',
+    fileUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
     fileSize: 1376,
     created: new Date().toISOString(),
     modified: new Date().toISOString(),
@@ -12,7 +12,7 @@ const fileDescriptions: FileDescription[] = [
   {
     fileId: 2,
     fileName: 'document1.docx',
-    file: '',
+    fileUrl: 'https://calibre-ebook.com/downloads/demos/demo.docx',
     fileSize: 35642,
     created: new Date().toISOString(),
     modified: new Date().toISOString(),
@@ -20,7 +20,7 @@ const fileDescriptions: FileDescription[] = [
   {
     fileId: 3,
     fileName: 'zipfile.zip',
-    file: '',
+    fileUrl: 'https://getsamplefiles.com/download/zip/sample-1.zip',
     fileSize: 434632,
     created: new Date().toISOString(),
     modified: new Date().toISOString(),
@@ -28,15 +28,15 @@ const fileDescriptions: FileDescription[] = [
   {
     fileId: 4,
     fileName: 'picture.png',
-    file: '',
+    fileUrl: 'https://download.samplelib.com/png/sample-boat-400x300.png',
     fileSize: 12483,
     created: new Date().toISOString(),
     modified: new Date().toISOString(),
   },
   {
     fileId: 5,
-    fileName: 'movie.mov',
-    file: '',
+    fileName: 'movie.mp4',
+    fileUrl: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
     fileSize: 8452321,
     created: new Date().toISOString(),
     modified: new Date().toISOString(),

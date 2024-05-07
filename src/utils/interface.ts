@@ -1,7 +1,7 @@
 interface FileDescription {
   fileId: number;
   fileName: string;
-  file: string;
+  fileUrl: string;
   fileSize: number;
   created: string;
   modified: string;
