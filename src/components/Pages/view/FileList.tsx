@@ -106,6 +106,19 @@ interface FileListProps {
 }
 
 export const FileList = ({ fileDescriptions, deleteFile }: FileListProps) => {
+  if (fileDescriptions.length === 0) {
+    return (
+      <tr>
+        <td colSpan={6}>
+          <span className="material-symbols-outlined" style={{ fontSize: 'xxx-large' }}>
+            unknown_document
+          </span>
+          <p style={{ fontSize: 'large' }}>파일 없음</p>
+        </td>
+      </tr>
+    );
+  }
+
   const initialSelected: { [key: number]: boolean } = {};
   fileDescriptions.forEach((file) => {
     initialSelected[file.fileId] = false;
