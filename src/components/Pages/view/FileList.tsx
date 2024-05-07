@@ -85,12 +85,11 @@ function getUploadedDatetimeExpression(created: string) {
   } catch (RangeError) {
     return null;
   }
-  
+
   let dateExpression = getDateExpression(now, datetime);
   const timeExpression = `${datetime.toLocaleTimeString()}`;
   return `${dateExpression} ${timeExpression}`;
 }
-
 
 export const FileList = () => {
   // TODO: dummy json 사용 중이지만, backend로부터 가져오도록 변경해야 함
@@ -107,7 +106,7 @@ export const FileList = () => {
     newSelected[fileId] = !newSelected[fileId];
     setSelected(newSelected);
   };
-  
+
   return fileDescriptions.map((file) => {
     const splitted = file.fileName.split('.');
     const extension = splitted[splitted.length - 1];
@@ -121,7 +120,9 @@ export const FileList = () => {
         <td>{getFileSizeExpression(file.fileSize)}</td>
         <td>{getUploadedDatetimeExpression(file.created)}</td>
         <td>
-          <button onClick={() => downloadFile(file.fileUrl)}>⭳</button>
+          <button onClick={() => downloadFile(file.fileUrl)}>
+            <img src="src/assets/download.png" alt="download" width={20} />
+          </button>
         </td>
       </tr>
     );
