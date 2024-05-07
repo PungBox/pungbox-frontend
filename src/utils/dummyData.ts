@@ -59,4 +59,12 @@ const fileDescriptions: FileDescription[] = [
   },
 ];
 
-export { fileDescriptions };
+function fetchFileDescriptions(): Promise<FileDescription[]> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(fileDescriptions);
+    }, 1000);
+  });
+}
+
+export { fetchFileDescriptions };

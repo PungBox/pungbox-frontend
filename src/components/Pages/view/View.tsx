@@ -1,12 +1,24 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { FileList } from './FileList';
-import { fileDescriptions as fd } from '../../../utils/dummyData';
+import { fetchFileDescriptions } from '../../../utils/dummyData';
 import { FileDescription } from '../../../utils/interface';
+import { EmptyFileList } from './EmptyFileList';
+import { LoadingFileList } from './LoadingFileList';
 
 const View = () => {
   const storageNumber = 192837;
   const expirationDate = `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`;
-  const [fileDescriptions, setFileDescriptions] = useState(fd);
+  const [fileDescriptions, setFileDescriptions] = useState([] as FileDescription[]);
+  const [isFileDescriptionsLoaded, setIsFileDescriptionsLoaded] = useState(false);
+
+  useEffect(() => {
+    (async (): Promise<FileDescription[]> => {
+      return await fetchFileDescriptions();
+    })().then((fileDescriptions) => {
+      setFileDescriptions(fileDescriptions);
+      setIsFileDescriptionsLoaded(true);
+    });
+  }, []);
 
   function addFile(e: ChangeEvent<HTMLInputElement>) {
     if (e.target.files === null) return;
@@ -32,6 +44,15 @@ const View = () => {
     setFileDescriptions(newFileDescriptions);
   }
 
+  let fileList = <FileList fileDescriptions={fileDescriptions} deleteFile={deleteFile} />;
+  if (fileDescriptions.length === 0) {
+    if (isFileDescriptionsLoaded) {
+      fileList = <EmptyFileList />;
+    } else {
+      fileList = <LoadingFileList />;
+    }
+  }
+
   // TODO: dummy json 사용 중이지만, backend로부터 가져오도록 변경해야 함
   return (
     <div className="view-panel">
@@ -51,9 +72,7 @@ const View = () => {
             <th>{/*delete*/}</th>
           </tr>
         </thead>
-        <tbody>
-          <FileList fileDescriptions={fileDescriptions} deleteFile={deleteFile} />
-        </tbody>
+        <tbody>{fileList}</tbody>
         <tfoot>
           <tr>
             <td colSpan={6}>
