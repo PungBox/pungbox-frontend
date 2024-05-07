@@ -52,4 +52,5 @@ const fileListConfig = {
   defaultSortingCriteria,
 };
 
+export type { HeaderConfig };
 export { fileListConfig };

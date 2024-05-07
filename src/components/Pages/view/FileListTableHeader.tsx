@@ -1,8 +1,29 @@
 import React, { JSX } from 'react';
-import { fileListConfig as config } from '../../../utils/config';
+import { fileListConfig as config, HeaderConfig } from '../../../utils/config';
 
 interface FileListTableHeaderProps {
   sortingHandler: Function;
+}
+
+const ascendingButton = (
+  <button>
+    <span className="material-symbols-outlined">arrow_drop_up</span>
+  </button>
+);
+const descendingButton = (
+  <button>
+    <span className="material-symbols-outlined">arrow_drop_down</span>
+  </button>
+);
+
+function appendSorter(sortableColumn: HeaderConfig, sorters: { [key: string]: React.JSX.Element }) {
+  let sorter;
+  if (sortableColumn.name === config.defaultSortingCriteria) {
+    sorter = sortableColumn.ascending ? ascendingButton : descendingButton;
+  } else {
+    sorter = <button></button>;
+  }
+  sorters[sortableColumn.name] = sorter;
 }
 
 function getSorters() {
@@ -11,23 +32,7 @@ function getSorters() {
     .filter((column) => {
       return column.sortable;
     })
-    .forEach((sortableColumn) => {
-      let sorter;
-      if (sortableColumn.name === config.defaultSortingCriteria) {
-        sorter = sortableColumn.ascending ? (
-          <button>
-            <span className="material-symbols-outlined">arrow_drop_up</span>
-          </button>
-        ) : (
-          <button>
-            <span className="material-symbols-outlined">arrow_drop_down</span>
-          </button>
-        );
-      } else {
-        sorter = <button></button>;
-      }
-      sorters[sortableColumn.name] = sorter;
-    });
+    .forEach((sortableColumns) => appendSorter(sortableColumns, sorters));
   return sorters;
 }
 
