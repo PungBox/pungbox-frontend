@@ -56,6 +56,10 @@ function getIconByFileExtension(extension: string) {
   }
 }
 
+function getFileNameExpression(fileName: string) {
+  return fileName.length <= 30 ? fileName : fileName.substring(0, 27) + '...';
+}
+
 function getFileSizeExpression(fileSize: number) {
   if (fileSize < 1e3) {
     return `${fileSize} KB`;
@@ -123,7 +127,7 @@ export const FileList = ({ fileDescriptions, deleteFile }: FileListProps) => {
           <input type="checkbox" checked={selected[file.fileId]} onChange={() => toggleSelectFile(file.fileId)} />
         </td>
         <td>{getIconByFileExtension(extension)}</td>
-        <td>{file.fileName}</td>
+        <td>{getFileNameExpression(file.fileName)}</td>
         <td>{getFileSizeExpression(file.fileSize)}</td>
         <td>{getUploadedDatetimeExpression(file.created)}</td>
         <td>

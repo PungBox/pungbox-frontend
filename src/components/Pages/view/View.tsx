@@ -13,7 +13,7 @@ const View = () => {
     const file = e.target.files[0];
     const newFileDescriptions = fileDescriptions.slice();
     newFileDescriptions.push({
-      fileId: fileDescriptions.length,
+      fileId: fileDescriptions.length + 1,
       fileName: file.name,
       fileUrl: '',
       fileSize: Math.floor(file.size / 1000),
