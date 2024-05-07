@@ -15,11 +15,12 @@ const View = () => {
       <table className="file-list-table">
         <thead>
         <tr>
-          <th></th>
+          <th>{/*checkbox*/}</th>
+          <th>{/*icon*/}</th>
           <th>name</th>
           <th>size</th>
           <th>upload date</th>
-          <th>download</th>
+          <th>{/*download*/}</th>
         </tr>
         </thead>
         <tbody>

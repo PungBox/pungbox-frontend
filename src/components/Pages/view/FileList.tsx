@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { fileDescriptions } from '../../../utils/dummyData';
 
 function getIconByFileExtension(extension: string) {
@@ -94,20 +94,34 @@ function getUploadedDatetimeExpression(created: string) {
 
 export const FileList = () => {
   // TODO: dummy json 사용 중이지만, backend로부터 가져오도록 변경해야 함
+  const initialSelected: { [key: number]: boolean } = {};
+  fileDescriptions.forEach((file) => {
+    initialSelected[file.fileId] = false;
+  });
+  const [selected, setSelected] = useState(initialSelected);
+  const downloadFile = (url: string) => {
+    window.location.href = url;
+  };
+  const toggleSelectFile = (fileId: number) => {
+    const newSelected = JSON.parse(JSON.stringify(selected));
+    newSelected[fileId] = !newSelected[fileId];
+    setSelected(newSelected);
+  };
+  
   return fileDescriptions.map((file) => {
     const splitted = file.fileName.split('.');
     const extension = splitted[splitted.length - 1];
-    const downloadFile = () => {
-      window.location.href = file.fileUrl;
-    };
     return (
-      <tr key={file.fileId}>
+      <tr key={file.fileId} onClick={() => toggleSelectFile(file.fileId)}>
+        <td>
+          <input type="checkbox" checked={selected[file.fileId]} />
+        </td>
         <td>{getIconByFileExtension(extension)}</td>
         <td>{file.fileName}</td>
         <td>{getFileSizeExpression(file.fileSize)}</td>
         <td>{getUploadedDatetimeExpression(file.created)}</td>
         <td>
-          <button onClick={downloadFile}>⭳</button>
+          <button onClick={() => downloadFile(file.fileUrl)}>⭳</button>
         </td>
       </tr>
     );
