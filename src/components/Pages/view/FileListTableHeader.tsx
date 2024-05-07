@@ -1,43 +1,36 @@
-import React, { JSX } from 'react';
+import React, { JSX, MouseEventHandler } from 'react';
 import { fileListConfig as config, HeaderConfig } from '../../../utils/config';
 
 interface FileListTableHeaderProps {
-  sortingHandler: Function;
+  sortingHandler: MouseEventHandler<HTMLButtonElement>;
 }
 
-const ascendingButton = (
-  <button>
-    <span className="material-symbols-outlined">arrow_drop_up</span>
-  </button>
-);
-const descendingButton = (
-  <button>
-    <span className="material-symbols-outlined">arrow_drop_down</span>
-  </button>
-);
-
-function appendSorter(sortableColumn: HeaderConfig, sorters: { [key: string]: React.JSX.Element }) {
-  let sorter;
+function getButtonInnerElement(sortableColumn: HeaderConfig) {
+  let innerElement = <></>;
   if (sortableColumn.name === config.defaultSortingCriteria) {
-    sorter = sortableColumn.ascending ? ascendingButton : descendingButton;
-  } else {
-    sorter = <button></button>;
+    innerElement = sortableColumn.ascending ? (
+      <span className="material-symbols-outlined">arrow_drop_up</span>
+    ) : (
+      <span className="material-symbols-outlined">arrow_drop_down</span>
+    );
   }
-  sorters[sortableColumn.name] = sorter;
+  return innerElement;
 }
 
-function getSorters() {
+function getSorters(sortingHandler: MouseEventHandler<HTMLButtonElement>) {
   const sorters: { [key: string]: JSX.Element } = {};
   config.headers
     .filter((column) => {
       return column.sortable;
     })
-    .forEach((sortableColumns) => appendSorter(sortableColumns, sorters));
+    .forEach((sortableColumn) => {
+      sorters[sortableColumn.name] = <button onClick={sortingHandler}>{getButtonInnerElement(sortableColumn)}</button>;
+    });
   return sorters;
 }
 
 export const FileListTableHeader = ({ sortingHandler }: FileListTableHeaderProps) => {
-  const sorters = getSorters();
+  const sorters = getSorters(sortingHandler);
 
   return (
     <tr>
@@ -46,7 +39,7 @@ export const FileListTableHeader = ({ sortingHandler }: FileListTableHeaderProps
         return (
           <th key={column.name}>
             {column.displayName}
-            {sorter}
+            {sorters[column.name]}
           </th>
         );
       })}

@@ -3,14 +3,14 @@ import { fetchFileDescriptions } from '../../../utils/dummyData';
 import { FileDescription } from '../../../utils/interface';
 import { FileListTableHeader } from './FileListTableHeader';
 import { FileListTableBody } from './FileListTableBody';
+import { fileListConfig } from '../../../utils/config';
 
 const View = () => {
   const storageNumber = 192837;
   const expirationDate = `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`;
   const [fileDescriptions, setFileDescriptions] = useState([] as FileDescription[]);
   const [isFileDescriptionsLoaded, setIsFileDescriptionsLoaded] = useState(false);
-  const [sortingCriteria, setSortingCriteria] = useState('date');
-  const [isSortingAscending, setIsSortingAscending] = useState(false);
+  const [sortingCriteria, setSortingCriteria] = useState(fileListConfig.defaultSortingCriteria);
 
   useEffect(() => {
     (async (): Promise<FileDescription[]> => {
