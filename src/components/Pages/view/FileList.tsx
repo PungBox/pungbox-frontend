@@ -98,7 +98,7 @@ export const FileList = () => {
     const splitted = file.fileName.split('.');
     const extension = splitted[splitted.length - 1];
     return (
-      <tr>
+      <tr key={file.fileId}>
         <td>{getIconByFileExtension(extension)}</td>
         <td>{file.fileName}</td>
         <td>{getFileSizeExpression(file.fileSize)}</td>
