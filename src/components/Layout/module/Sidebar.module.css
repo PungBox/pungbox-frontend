@@ -1,0 +1,48 @@
+.sidebar {
+    position: absolute;
+    height: 100%;
+    width: 240px;
+    /*padding: 1rem;*/
+    background-color: #b0b0b0;
+  }
+
+  .frame {
+    width: 100%;
+    padding-top: 20px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    display: inline-flex;
+  }
+  
+  .folder,
+  .search,
+  .information {
+    margin-left: 15px;
+    width: 50px;
+    height: 50px;
+  }
+
+  /*media queury 기준*/
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 60px;
+      background-color: #b0b0b0;
+      z-index: 999; /* 다른 요소들 위에 표시되도록 설정 */
+    }
+  
+    .frame {
+      justify-content: space-around;
+      align-items: center;
+      gap: 15px; /* 요소 사이 간격 조정 */
+    }
+    
+    .folder,
+    .search,
+    .information {
+      margin-left: 0px;
+      width: 40px; /* 작은 이미지 크기로 조정 */
+      height: 40px;
+    }
+  }

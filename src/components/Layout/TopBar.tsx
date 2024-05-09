@@ -1,10 +1,9 @@
 import React from 'react';
-import styles from './TopBar.module.css'; // CSS 모듈 불러오기
+import styles from './module/TopBar.module.css'; 
 
 const TopBar = () => {
   return (
     <div className={styles.topbar}>
-        <div className={styles.logoborder}></div>
         <div>
           <img
             className={styles.logo}
@@ -15,10 +14,11 @@ const TopBar = () => {
         <div>
           <img
             className={styles.punglogo}
-            src="https://via.placeholder.com/200x50"
+            src="https://via.placeholder.com/225x50"
             alt="Pung Logo"
           />
         </div>
+        <div></div>
     </div>
   );
 };
