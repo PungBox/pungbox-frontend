@@ -1,0 +1,68 @@
+.uploadcontainer {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 400px;
+    width: 100%;
+    border: 1px solid #000000;
+  }
+  
+  /* Ellipse */
+  .ellipse {
+    width: 350px;
+    height: 350px;
+    background-color: rgba(211, 211, 211, 0.4);
+    border-radius: 50%;
+    border: 8px solid #000000;
+  }
+  
+  /* UploadIcon */
+  .uploadicon {
+    width: 312px;
+    height: 310px;
+    opacity: 0.3;
+  }
+  
+  /* UploadTheFile */
+  .UploadTheFile {
+    width: 301px;
+    height: 68px;
+    text-align: center;
+    color: #000000;
+    font-size: 40px;
+    font-weight: normal;
+    font-family: 'Bungee';
+    line-height: 59.60px;
+  }
+  
+  /* GetUrl */
+  .GetUrl {
+    width: 400px;
+    height: 100px;
+    position: relative;
+  }
+  
+  /* Rectangle3 */
+  .Rectangle3 {
+    width: 400px;
+    height: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: rgba(211, 211, 211, 0.4);
+    box-shadow: 0px 0px 0px 2px #000000;
+    border: 1px solid #000000;
+  }
+  
+  /* GetUrl Text */
+  .GetUrlText {
+    position: absolute;
+    left: 101px;
+    top: 13px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 50px;
+    font-weight: normal;
+    font-family: 'Inter';
+    line-height: 74.50px;
+  }

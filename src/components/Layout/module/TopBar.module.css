@@ -3,7 +3,7 @@
     /*padding: 1rem;*/
     background-color: #d47474;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-bottom: 1px black solid;
+    border-bottom: 1px rgb(104, 104, 104) solid;
     position: relative; /* 추가 */ 
     display: flex;
     flex-grow: 1;
@@ -16,25 +16,34 @@
   .logo {
     width: 50px;
     height: 50px;
-    margin: 5px;
+    margin-left: 15px;
     position: relative;
   }
 
-.logoborder {
-    width: 60px;
-    height: 60px;
-    position: absolute;
-    border-right: 1px black solid;
-    border-bottom: 1px black solid;
-}
-
 .punglogo {
-  width: 200px;
+  width: 225.25px;
   height: 50px;
-  margin-top: 1px;
-  position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  position: absolute;
 }
 
+/*모바일 웹 반응형*/
+@media (max-width: 768px) {
+  .topbar {
+    /* 기존 스타일 유지 */
+    height: 50px;
+  }
+
+  .logo {
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+  }
+
+  .punglogo {
+    width: 180.2px; /* 모바일 화면에서 로고 크기 축소 */
+    height: 40px;
+  }
+}

@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './Layout/Layout';
 import Home from './Pages/Home';
 import Register from './Pages/Register';
-import View from './Pages/View';
+import View from './Pages/view/View';
 import Expired from './Pages/Expired';
-import Search from './Pages/Search';
+import Authenticate from './Pages/authenticate/Authenticate';
 import logo from './assets/logo.svg';
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/view" element={<View />} />
           <Route path="/expired" element={<Expired />} />
-          <Route path="/search" element={<Search />} />
+          <Route path="/authenticate" element={<Authenticate />} />
         </Routes>
       </Layout>
     </Router>
