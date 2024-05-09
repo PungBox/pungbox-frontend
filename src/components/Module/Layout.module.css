@@ -2,7 +2,7 @@
     max-width: 1920px;
     margin: 0 auto;
     height: 100vh;
-    background-color: #d9d9d9; 
+    background-color: #e9e9e9; 
   }
   
 .main {
@@ -14,11 +14,15 @@
 }
 
 .withsidebar {
-  margin-left: 240px; /* Sidebar가 표시될 때의 왼쪽 여백 */
+  margin-left: 240px; 
+}
+
+.withoutsidebar {
+  margin-left: 0px;
 }
 
 @media (max-width: 768px) {
   .withsidebar {
-    margin-left: 60px; /* Sidebar가 표시될 때의 왼쪽 여백 */
+    margin-left: 60px; 
   }
 }

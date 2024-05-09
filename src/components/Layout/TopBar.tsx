@@ -3,7 +3,6 @@
   import styles from '/src/components/Module/TopBar.module.css'; 
 
   const TopBar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
-    const [sidebarOpen, setSidebarOpen] = useState(false); // Sidebar의 표시 여부를 상태로 관리
   
     return (
       <div className={styles.topbar}>
