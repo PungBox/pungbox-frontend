@@ -1,16 +1,14 @@
 import Layout from 'components/Layout/Layout'
 import React from 'react'
-import styles from './module/Home.module.css'; 
+import styles from '/src/components/Module/Home.module.css'; 
 
 const Home = () => {
   return (
     <div className={styles.uploadcontainer}>
-            
     </div>
     
   )
 }
-
 export default Home
 
 /*
