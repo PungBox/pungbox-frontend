@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { fileListConfig } from '../../../../../utils/config';
+import { getNewlySortedFileDescriptions } from './fileDescription';
+import { FileDescription } from '../../../../../utils/interface';
 
 function getIsDefaultSortingOrderForTheColumnAscending(columnName: string): boolean {
   const column = fileListConfig.headers.filter((column) => {
@@ -38,7 +40,18 @@ function useSortingOrder() {
     toggleSortingOrder();
   }
 
-  return { sortingCriteria, isSortingAscending, resetToDefaultSortingOrder, handleSorting };
+  const reSortFileDescriptions = useCallback(
+    (
+      fileDescriptions: FileDescription[],
+      setFileDescriptions: React.Dispatch<React.SetStateAction<FileDescription[]>>,
+    ) => {
+      const newFileDescriptions = getNewlySortedFileDescriptions(fileDescriptions, sortingCriteria, isSortingAscending);
+      setFileDescriptions(newFileDescriptions);
+    },
+    [sortingCriteria, isSortingAscending],
+  );
+
+  return { sortingCriteria, isSortingAscending, resetToDefaultSortingOrder, handleSorting, reSortFileDescriptions };
 }
 
 export { useSortingOrder };

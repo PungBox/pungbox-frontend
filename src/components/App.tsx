@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './Layout/Layout';
 import Home from './Pages/Home';
-import Register from './Pages/Register';
+import Register from './Pages/register/Register';
 import View from './Pages/view/View';
 import Expired from './Pages/Expired';
 import Authenticate from './Pages/authenticate/Authenticate';

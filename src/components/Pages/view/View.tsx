@@ -4,12 +4,13 @@ import { FileListTableHeader } from './component/FileListTableHeader';
 import { FileListTableBody } from './component/FileListTableBody';
 import { fileListConfig } from '../../../utils/config';
 import { useSortingOrder } from './util/view/sortingOrder';
-import { getNewlySortedFileDescriptions, useFileDescription } from './util/view/fileDescription';
+import { useFileDescription } from './util/view/fileDescription';
 
 const View = () => {
   const storageNumber = 192837;
   const expirationDate = `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`;
-  const { sortingCriteria, isSortingAscending, resetToDefaultSortingOrder, handleSorting } = useSortingOrder();
+  const { sortingCriteria, isSortingAscending, resetToDefaultSortingOrder, handleSorting, reSortFileDescriptions } =
+    useSortingOrder();
   const {
     fileDescriptions,
     setFileDescriptions,
@@ -26,14 +27,9 @@ const View = () => {
     });
   }, []);
 
-  function reSortFileDescriptions() {
-    const newFileDescriptions = getNewlySortedFileDescriptions(fileDescriptions, sortingCriteria, isSortingAscending);
-    setFileDescriptions(newFileDescriptions);
-  }
-
   useEffect(() => {
-    reSortFileDescriptions();
-  }, [sortingCriteria, isSortingAscending]);
+    reSortFileDescriptions(fileDescriptions, setFileDescriptions);
+  }, [reSortFileDescriptions]);
 
   // TODO: dummy json 사용 중이지만, backend로부터 가져오도록 변경해야 함
   return (
