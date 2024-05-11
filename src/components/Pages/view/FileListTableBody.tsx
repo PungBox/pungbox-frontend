@@ -15,13 +15,13 @@ export const FileListTableBody = ({
   deleteFile,
   isFileDescriptionsLoaded,
 }: FileListTableBodyProps) => {
-  let fileList = <FileList fileDescriptions={fileDescriptions} deleteFile={deleteFile} />;
-  if (fileDescriptions.length === 0) {
-    if (isFileDescriptionsLoaded) {
-      fileList = <EmptyFileList />;
-    } else {
-      fileList = <LoadingFileList />;
-    }
-  }
-  return fileList;
+  return fileDescriptions.length === 0 ? (
+    isFileDescriptionsLoaded ? (
+      <EmptyFileList />
+    ) : (
+      <LoadingFileList />
+    )
+  ) : (
+    <FileList fileDescriptions={fileDescriptions} deleteFile={deleteFile} />
+  );
 };
