@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { fetchFileDescriptions } from '../../../utils/dummyData';
-import { FileListTableHeader } from './FileListTableHeader';
-import { FileListTableBody } from './FileListTableBody';
+import { FileListTableHeader } from './component/FileListTableHeader';
+import { FileListTableBody } from './component/FileListTableBody';
 import { fileListConfig } from '../../../utils/config';
 import { useSortingOrder } from './util/view/sortingOrder';
 import { getNewlySortedFileDescriptions, useFileDescription } from './util/view/fileDescription';

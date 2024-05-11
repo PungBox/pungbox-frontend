@@ -7,7 +7,7 @@ import {
   getFileSizeExpression,
   getIconByFileExtension,
   getUploadedDatetimeExpression,
-} from './util/fileList';
+} from '../util/fileList';
 
 export const FileList = ({ fileDescriptions, deleteFile }: FileListProps) => {
   const [selected, setSelected] = useState(

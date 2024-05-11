@@ -2,7 +2,7 @@ import { FileList } from './FileList';
 import { EmptyFileList } from './EmptyFileList';
 import { LoadingFileList } from './LoadingFileList';
 import React from 'react';
-import { FileDescription } from '../../../utils/interface';
+import { FileDescription } from '../../../../utils/interface';
 
 interface FileListTableBodyProps {
   fileDescriptions: FileDescription[];
