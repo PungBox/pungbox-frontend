@@ -21,9 +21,9 @@ const Layout = ({children }: {
       <div className={`${styles.main} ${sidebarOpen ? styles.withsidebar : ''}`}>
         {/* Main content */}
         {children} 
+        <div></div>
       </div>
     </div>
-    /* <Footer /> */
   );
 };
 

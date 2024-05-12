@@ -29,20 +29,11 @@ const Home = () => {
     // 파일 업로드 로직 추가
   };
 
-  // 드래그 앤 드롭 영역 스타일
-  const dropzoneStyle = {
-    border: '2px dashed #CCCCCC',
-    borderRadius: '4px',
-    padding: '20px',
-    cursor: 'pointer',
-    margin: '20px auto',
-  };
-
   return (
-    <div>
+    <div className={styles.outercontainer}>
       {/* 드래그 앤 드롭 영역 */}
       <div
-        style={dropzoneStyle}
+        className={styles.dropzone}
         onDrop={handleDrop}
         onDragOver={(e) => e.preventDefault()}
       >
@@ -54,7 +45,9 @@ const Home = () => {
 
       {/* 업로드 버튼 */}
       <div></div>
-      <button onClick={handleUpload}>업로드</button>
+      <button 
+        className={styles.uploadbotton}
+        onClick={handleUpload}>업로드</button>
     </div>
   );
 }
