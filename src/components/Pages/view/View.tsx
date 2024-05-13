@@ -124,7 +124,7 @@ const View = () => {
         <p className={styles.storage_number}>Storage No. {storageNumber}</p>
         <p className={styles.expiration_date}>expiration date: {expirationDate}</p>
       </div>
-      <table className={styles['file-list-table']}>
+      <table className={styles.file_list_table}>
         <thead>
           <FileListTableHeader
             sortingHandler={handleSorting}
