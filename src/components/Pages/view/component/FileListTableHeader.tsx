@@ -1,9 +1,14 @@
 import React, { JSX, MouseEventHandler } from 'react';
-import { fileListConfig as config, HeaderConfig } from '../../../utils/config';
+import { fileListConfig as config, HeaderConfig } from '../../../../utils/config';
+
+const headerNames = config.headers.map((header: HeaderConfig): string => {
+  return header.name;
+});
+type headerNames = (typeof headerNames)[number];
 
 interface FileListTableHeaderProps {
-  sortingHandler: MouseEventHandler<HTMLElement>;
-  sortingCriteria: string;
+  handleSorting: MouseEventHandler<HTMLElement>;
+  sortingCriteria: headerNames;
   isSortingAscending: boolean;
 }
 
@@ -34,7 +39,7 @@ function getSorters(sortingCriteria: string, isSortingAscending: boolean) {
 }
 
 export const FileListTableHeader = ({
-  sortingHandler,
+  handleSorting,
   sortingCriteria,
   isSortingAscending,
 }: FileListTableHeaderProps) => {
@@ -43,9 +48,8 @@ export const FileListTableHeader = ({
   return (
     <tr>
       {config.headers.map((column) => {
-        const sorter = column.sortable ? sorters[column.name] : '';
         return (
-          <th key={column.name} onClick={sortingHandler} style={{ userSelect: 'none' }}>
+          <th key={column.name} onClick={handleSorting} style={{ userSelect: 'none' }}>
             <span className={column.name}>{column.displayName}</span>
             {sorters[column.name]}
           </th>
