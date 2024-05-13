@@ -6,7 +6,7 @@ import Register from './Pages/register/Register';
 import View from './Pages/view/View';
 import Expired from './Pages/Expired';
 import Authenticate from './Pages/authenticate/Authenticate';
-import logo from './assets/logo.svg';
+import Aboutus from './Pages/Aboutus';
 
 function App() {
   return (
@@ -18,6 +18,7 @@ function App() {
           <Route path="/view" element={<View />} />
           <Route path="/expired" element={<Expired />} />
           <Route path="/authenticate" element={<Authenticate />} />
+          <Route path="/aboutus" element={<Aboutus />} />
         </Routes>
       </Layout>
     </Router>

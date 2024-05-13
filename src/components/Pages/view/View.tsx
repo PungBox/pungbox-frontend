@@ -5,6 +5,7 @@ import { FileListTableBody } from './component/FileListTableBody';
 import { fileListConfig } from '../../../utils/config';
 import { useSortingOrder } from './util/view/sortingOrder';
 import { useFileDescription } from './util/view/fileDescription';
+import styles from '/src/components/Module/View.module.css';
 
 const View = () => {
   const storageNumber = 192837;
@@ -33,12 +34,12 @@ const View = () => {
 
   // TODO: dummy json 사용 중이지만, backend로부터 가져오도록 변경해야 함
   return (
-    <div className="view-panel">
-      <div className="view-panel-header">
-        <p className="storage-number">Storage No. {storageNumber}</p>
-        <p className="expiration-date">expiration date: {expirationDate}</p>
+    <div className={styles.view_panel}>
+      <div className={styles.view_panel_header}>
+        <p className={styles.storage_number}>Storage No. {storageNumber}</p>
+        <p className={styles.expiration_date}>expiration date: {expirationDate}</p>
       </div>
-      <table className="file-list-table">
+      <table className={styles.file_list_table}>
         <thead>
           <FileListTableHeader
             handleSorting={handleSorting}

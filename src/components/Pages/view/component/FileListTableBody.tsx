@@ -15,6 +15,7 @@ export const FileListTableBody = ({
   deleteFile,
   isFileDescriptionsLoaded,
 }: FileListTableBodyProps) => {
+
   return fileDescriptions.length === 0 ? (
     isFileDescriptionsLoaded ? (
       <EmptyFileList />
