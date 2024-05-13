@@ -1,5 +1,5 @@
 import React, { JSX, MouseEventHandler } from 'react';
-import { fileListConfig as config, HeaderConfig } from '../../../utils/config';
+import { fileListConfig as config, HeaderConfig } from '../../../../utils/config';
 
 interface FileListTableHeaderProps {
   sortingHandler: MouseEventHandler<HTMLElement>;

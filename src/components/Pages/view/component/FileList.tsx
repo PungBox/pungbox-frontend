@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { FileDescription } from '../../../utils/interface';
+import { FileDescription } from '../../../../utils/interface';
 import { EmptyFileList } from './EmptyFileList';
 
 function getIconByFileExtension(extension: string) {
