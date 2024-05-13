@@ -31,23 +31,23 @@ const Home = () => {
 
   return (
     <div className={styles.outercontainer}>
-      {/* 드래그 앤 드롭 영역 */}
-      <div
-        className={styles.dropzone}
-        onDrop={handleDrop}
-        onDragOver={(e) => e.preventDefault()}
-      >
-        <span>업로드할 파일을 여기에 끌어다 놓으세요.</span>
+      <div className={styles.innercontainer}>
+        {/* 드래그 앤 드롭 영역 */}
+        <div
+          className={styles.dropzone}
+          onDrop={handleDrop}
+          onDragOver={(e) => e.preventDefault()}
+        >
+        <img className={styles.uploadicon} src="src/assets/icon/free-icon-cloud-database-7734276.png" />
+        <span >업로드할 파일을 여기에 끌어다 놓으세요.</span>
+        </div>
+        {/* 파일 or 폴더 선택 버튼 */}
+        <input type="file" onChange={handleFileSelect} multiple={true} directory={true} webkitdirectory={true} />  
       </div>
-
-      {/* 파일 선택 input */}
-      <input type="file" onChange={handleFileSelect} />
-
-      {/* 업로드 버튼 */}
-      <div></div>
-      <button 
-        className={styles.uploadbotton}
-        onClick={handleUpload}>업로드</button>
+     
+      <div style={{ textAlign: 'center' }}>
+        <button className={styles.uploadbutton} onClick={handleUpload}>UPLOAD FILE</button>
+      </div>
     </div>
   );
 }
