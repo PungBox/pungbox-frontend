@@ -20,7 +20,7 @@ const View = () => {
     addFile,
     deleteFile,
   } = useFileDescription();
-  
+
   useEffect(() => {
     fetchFileDescriptions().then((fileDescriptions) => {
       displayFileDescriptions(fileDescriptions);
@@ -42,7 +42,7 @@ const View = () => {
       <table className={styles.file_list_table}>
         <thead>
           <FileListTableHeader
-            sortingHandler={handleSorting}
+            handleSorting={handleSorting}
             sortingCriteria={sortingCriteria}
             isSortingAscending={isSortingAscending}
           />
