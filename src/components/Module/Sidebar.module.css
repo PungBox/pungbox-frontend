@@ -8,7 +8,7 @@
   border-right: 1px rgb(104, 104, 104) solid;
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
   transition: left 0.35s; /* left 속성 변경 시 애니메이션 적용 */
-  z-index: 1; /* 다른 요소들 위에 표시되도록 설정 */
+  z-index: 1;
 }
 
 .sidebar.open {
@@ -46,7 +46,8 @@
   display: flex;
   align-items: center;
   position: relative; /* 부모 요소 기준으로 위치 지정 */
-  z-index: 1; /* 다른 요소들 위에 위치하도록 설정 */
+  z-index: 2; /* 다른 요소들 위에 위치하도록 설정 */
+  transition: opacity 0.3s;
 }
 .menucontainer:hover {
   cursor: pointer; /* 마우스 커서를 포인터로 변경 */
