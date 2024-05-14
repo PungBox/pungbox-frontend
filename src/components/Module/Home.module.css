@@ -32,6 +32,7 @@
     justify-content: center;
     align-items: center;
     transition: background-color 0.3s, border-color 0.3s;
+    z-index: 9999;
   }
 
 .dropzone.active{
@@ -64,7 +65,7 @@
 .uploadbutton:hover {
     opacity: 1;
   }
-.uploadbutton:active {
+.uploadbutton.active     {
     top: 2px;
     box-shadow: #c0392b 0px 3px 2px,#000 0px 3px 5px;
   }
@@ -94,7 +95,7 @@
     font-size: 1rem;
     border-radius: 1rem;
     cursor: pointer;
-    z-index: 9999;
+    z-index: 999;
  }
 
 .dragdropFilesFilter {
@@ -113,7 +114,7 @@
     padding-right: 10px;
     font-size: 1rem;
     border-radius: 1rem;
-    color: rgba(240, 128, 128, 0.535);
+    color: rgb(205, 108, 108);
     cursor: pointer;
 }
 .filelistbutton:hover{

@@ -1,11 +1,11 @@
-import Layout from 'components/Layout/Layout'
+// Home.tsx
 import React, {
   ChangeEvent,
-  useCallback,
-  useRef,
   useState,
-  useEffect
-} from "react";
+  useEffect,
+  useRef,
+} from 'react';
+import useDragAndDrop from './UseDragDrop';
 import styles from '/src/components/Module/Home.module.css'; 
 import iconExpand from '/src/assets/icon/icon_expand.svg';
 import iconCollapse from '/src/assets/icon/icon_collapse.svg';
@@ -20,98 +20,70 @@ const Home = () => {
   const [files, setFiles] = useState<IFileTypes[]>([]);
   const [showFiles, setShowFiles] = useState<boolean>(false);
 
-  const dragRef = useRef<HTMLLabelElement | null>(null);
-  const fileId = useRef<number>(0);
+  const nextFileId = useRef<number>(0);
 
-  const onChangeFiles = useCallback(
-    (e: ChangeEvent<HTMLInputElement> | any): void => {
-      let selectFiles: File[] = [];
-      let tempFiles: IFileTypes[] = files;
-
-      if (e.type === "drop") {
-        selectFiles = e.dataTransfer.files;
-      } else {
-        selectFiles = e.target.files;
-      }
-
-      for (const file of selectFiles) {
-        tempFiles = [
-          ...tempFiles,
-          {
-            id: fileId.current++,
-            object: file
-          }
-        ];
-      }
-
-      setFiles(tempFiles);
-    },
-    [files]
-  );
-
-  const handleFilterFile = useCallback(
-    (id: number): void => {
-      setFiles(files.filter((file: IFileTypes) => file.id !== id));
-    },
-    [files]
-  );
-
-  const handleDragStart = useCallback((e: DragEvent): void => {
+  const handleDragStart = (e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(true);
-  }, []);
+  };
 
-  const handleDragEnd = useCallback((e: DragEvent): void => {
+  const handleDragOver = (e: DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragEnd = (e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(false);
-  }, []);
+  };
 
-  const handleDragOver = useCallback((e: DragEvent): void => {
+  const handleDrop = (e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsDragging(true);
-  }, []);
+    setIsDragging(false);
+    onChangeFiles(e);
+  };
 
-  const handleDrop = useCallback(
-    (e: DragEvent): void => {
-      e.preventDefault();
-      e.stopPropagation();
-      setIsDragging(false);
-      onChangeFiles(e);
-    },
-    [onChangeFiles]
-  );
+  const onChangeFiles = (e: ChangeEvent<HTMLInputElement> | any) => {
+    let selectFiles: File[] = [];
+    let tempFiles: IFileTypes[] = files;
 
-  const initDragEvents = useCallback((): void => {
-    if (dragRef.current !== null) {
-      dragRef.current.addEventListener("dragenter", handleDragStart);
-      dragRef.current.addEventListener("dragover", handleDragOver);
-      dragRef.current.addEventListener("dragleave", handleDragEnd);
-      dragRef.current.addEventListener("drop", handleDrop);
+    if (e.type === 'drop') {
+      selectFiles = e.dataTransfer.files;
+    } else {
+      selectFiles = e.target.files;
     }
-  }, [handleDragStart, handleDragOver, handleDragEnd, handleDrop]);
 
-  const resetDragEvents = useCallback((): void => {
-    if (dragRef.current !== null) {
-      dragRef.current.removeEventListener("dragenter", handleDragStart);
-      dragRef.current.removeEventListener("dragover", handleDragOver);
-      dragRef.current.removeEventListener("dragleave", handleDragEnd);
-      dragRef.current.removeEventListener("drop", handleDrop);
+    for (const file of selectFiles) {
+      tempFiles = [
+        ...tempFiles,
+        {
+          id: nextFileId.current++,
+          object: file,
+        },
+      ];
     }
-  }, [handleDragStart, handleDragOver, handleDragEnd, handleDrop]);
 
-  useEffect(() => {
-    initDragEvents();
+    setFiles(tempFiles);
+  };
 
-    return () => resetDragEvents();
-  }, [initDragEvents, resetDragEvents]);
+  const handleFilterFile = (id: number) => {
+    setFiles(files.filter((file: IFileTypes) => file.id !== id));
+  };
 
   const toggleFilesVisibility = () => {
     setShowFiles(!showFiles);
   };
 
+  const { dragRef } = useDragAndDrop(
+    handleDragStart,
+    handleDragOver,
+    handleDragEnd,
+    handleDrop
+  );
   
   return (
     <div className={styles.outercontainer}>
@@ -120,7 +92,7 @@ const Home = () => {
         <input
           type="file"
           id="fileUpload"
-          style={{ display: "none" }}
+          style={{ display: 'none' }}
           multiple={true}
           onChange={onChangeFiles}
         />
@@ -136,8 +108,8 @@ const Home = () => {
         <button className={styles.filelistbutton} onClick={toggleFilesVisibility}>
           {showFiles ? <img src={iconCollapse} alt="Collapse" /> : <img src={iconExpand} alt="Expand" />}
           <span>Uploaded file list</span>
-          </button>
-          <div className={styles.dragdropFiles} style={{ display: showFiles ? 'block' : 'none' }}>
+        </button>
+        <div className={styles.dragdropFiles} style={{ display: showFiles ? 'block' : 'none' }}>
           {files.map((file: IFileTypes) => {
             const {
               id,
@@ -160,10 +132,11 @@ const Home = () => {
       </div>
      
       <div style={{ textAlign: 'center' }}>
-        <button className={styles.uploadbutton} >UPLOAD FILE</button> 
+      <button className={styles.uploadbutton} >UPLOAD FILE</button> 
         {/* onClick={handleUpload} */}
       </div>
     </div>
   );
-}
-export default Home
+};
+
+export default Home;
