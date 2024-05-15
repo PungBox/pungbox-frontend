@@ -8,7 +8,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.3.0
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PULL_PRIVATE_REPO_GITHUB_TOKEN }}
       
       - name: execute remote ssh
         uses: appleboy/ssh-action@master
@@ -17,7 +19,6 @@ jobs:
           username: ${{ secrets.REMOTE_SSH_USERNAME }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
           port: ${{ secrets.REMOTE_SSH_PORT }}
-          token: ${{ secrets.PULL_PRIVATE_REPO_GITHUB_TOKEN }}
           script: |
             git pull
             pnpm install
