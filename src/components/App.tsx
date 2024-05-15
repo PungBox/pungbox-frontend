@@ -6,7 +6,7 @@ import Register from './Pages/register/Register';
 import View from './Pages/view/View';
 import Expired from './Pages/Expired';
 import Authenticate from './Pages/authenticate/Authenticate';
-import Aboutus from './Pages/Aboutus';
+import Aboutus from './Pages/AboutUs';
 
 function App() {
   return (
