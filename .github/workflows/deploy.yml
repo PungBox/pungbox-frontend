@@ -1,0 +1,26 @@
+name: deploy
+on:
+  push:
+    branches: ['main']
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.3.0
+
+      - name: execute remote ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_SSH_HOST }}
+          username: ${{ secrets.REMOTE_SSH_USERNAME }}
+          key: ${{ secrets.REMOTE_SSH_KEY }}
+          passphrase: ${{ secrets.REMOTE_SSH_PASSPHRASE }}
+          port: ${{ secrets.REMOTE_SSH_PORT }}
+          token: ${{ secretes.GITHUB_TOKEN }} # for git pull from github
+          script: |
+            git pull
+            pnpm install
+            pnpm run build
+            sudo kill -9 $(sudo lsof -t -i:80)
+            sudo pnpm run serve --port=80 --host
+            
