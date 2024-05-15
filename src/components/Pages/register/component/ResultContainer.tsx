@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface ResultContainerProps {
   title: string;
@@ -7,7 +7,14 @@ interface ResultContainerProps {
 }
 
 const ResultContainer = ({ title, content, copyable }: ResultContainerProps) => {
-  const copyToClipboard = () => {};
+  const [isCopied, setIsCopied] = useState(false);
+  const copyToClipboard = async () => {
+    setIsCopied(true);
+    await navigator.clipboard.writeText(content);
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 1500);
+  };
 
   return (
     <>
@@ -16,7 +23,7 @@ const ResultContainer = ({ title, content, copyable }: ResultContainerProps) => 
         <span>{content}</span>
         {copyable ? (
           <button onClick={copyToClipboard}>
-            <span className="material-symbols-outlined">link</span>
+            <span className="material-symbols-outlined">{isCopied ? 'check' : 'link'}</span>
           </button>
         ) : (
           <></>

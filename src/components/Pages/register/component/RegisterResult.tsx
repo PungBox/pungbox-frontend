@@ -14,7 +14,7 @@ const RegisterResult = () => {
       <ResultContainer title="Expiration Date:" content={expirationDate} />
 
       <Link to={`${url}/view`}>
-        <button onClick={() => (window.location.href = url)}>Go to Storage</button>
+        <button>Go to Storage</button>
       </Link>
     </div>
   );
