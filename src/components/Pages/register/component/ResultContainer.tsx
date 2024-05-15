@@ -17,7 +17,7 @@ const ResultContainer = ({ title, content, copyable }: ResultContainerProps) => 
   };
 
   return (
-    <>
+    <div>
       <div>{title}</div>
       <div>
         <span>{content}</span>
@@ -30,7 +30,7 @@ const ResultContainer = ({ title, content, copyable }: ResultContainerProps) => 
         )}
       </div>
       <br />
-    </>
+    </div>
   );
 };
 
