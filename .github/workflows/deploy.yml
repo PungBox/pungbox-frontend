@@ -25,5 +25,5 @@ jobs:
             pnpm install
             pnpm run build
             sudo kill -9 $(sudo lsof -t -i:80)
-            sudo pnpm run serve --port=80 --host
+            nohup sudo pnpm run serve --port=80 --host </dev/null &>/dev/null &
             
