@@ -9,6 +9,7 @@ import useDragAndDrop from './UseDragDrop';
 import styles from '/src/components/Module/Home.module.css'; 
 import iconExpand from '/src/assets/icon/icon_expand.svg';
 import iconCollapse from '/src/assets/icon/icon_collapse.svg';
+import { getPresignedUrl } from 'service/service';
 
 interface IFileTypes {
   id: number;
@@ -47,7 +48,7 @@ const Home = () => {
     onChangeFiles(e);
   };
 
-  const onChangeFiles = (e: ChangeEvent<HTMLInputElement> | any) => {
+  const onChangeFiles = async (e: ChangeEvent<HTMLInputElement> | any) => {
     let selectFiles: File[] = [];
     let tempFiles: IFileTypes[] = files;
 
@@ -67,6 +68,13 @@ const Home = () => {
       ];
     }
 
+    const urls = await getPresignedUrl({
+      files: selectFiles,
+      // @TODO: bucketName을 변경하세요.
+      bucketName: 'pungbox-test-bucket',
+    })
+
+    console.log(urls);
     setFiles(tempFiles);
   };
 
