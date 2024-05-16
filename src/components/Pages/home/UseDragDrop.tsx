@@ -1,5 +1,6 @@
 // useDragAndDrop.ts
 import { useEffect, useRef, useCallback } from 'react';
+import styles from '/src/components/Module/Home.module.css'; 
 
 interface DragEvents {
   onDragStart: (event: DragEvent) => void;
@@ -16,6 +17,19 @@ const useDragAndDrop = (
   onDrop: (event: DragEvent) => void
 ) => {
   const dragRef = useRef<HTMLLabelElement | null>(null);
+
+  useEffect(() => {
+    const element = dragRef.current;
+    if(!element) return;
+
+    element.addEventListener('dragenter', (e) => {
+      element.classList.add(styles.active)
+    })
+
+    element.addEventListener('dragleave', () => {
+      element.classList.remove(styles.active)
+    })
+  }, [])
 
   const initDragEvents = useCallback(() => {
     if (dragRef.current !== null) {
