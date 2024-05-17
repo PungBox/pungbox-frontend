@@ -1,60 +1,40 @@
-import React, { JSX, MouseEventHandler } from 'react';
-import { fileListConfig as config, HeaderConfig } from '../../../../utils/config';
+import React from 'react';
+import { fileListConfig as config } from '../../../../utils/config';
+import { downloadFile, FileListTableHeaderProps, getSorters } from '../util/fileListTableHeader';
 
-const headerNames = config.headers.map((header: HeaderConfig): string => {
-  return header.name;
-});
-type headerNames = (typeof headerNames)[number];
 
-interface FileListTableHeaderProps {
-  handleSorting: MouseEventHandler<HTMLElement>;
-  sortingCriteria: headerNames;
-  isSortingAscending: boolean;
-}
-
-function getButtonInnerElement(sortableColumn: HeaderConfig, sortingCriteria: string, isSortingAscending: boolean) {
-  let innerElement = <></>;
-  if (sortableColumn.name === sortingCriteria) {
-    innerElement = isSortingAscending ? (
-      <span className="material-symbols-outlined">arrow_drop_up</span>
-    ) : (
-      <span className="material-symbols-outlined">arrow_drop_down</span>
-    );
-  }
-  return innerElement;
-}
-
-function getSorters(sortingCriteria: string, isSortingAscending: boolean) {
-  const sorters: { [key: string]: JSX.Element } = {};
-  config.headers
-    .filter((column) => {
-      return column.sortable;
-    })
-    .forEach((sortableColumn) => {
-      sorters[sortableColumn.name] = (
-        <button>{getButtonInnerElement(sortableColumn, sortingCriteria, isSortingAscending)}</button>
-      );
-    });
-  return sorters;
-}
-
-export const FileListTableHeader = ({
-  handleSorting,
-  sortingCriteria,
-  isSortingAscending,
-}: FileListTableHeaderProps) => {
+export const FileListTableHeader = (
+  {
+    handleSorting,
+    sortingCriteria,
+    isSortingAscending,
+    fileDescriptions,
+    selected,
+    deleteFile,
+  }: FileListTableHeaderProps,
+) => {
   const sorters = getSorters(sortingCriteria, isSortingAscending);
-
+  
   return (
-    <tr>
-      {config.headers.map((column) => {
-        return (
-          <th key={column.name} onClick={handleSorting} style={{ userSelect: 'none' }}>
-            <span className={column.name}>{column.displayName}</span>
-            {sorters[column.name]}
-          </th>
-        );
-      })}
-    </tr>
+    <div>
+      <div>
+        <button onClick={() => downloadFile(file.fileUrl)}>
+          <span className="material-symbols-outlined">download</span>
+        </button>
+        <button onClick={() => deleteFile(file.fileId)}>
+          <span className="material-symbols-outlined">delete</span>
+        </button>
+      </div>
+      <tr>
+        {config.headers.map((column) => {
+          return (
+            <th key={column.name} onClick={handleSorting} style={{ userSelect: 'none' }}>
+              <span className={column.name}>{column.displayName}</span>
+              {sorters[column.name]}
+            </th>
+          );
+        })}
+      </tr>
+    </div>
   );
 };

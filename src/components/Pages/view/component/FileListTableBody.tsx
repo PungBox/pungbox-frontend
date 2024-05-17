@@ -6,7 +6,6 @@ import { FileDescription } from '../../../../utils/interface';
 
 interface FileListTableBodyProps {
   fileDescriptions: FileDescription[];
-  deleteFile: (fileId: number) => void;
   isFileDescriptionsLoaded: boolean;
   selected: { [key: number]: boolean };
   toggleSelectFile: (fileId: number) => void;
@@ -15,7 +14,6 @@ interface FileListTableBodyProps {
 export const FileListTableBody = (
   {
     fileDescriptions,
-    deleteFile,
     isFileDescriptionsLoaded,
     selected,
     toggleSelectFile,
@@ -29,7 +27,6 @@ export const FileListTableBody = (
       <LoadingFileList />
     )
   ) : (
-    <FileList fileDescriptions={fileDescriptions} deleteFile={deleteFile} selected={selected}
-              toggleSelectFile={toggleSelectFile} />
+    <FileList fileDescriptions={fileDescriptions} selected={selected} toggleSelectFile={toggleSelectFile} />
   );
 };

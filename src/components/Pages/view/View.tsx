@@ -49,12 +49,14 @@ const View = () => {
           handleSorting={handleSorting}
           sortingCriteria={sortingCriteria}
           isSortingAscending={isSortingAscending}
+          fileDescriptions={fileDescriptions}
+          selected={selected}
+          deleteFile={deleteFile}
         />
         </thead>
         <tbody>
         <FileListTableBody
           fileDescriptions={fileDescriptions}
-          deleteFile={deleteFile}
           isFileDescriptionsLoaded={isFileDescriptionsLoaded}
           selected={selected}
           toggleSelectFile={toggleSelectFile}

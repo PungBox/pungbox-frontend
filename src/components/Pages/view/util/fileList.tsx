@@ -3,7 +3,6 @@ import { FileDescription } from '../../../../utils/interface';
 
 interface FileListProps {
   fileDescriptions: FileDescription[];
-  deleteFile: (fileId: number) => void;
   selected: { [key: number]: boolean };
   toggleSelectFile: (fileId: number) => void;
 }
@@ -101,15 +100,10 @@ function getUploadedDatetimeExpression(created: string) {
   return `${dateExpression} ${timeExpression}`;
 }
 
-function downloadFile(url: string): void {
-  window.location.href = url;
-}
-
 export type { FileListProps };
 export {
   getIconByFileExtension,
   getFileNameExpression,
   getFileSizeExpression,
   getUploadedDatetimeExpression,
-  downloadFile,
 };

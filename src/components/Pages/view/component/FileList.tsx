@@ -1,7 +1,6 @@
 import React from 'react';
 
 import {
-  downloadFile,
   FileListProps,
   getFileNameExpression,
   getFileSizeExpression,
@@ -9,7 +8,7 @@ import {
   getUploadedDatetimeExpression,
 } from '../util/fileList';
 
-export const FileList = ({ fileDescriptions, deleteFile, selected, toggleSelectFile }: FileListProps) => {
+export const FileList = ({ fileDescriptions, selected, toggleSelectFile }: FileListProps) => {
   return fileDescriptions.map((file) => {
     const splitted = file.fileName.split('.');
     const extension = splitted[splitted.length - 1];
@@ -22,16 +21,6 @@ export const FileList = ({ fileDescriptions, deleteFile, selected, toggleSelectF
         <td>{getFileNameExpression(file.fileName)}</td>
         <td>{getFileSizeExpression(file.fileSize)}</td>
         <td>{getUploadedDatetimeExpression(file.created)}</td>
-        <td>
-          <button onClick={() => downloadFile(file.fileUrl)}>
-            <span className="material-symbols-outlined">download</span>
-          </button>
-        </td>
-        <td>
-          <button onClick={() => deleteFile(file.fileId)}>
-            <span className="material-symbols-outlined">delete</span>
-          </button>
-        </td>
       </tr>
     );
   });
