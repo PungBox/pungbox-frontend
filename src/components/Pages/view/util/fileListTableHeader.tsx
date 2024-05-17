@@ -38,9 +38,5 @@ function getSorters(sortingCriteria: string, isSortingAscending: boolean) {
   return sorters;
 }
 
-function downloadFile(url: string): void {
-  window.location.href = url;
-}
-
 export type { FileListTableHeaderProps };
-export { getSorters, downloadFile };
+export { getSorters };

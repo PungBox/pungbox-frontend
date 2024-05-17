@@ -7,7 +7,7 @@ import { useSortingOrder } from './util/view/sortingOrder';
 import { useFileDescription } from './util/view/fileDescription';
 import styles from '/src/components/Module/View.module.css';
 import { useSelected } from './util/view/selected';
-import { downloadFile } from './util/fileListTableHeader';
+import { downloadFile } from './util/view/view';
 
 const View = () => {
   const storageNumber = 192837;
@@ -20,10 +20,10 @@ const View = () => {
     isFileDescriptionsLoaded,
     displayFileDescriptions,
     addFile,
-    deleteFile,
+    deleteFiles,
   } = useFileDescription();
   const {
-    selected, toggleSelectFile,
+    selected, getSelectedFileIds, getSelectedFileUrls, toggleSelectFile,
   } = useSelected(fileDescriptions);
   
   useEffect(() => {
@@ -37,6 +37,7 @@ const View = () => {
     reSortFileDescriptions(fileDescriptions, setFileDescriptions);
   }, [reSortFileDescriptions]);
   
+  
   // TODO: dummy json 사용 중이지만, backend로부터 가져오도록 변경해야 함
   return (
     <div className={styles.view_panel}>
@@ -45,10 +46,10 @@ const View = () => {
         <p className={styles.expiration_date}>expiration date: {expirationDate}</p>
       </div>
       <div>
-        <button onClick={() => downloadFile(file.fileUrl)}>
+        <button onClick={() => downloadFile(getSelectedFileUrls(fileDescriptions))}>
           <span className="material-symbols-outlined">download</span>
         </button>
-        <button onClick={() => deleteFile(file.fileId)}>
+        <button onClick={() => deleteFiles(getSelectedFileIds())}>
           <span className="material-symbols-outlined">delete</span>
         </button>
       </div>

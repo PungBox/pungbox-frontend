@@ -37,16 +37,6 @@ const headers: HeaderConfig[] = [
     sortable: true,
     ascending: false,
   },
-  {
-    name: 'download',
-    displayName: '',
-    sortable: false,
-  },
-  {
-    name: 'delete',
-    displayName: '',
-    sortable: false,
-  },
 ];
 
 const mappings: { [key: string]: 'fileName' | 'fileSize' | 'created' } = {
