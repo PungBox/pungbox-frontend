@@ -6,6 +6,7 @@ import { fileListConfig } from '../../../utils/config';
 import { useSortingOrder } from './util/view/sortingOrder';
 import { useFileDescription } from './util/view/fileDescription';
 import styles from '/src/components/Module/View.module.css';
+import { useSelected } from './util/view/selected';
 
 const View = () => {
   const storageNumber = 192837;
@@ -20,18 +21,21 @@ const View = () => {
     addFile,
     deleteFile,
   } = useFileDescription();
-
+  const {
+    selected, toggleSelectFile,
+  } = useSelected(fileDescriptions);
+  
   useEffect(() => {
     fetchFileDescriptions().then((fileDescriptions) => {
       displayFileDescriptions(fileDescriptions);
       resetToDefaultSortingOrder(fileListConfig.defaultSortingCriteria);
     });
   }, []);
-
+  
   useEffect(() => {
     reSortFileDescriptions(fileDescriptions, setFileDescriptions);
   }, [reSortFileDescriptions]);
-
+  
   // TODO: dummy json 사용 중이지만, backend로부터 가져오도록 변경해야 함
   return (
     <div className={styles.view_panel}>
@@ -41,25 +45,27 @@ const View = () => {
       </div>
       <table className={styles.file_list_table}>
         <thead>
-          <FileListTableHeader
-            handleSorting={handleSorting}
-            sortingCriteria={sortingCriteria}
-            isSortingAscending={isSortingAscending}
-          />
+        <FileListTableHeader
+          handleSorting={handleSorting}
+          sortingCriteria={sortingCriteria}
+          isSortingAscending={isSortingAscending}
+        />
         </thead>
         <tbody>
-          <FileListTableBody
-            fileDescriptions={fileDescriptions}
-            deleteFile={deleteFile}
-            isFileDescriptionsLoaded={isFileDescriptionsLoaded}
-          />
+        <FileListTableBody
+          fileDescriptions={fileDescriptions}
+          deleteFile={deleteFile}
+          isFileDescriptionsLoaded={isFileDescriptionsLoaded}
+          selected={selected}
+          toggleSelectFile={toggleSelectFile}
+        />
         </tbody>
         <tfoot>
-          <tr>
-            <td colSpan={6}>
-              <input type="file" onChange={addFile} />
-            </td>
-          </tr>
+        <tr>
+          <td colSpan={6}>
+            <input type="file" onChange={addFile} />
+          </td>
+        </tr>
         </tfoot>
       </table>
     </div>

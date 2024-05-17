@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   downloadFile,
@@ -9,17 +9,7 @@ import {
   getUploadedDatetimeExpression,
 } from '../util/fileList';
 
-export const FileList = ({ fileDescriptions, deleteFile }: FileListProps) => {
-  const [selected, setSelected] = useState(
-    fileDescriptions.reduce((acc, file) => ({ ...acc, [file.fileId]: false }), {}) as { [key: number]: boolean },
-  );
-
-  const toggleSelectFile = (fileId: number) => {
-    const newSelected = JSON.parse(JSON.stringify(selected));
-    newSelected[fileId] = !newSelected[fileId];
-    setSelected(newSelected);
-  };
-
+export const FileList = ({ fileDescriptions, deleteFile, selected, toggleSelectFile }: FileListProps) => {
   return fileDescriptions.map((file) => {
     const splitted = file.fileName.split('.');
     const extension = splitted[splitted.length - 1];
