@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from '/src/components/Module/Sidebar.module.css'; 
+import { openfolderUrl, searchUrl, questionUrl } from 'assets/imageUrls';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -42,19 +43,19 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, toggleSidebar }) => {
       <div className={styles.frame}>
         <Link to={getLinkByAlt('Open Folder')}>
           <div className={styles.menucontainer}>
-            <img className={styles.folder} src="src/assets/icon/free-icon-open-folder-7734271.png" alt="Open Folder" />
+            <img className={styles.folder} src={openfolderUrl} alt="Open Folder" />
             {!isMobile && <span>View Folder</span>}
           </div>
         </Link>
         <Link to={getLinkByAlt('Search')}>
           <div className={styles.menucontainer}>
-            <img className={styles.search} src="src/assets/icon/free-icon-search-7734281.png" alt="Search" />
+            <img className={styles.search} src={searchUrl} alt="Search" />
             {!isMobile && <span>Search Folder</span>}
           </div>
         </Link>
         <Link to={getLinkByAlt('About Us')}>
           <div className={styles.menucontainer}>
-            <img className={styles.information} src="src/assets/icon/free-icon-question-7734270.png" alt="About Us" />
+            <img className={styles.information} src={questionUrl} alt="About Us" />
             {!isMobile && <span>About Us</span>}
           </div>
         </Link>
