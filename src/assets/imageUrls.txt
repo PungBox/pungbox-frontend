@@ -1,0 +1,23 @@
+import logoUrl from './assets/images/logo.png';
+import punglogoUrl from './assets/images/punglogo.png';
+import openfolderUrl from './assets/images/icon-open-folder.png';
+import searchUrl from './assets/images/icon-search.png';
+import questionUrl from './assets/images/icon-question.png';
+import uploadUrl from './assets/images/icon-cloud-database.png';
+import expiredUrl from './assets/images/icon-cloud-connection.png';
+import documentUrl from './assets/images/icon-document.png';
+import photoUrl from './assets/images/icon-photo.png';
+import videoUrl from './assets/images/icon-video.png';
+
+export {
+  logoUrl,
+  punglogoUrl,
+  openfolderUrl,
+  searchUrl,
+  questionUrl,
+  uploadUrl,
+  expiredUrl,
+  documentUrl,
+  photoUrl,
+  videoUrl
+};

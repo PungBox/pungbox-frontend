@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from '/src/components/Module/Sidebar.module.css'; 
-import { openfolderUrl, searchUrl, questionUrl } from 'assets/imageUrls';
+import openfolderUrl from '/src/assets/images/icon-open-folder.png';
+import searchUrl from '/src/assets/images/icon-search.png';
+import questionUrl from '/src/assets/images/icon-question.png';
 
 interface SidebarProps {
   sidebarOpen: boolean;

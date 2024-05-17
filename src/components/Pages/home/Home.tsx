@@ -11,7 +11,7 @@ import iconExpand from '/src/assets/images/icon_expand.svg';
 import iconCollapse from '/src/assets/images/icon_collapse.svg';
 import { getPresignedUrl } from 'service/service';
 import { Link } from 'react-router-dom';
-import { uploadUrl } from 'assets/imageUrls';
+import uploadUrl from '/src/assets/images/icon-cloud-database.png';
 
 interface IFileTypes {
   id: number;
