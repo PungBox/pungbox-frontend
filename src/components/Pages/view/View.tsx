@@ -7,7 +7,7 @@ import { useSortingOrder } from './util/view/sortingOrder';
 import { useFileDescription } from './util/view/fileDescription';
 import styles from '/src/components/Module/View.module.css';
 import { useSelected } from './util/view/selected';
-import { downloadFile } from './util/view/view';
+import { downloadFiles } from './util/view/view';
 
 const View = () => {
   const storageNumber = 192837;
@@ -46,7 +46,7 @@ const View = () => {
         <p className={styles.expiration_date}>expiration date: {expirationDate}</p>
       </div>
       <div>
-        <button onClick={() => downloadFile(getSelectedFileUrls(fileDescriptions))}>
+        <button onClick={() => downloadFiles(getSelectedFileUrls(fileDescriptions))}>
           <span className="material-symbols-outlined">download</span>
         </button>
         <button onClick={() => deleteFiles(getSelectedFileIds())}>

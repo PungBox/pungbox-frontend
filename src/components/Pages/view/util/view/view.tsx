@@ -1,5 +1,5 @@
-function downloadFile(urls: string[]): void {
-  urls.forEach((url) => window.location.href = url);
+function downloadFiles(urls: string[]): void {
+  urls.forEach((url) => window.open(url));
 }
 
-export { downloadFile };
+export { downloadFiles };

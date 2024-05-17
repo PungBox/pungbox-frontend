@@ -17,7 +17,7 @@ function useSelected(fileDescriptions: FileDescription[]) {
     return fileDescriptions
       .map((file) => (fileIds.includes(file.fileId)) ? file.fileUrl : null)
       .filter((x) => x !== null) as string[];
-  };
+  }
   
   const toggleSelectFile = (fileId: number) => {
     const newSelected = JSON.parse(JSON.stringify(selected));
