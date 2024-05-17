@@ -7,6 +7,7 @@ import { useSortingOrder } from './util/view/sortingOrder';
 import { useFileDescription } from './util/view/fileDescription';
 import styles from '/src/components/Module/View.module.css';
 import { useSelected } from './util/view/selected';
+import { downloadFile } from './util/fileListTableHeader';
 
 const View = () => {
   const storageNumber = 192837;
@@ -43,15 +44,20 @@ const View = () => {
         <p className={styles.storage_number}>Storage No. {storageNumber}</p>
         <p className={styles.expiration_date}>expiration date: {expirationDate}</p>
       </div>
+      <div>
+        <button onClick={() => downloadFile(file.fileUrl)}>
+          <span className="material-symbols-outlined">download</span>
+        </button>
+        <button onClick={() => deleteFile(file.fileId)}>
+          <span className="material-symbols-outlined">delete</span>
+        </button>
+      </div>
       <table className={styles.file_list_table}>
         <thead>
         <FileListTableHeader
           handleSorting={handleSorting}
           sortingCriteria={sortingCriteria}
           isSortingAscending={isSortingAscending}
-          fileDescriptions={fileDescriptions}
-          selected={selected}
-          deleteFile={deleteFile}
         />
         </thead>
         <tbody>

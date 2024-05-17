@@ -1,6 +1,5 @@
 import { fileListConfig as config, HeaderConfig } from '../../../../utils/config';
 import React, { JSX, MouseEventHandler } from 'react';
-import { FileDescription } from '../../../../utils/interface';
 
 const headerNames = config.headers.map((header: HeaderConfig): string => {
   return header.name;
@@ -11,9 +10,6 @@ interface FileListTableHeaderProps {
   handleSorting: MouseEventHandler<HTMLElement>;
   sortingCriteria: headerNames;
   isSortingAscending: boolean;
-  fileDescriptions: FileDescription[];
-  selected: { [key: number]: boolean };
-  deleteFile: (fileId: number) => void;
 }
 
 function getButtonInnerElement(sortableColumn: HeaderConfig, sortingCriteria: string, isSortingAscending: boolean) {
