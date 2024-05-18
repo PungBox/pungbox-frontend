@@ -8,7 +8,6 @@
     justify-content: center;
     align-items: center; 
     /* border: 1px solid #ff0000; */
-    z-index: 999;
 }
 
 .innercontainer{
@@ -32,7 +31,6 @@
     justify-content: center;
     align-items: center;
     transition: background-color 0.3s, border-color 0.3s;
-    z-index: 9999;
   }
 
 .dropzone:global(.active){
@@ -85,7 +83,6 @@
 
 .dragdropFiles{
     margin-top: 1rem;
-    z-index: 9999;
 }
 .dragdropFiles > div {
     width: 300px;
@@ -100,12 +97,10 @@
     font-size: 1rem;
     border-radius: 1rem;
     cursor: pointer;
-    z-index: 999;
  }
 
 .dragdropFilesFilter {
     cursor: pointer;
-    z-index: 9999;
 }
 .dragdropFilesFilter:hover {
     opacity: 0.3;

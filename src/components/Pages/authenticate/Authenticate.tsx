@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import styles from '/src/components/Module/Authenticate.module.css';
 
 const Authenticate = () => {
   const DIGIT_LENGTH = 6;
@@ -37,13 +38,11 @@ const Authenticate = () => {
   }
 
   return (
-    <div className="auth-panel">
-      <form method="POST" onSubmit={(e) => submit(e)}>
-        <label htmlFor="access_code">Access Code:</label>
-        <br />
+    <div className={styles.authPanel}>
+    <form method="POST" onSubmit={(e) => submit(e)}>
+    <span className="font-bold">Access Code:</span>
+      <label htmlFor="access_code" className={styles.label}>
         {Array.from({ length: DIGIT_LENGTH }, (_, i) => {
-          return i;
-        }).map((i) => {
           const id = `digit${i}`;
           if (i === 0) {
             return (
@@ -58,6 +57,7 @@ const Authenticate = () => {
                 onKeyUp={(e) => handleDigitInput(e, i)}
                 required
                 autoFocus
+                className={styles.inputcode}
               />
             );
           }
@@ -72,32 +72,32 @@ const Authenticate = () => {
               max="9"
               onKeyUp={(e) => handleDigitInput(e, i)}
               required
+              className={styles.inputcode}
             />
           );
         })}
-        <span className="material-symbols-outlined" onClick={undoDigitInput}>
-          cancel
+        <span className={`${styles.materialSymbolsOutlined} ${styles.cancel}`} onClick={undoDigitInput}>
+          X
         </span>
-        <br />
-        <br />
-
-        <label htmlFor="password">Password:</label>
-        <br />
+      </label>
+        
+      <span className="font-bold">Password:</span>
+      <label htmlFor="password" className={styles.label}>
         <input
           ref={(elem) => (inputsRef.current[DIGIT_LENGTH] = elem)}
           type="password"
           id="password"
           name="password"
           required
+          className={styles.inputpassword}
         />
-        <br />
-        <br />
-
-        <button type="submit" value="Submit">
-          Go to Storage
-        </button>
-      </form>
-    </div>
+      </label>
+  
+      <button type="submit" value="Submit" className={styles.button}>
+        Go to Storage
+      </button>
+    </form>
+  </div>
   );
 };
 

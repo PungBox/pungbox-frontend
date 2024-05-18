@@ -12,7 +12,7 @@ const RegisterForm = ({ setIsRegisterDone }: RegisterResultProps) => {
 
   return (
     <form className={styles.form} method="POST" onSubmit={submit}>
-      <label htmlFor="password">Password for storage:</label>
+      <label htmlFor="password">Password for storage (six figures):</label>
       <br />
       <input type="password" id="password" name="password" required />
       <br />

@@ -1,48 +1,113 @@
 .form {
-    display: flex;
-    flex-direction: column;
-    width: 400px;
-    margin: 20px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    z-index: 999;
-  }
-  
-  .form label {
-    font-weight: bold;
-  }
-  
-  .form input[type="password"],
-  .form select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .form input[type="submit"] {
-    --bg: #d25d5d;
-    --text-color: #fff;
-    position: relative;
-    width: 100%;
-    height: 50px; 
-    border: none;
-    background: var(--bg);
-    color: var(--text-color);
-    padding: 1em;
-    font-weight: bold;
-    text-transform: uppercase;
-    transition: 0.2s;
-    border-radius: 5px;
-    opacity: 0.8;
-    letter-spacing: 1px;
-    box-shadow: #c0392b 0px 7px 2px, #000 0px 8px 5px;
-  }
-.form input[type="submit"]:hover {
-    opacity: 1;
-    top: 2px;
-    box-shadow: #c0392b 0px 3px 2px,#000 0px 3px 5px;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #efefef;
 }
-.form input[type="submit"].active     {
-    top: 3px;
-  }
+
+.form label {
+  font-weight: bold;
+}
+
+.form input[type="password"],
+.form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+
+.form input[type="submit"] {
+  --bg: #d25d5d;
+  --text-color: #fff;
+  position: relative;
+  width: 100%;
+  height: 50px;
+  border: none;
+  background: var(--bg);
+  color: var(--text-color);
+  padding: 1em;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: 0.2s;
+  border-radius: 5px;
+  opacity: 0.8;
+  letter-spacing: 1px;
+  box-shadow: #c0392b 0px 7px 2px, #000 0px 8px 5px;
+}
+
+.form input[type="submit"]:hover {
+  opacity: 1;
+  top: 2px;
+  box-shadow: #c0392b 0px 3px 2px, #000 0px 3px 5px;
+}
+
+.form input[type="submit"].active {
+  top: 3px;
+}
+
+
+/*Register Result */
+.resultContainer {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.content {
+  margin-top: 5px;
+}
+
+.copyButton {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.registerResultContainer {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #efefef;
+}
+
+.gotobutton{
+  --bg: #d25d5d;
+  --text-color: #fff;
+  position: relative;
+  width: 100%;
+  height: 50px;
+  border: none;
+  background: var(--bg);
+  color: var(--text-color);
+  padding: 1em;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: 0.2s;
+  border-radius: 5px;
+  opacity: 0.8;
+  letter-spacing: 1px;
+  box-shadow: #c0392b 0px 7px 2px, #000 0px 8px 5px;
+}
+
+.gotobutton:hover {
+  opacity: 1;
+  top: 2px;
+  box-shadow: #c0392b 0px 3px 2px, #000 0px 3px 5px;
+}
+
+.gotobutton.active {
+  top: 3px;
+}
