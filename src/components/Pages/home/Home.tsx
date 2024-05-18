@@ -7,9 +7,11 @@ import React, {
 } from 'react';
 import useDragAndDrop from './UseDragDrop';
 import styles from '/src/components/Module/Home.module.css'; 
-import iconExpand from '/src/assets/icon/icon_expand.svg';
-import iconCollapse from '/src/assets/icon/icon_collapse.svg';
+import iconExpand from '/src/assets/images/icon_expand.svg';
+import iconCollapse from '/src/assets/images/icon_collapse.svg';
 import { getPresignedUrl } from 'service/service';
+import { Link } from 'react-router-dom';
+import uploadUrl from '/src/assets/images/icon-cloud-database.png';
 
 interface IFileTypes {
   id: number;
@@ -68,13 +70,14 @@ const Home = () => {
       ];
     }
 
-    const urls = await getPresignedUrl({
-      files: selectFiles,
-      // @TODO: bucketName을 변경하세요.
-      bucketName: 'pungbox-test-bucket',
-    })
+    // !!!임시로 주석 처리 해놓음!!!
+    // const urls = await getPresignedUrl({
+    //   files: selectFiles,
+    //   // @TODO: bucketName을 변경하세요.
+    //   bucketName: 'pungbox-test-bucket',
+    // })
 
-    console.log(urls);
+    // console.log(urls);
     setFiles(tempFiles);
   };
 
@@ -109,7 +112,7 @@ const Home = () => {
           htmlFor="fileUpload"
           ref={dragRef}
         >
-          <img className={styles.uploadicon} src="src/assets/icon/free-icon-cloud-database-7734276.png" />
+          <img className={styles.uploadicon} src={uploadUrl} />
           <span>클릭 또는 파일을 이곳에 드롭하세요.</span>
         </label>
 
@@ -140,8 +143,10 @@ const Home = () => {
       </div>
      
       <div style={{ textAlign: 'center' }}>
-      <button className={styles.uploadbutton} >UPLOAD FILE</button> 
-        {/* onClick={handleUpload} */}
+        <Link to="/register">
+        <button className={styles.uploadbutton} >UPLOAD FILE</button> 
+          {/* onClick={handleUpload} */}
+        </Link>
       </div>
     </div>
   );

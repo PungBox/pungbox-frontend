@@ -68,10 +68,11 @@
   }
 .uploadbutton:hover {
     opacity: 1;
-  }
-.uploadbutton.active     {
     top: 2px;
     box-shadow: #c0392b 0px 3px 2px,#000 0px 3px 5px;
+  }
+.uploadbutton.active     {
+    top: 3px;
   }
   
 .uploadicon {

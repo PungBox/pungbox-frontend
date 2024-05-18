@@ -1,6 +1,8 @@
   import React, { useState } from 'react';
   import { Link } from 'react-router-dom';
   import styles from '/src/components/Module/TopBar.module.css'; 
+  import logoUrl from '/src/assets/images/logo.png';
+  import punglogoUrl from '/src/assets/images/punglogo.png';
 
   const TopBar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
   
@@ -9,7 +11,7 @@
         <div onClick={toggleSidebar}>
         <img
           className={styles.logo}
-          src="src/assets/logo.png"
+          src={logoUrl}
           alt="Logo"
         />
         </div>
@@ -18,7 +20,7 @@
           <Link to="/">
             <img
               className={styles.punglogo}
-              src="src/assets/punglogo.png"
+              src={punglogoUrl}
               alt="PungLogo"
             />
           </Link>

@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from '/src/components/Module/Register.module.css';
 
 interface RegisterResultProps {
   setIsRegisterDone: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,7 +11,7 @@ const RegisterForm = ({ setIsRegisterDone }: RegisterResultProps) => {
   }
 
   return (
-    <form method="POST" onSubmit={submit}>
+    <form className={styles.form} method="POST" onSubmit={submit}>
       <label htmlFor="password">Password for storage:</label>
       <br />
       <input type="password" id="password" name="password" required />
