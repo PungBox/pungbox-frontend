@@ -6,16 +6,20 @@ import { FileDescription } from '../../../../utils/interface';
 
 interface FileListTableBodyProps {
   fileDescriptions: FileDescription[];
-  deleteFile: (fileId: number) => void;
   isFileDescriptionsLoaded: boolean;
+  selected: { [key: number]: boolean };
+  toggleSelectFile: (fileId: number) => void;
 }
 
-export const FileListTableBody = ({
-  fileDescriptions,
-  deleteFile,
-  isFileDescriptionsLoaded,
-}: FileListTableBodyProps) => {
-
+export const FileListTableBody = (
+  {
+    fileDescriptions,
+    isFileDescriptionsLoaded,
+    selected,
+    toggleSelectFile,
+  }: FileListTableBodyProps,
+) => {
+  
   return fileDescriptions.length === 0 ? (
     isFileDescriptionsLoaded ? (
       <EmptyFileList />
@@ -23,6 +27,6 @@ export const FileListTableBody = ({
       <LoadingFileList />
     )
   ) : (
-    <FileList fileDescriptions={fileDescriptions} deleteFile={deleteFile} />
+    <FileList fileDescriptions={fileDescriptions} selected={selected} toggleSelectFile={toggleSelectFile} />
   );
 };

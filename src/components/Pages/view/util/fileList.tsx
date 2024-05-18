@@ -3,7 +3,8 @@ import { FileDescription } from '../../../../utils/interface';
 
 interface FileListProps {
   fileDescriptions: FileDescription[];
-  deleteFile: (fileId: number) => void;
+  selected: { [key: number]: boolean };
+  toggleSelectFile: (fileId: number) => void;
 }
 
 function getIconByFileExtension(extension: string) {
@@ -93,14 +94,10 @@ function getUploadedDatetimeExpression(created: string) {
   } catch (RangeError) {
     return null;
   }
-
+  
   let dateExpression = getDateExpression(now, datetime);
   const timeExpression = `${datetime.toLocaleTimeString()}`;
   return `${dateExpression} ${timeExpression}`;
-}
-
-function downloadFile(url: string): void {
-  window.location.href = url;
 }
 
 export type { FileListProps };
@@ -109,5 +106,4 @@ export {
   getFileNameExpression,
   getFileSizeExpression,
   getUploadedDatetimeExpression,
-  downloadFile,
 };
