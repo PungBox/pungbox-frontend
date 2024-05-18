@@ -1,8 +1,10 @@
 .view_panel {
+    width: 100%;
     margin: 20px;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 8px;
+    background-color: #efefef;
   }
   
   .view_panel_header {
@@ -27,12 +29,13 @@
   
   .file_list_table th,
   .file_list_table td {
-    border: 1px solid #ccc;
+    border: 1px solid #707070;
     padding: 10px;
+    border: none;
   }
   
   .file_list_table th {
-    background-color: #f0f0f0;
+    background-color: #d6d6d6;
   }
   
   .file_list_table tfoot input[type='file'] {
