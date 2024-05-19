@@ -51,5 +51,10 @@ const fileListConfig = {
   mappings,
 };
 
+const authConfig = {
+  DIGIT_LENGTH: 6,
+};
+
+
 export type { HeaderConfig };
-export { fileListConfig };
+export { fileListConfig, authConfig };
