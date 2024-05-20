@@ -39,18 +39,19 @@ const View = () => {
   
   
   // TODO: dummy json 사용 중이지만, backend로부터 가져오도록 변경해야 함
+  // TODO 추가: 인증키 유효하지 않으면 Expired 페이지로 이동하게 (만료일자 및 고유번호 포함)
   return (
     <div className={styles.view_panel}>
       <div className={styles.view_panel_header}>
         <p className={styles.storage_number}>Storage No. {storageNumber}</p>
         <p className={styles.expiration_date}>expiration date: {expirationDate}</p>
       </div>
-      <div>
-        <button onClick={() => downloadFiles(getSelectedFileUrls(fileDescriptions))}>
-          <span className="material-symbols-outlined">download</span>
+      <div className={styles.button_container}>
+        <button className={styles.action_button} onClick={() => downloadFiles(getSelectedFileUrls(fileDescriptions))}>
+          <span className="material-symbols-outlined">Download</span>
         </button>
-        <button onClick={() => deleteFiles(getSelectedFileIds())}>
-          <span className="material-symbols-outlined">delete</span>
+        <button className={styles.action_button} onClick={() => deleteFiles(getSelectedFileIds())}>
+          <span className="material-symbols-outlined">Delete</span>
         </button>
       </div>
       <table className={styles.file_list_table}>
@@ -72,7 +73,10 @@ const View = () => {
         <tfoot>
         <tr>
           <td colSpan={6}>
-            <input type="file" onChange={addFile} />
+            <label htmlFor="file_upload" className={styles.file_upload_label}>
+              <input type="file" id="file_upload" className={styles.file_upload_input} onChange={addFile} />
+                Upload File
+            </label>
           </td>
         </tr>
         </tfoot>
