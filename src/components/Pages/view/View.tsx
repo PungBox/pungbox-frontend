@@ -46,12 +46,12 @@ const View = () => {
         <p className={styles.storage_number}>Storage No. {storageNumber}</p>
         <p className={styles.expiration_date}>expiration date: {expirationDate}</p>
       </div>
-      <div>
-        <button onClick={() => downloadFiles(getSelectedFileUrls(fileDescriptions))}>
-          <span className="material-symbols-outlined">download</span>
+      <div className={styles.button_container}>
+        <button className={styles.action_button} onClick={() => downloadFiles(getSelectedFileUrls(fileDescriptions))}>
+          <span className="material-symbols-outlined">Download</span>
         </button>
-        <button onClick={() => deleteFiles(getSelectedFileIds())}>
-          <span className="material-symbols-outlined">delete</span>
+        <button className={styles.action_button} onClick={() => deleteFiles(getSelectedFileIds())}>
+          <span className="material-symbols-outlined">Delete</span>
         </button>
       </div>
       <table className={styles.file_list_table}>
@@ -73,7 +73,10 @@ const View = () => {
         <tfoot>
         <tr>
           <td colSpan={6}>
-            <input type="file" onChange={addFile} />
+            <label htmlFor="file_upload" className={styles.file_upload_label}>
+              <input type="file" id="file_upload" className={styles.file_upload_input} onChange={addFile} />
+                Upload File
+            </label>
           </td>
         </tr>
         </tfoot>

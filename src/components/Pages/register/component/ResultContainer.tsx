@@ -18,19 +18,20 @@ const ResultContainer = ({ title, content, copyable }: ResultContainerProps) => 
   };
 
   return (
-    <div className={styles.resultContainer}>
+    <div>
       <div className={styles.title}>{title}</div>
-      <div className={styles.content}>
-        <span>{content}</span>
-        {copyable ? (
-          <button className={styles.copyButton} onClick={copyToClipboard}>
-            <span className="material-symbols-outlined">{isCopied ? 'check' : 'link'}</span>
-          </button>
-        ) : (
-          <></>
-        )}
+      <div className={styles.resultContainer}>
+        <div className={styles.content}>
+          <span>{content}</span>
+          {copyable ? (
+            <button className={styles.copyButton} onClick={copyToClipboard}>
+              <span className="material-symbols-outlined">{isCopied ? 'check' : 'link'}</span>
+            </button>
+          ) : (
+            <></>
+          )}
+        </div>
       </div>
-      <br />
     </div>
   );
 };

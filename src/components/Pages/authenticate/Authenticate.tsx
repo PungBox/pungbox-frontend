@@ -3,11 +3,11 @@ import styles from '/src/components/Module/Authenticate.module.css';
 
 const Authenticate = () => {
   const DIGIT_LENGTH = 6;
-  const inputsRef = useRef(Array(DIGIT_LENGTH + 1));
+  const inputsRef = useRef(Array(DIGIT_LENGTH));
 
   function handleDigitInput(e: React.KeyboardEvent<HTMLInputElement>, currentNumber: number) {
     const target = e.target as HTMLInputElement;
-    const inputValue = target.value;
+    const inputValue = target.value;  
 
     if (currentNumber !== 0 && (e.keyCode === 8 /* backspace */ || inputsRef.current[currentNumber - 1].value === '')) {
       inputsRef.current[currentNumber - 1].value = '';
@@ -49,7 +49,7 @@ const Authenticate = () => {
               <input
                 key={i}
                 ref={(elem) => (inputsRef.current[i] = elem)}
-                type="number"
+                type="text"
                 id={id}
                 name={id}
                 min="0"
@@ -65,7 +65,7 @@ const Authenticate = () => {
             <input
               key={i}
               ref={(elem) => (inputsRef.current[i] = elem)}
-              type="number"
+              type="text"
               id={id}
               name={id}
               min="0"

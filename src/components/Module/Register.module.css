@@ -1,10 +1,9 @@
 .form {
+  max-width: 450px;
   min-width: 250px;
-  display: flex;
-  flex-direction: column;
   width: 80%;
   margin: 20px;
-  padding: 20px;
+  padding: 30px;
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #efefef;
@@ -18,7 +17,8 @@
 .form select {
   width: 100%;
   padding: 10px;
-  margin-bottom: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px; 
 }
 
 .form input[type="submit"] {
@@ -52,27 +52,9 @@
 
 
 /*Register Result */
-.resultContainer {
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-}
-
-.title {
-  font-weight: bold;
-}
-
-.content {
-  margin-top: 5px;
-}
-
-.copyButton {
-  margin-left: 10px;
-  cursor: pointer;
-}
-
 .registerResultContainer {
+  max-width: 450px;
+  min-width: 250px;
   display: flex;
   flex-direction: column;
   width: 80%;
@@ -81,6 +63,33 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #efefef;
+}
+
+.resultContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  border: 1px solid #ccc;
+  padding: 10x;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  background-color: #f8f7f7;
+}
+
+.title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.content {
+  margin-left: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.copyButton {
+  margin-left: 10px;
+  cursor: pointer;
 }
 
 .gotobutton{

@@ -46,16 +46,22 @@
 .menucontainer{
   display: flex;
   align-items: center;
-  position: relative; /* 부모 요소 기준으로 위치 지정 */
-  z-index: 2; /* 다른 요소들 위에 위치하도록 설정 */
+  position: relative; 
+  z-index: 2; 
   transition: opacity 0.3s;
 }
 .menucontainer:hover {
-  cursor: pointer; /* 마우스 커서를 포인터로 변경 */
+  cursor: pointer; 
   opacity: 0.3;
 }
 .menucontainer > * {
   margin-right: 10px; /* 모든 자식 요소들의 오른쪽에 10px 마진 설정 */
+}
+.menucontainer:active{
+  transition: background-color 0.3s ease; 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+  top:2px;
 }
 
 /*media queury 기준*/
@@ -68,14 +74,14 @@
   .frame {
     justify-content: space-around;
     align-items: center;
-    gap: 15px; /* 요소 사이 간격 조정 */
+    gap: 15px; 
   }
   
   .folder,
   .search,
   .information {
     margin-left: 10px;
-    width: 40px; /* 작은 이미지 크기로 조정 */
+    width: 40px; 
     height: 40px;
   }
 

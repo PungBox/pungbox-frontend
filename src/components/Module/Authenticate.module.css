@@ -1,10 +1,9 @@
 .authPanel {
-    min-width: 300px;
-    display: flex;
-    flex-direction: column;
+    max-width: 450px;
+    min-width: 250px;
     width: 80%;
     margin: 20px;
-    padding: 20px;
+    padding: 30px;
     border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #efefef;
@@ -12,15 +11,26 @@
 
 .label {
     display: flex;
-    position: relative;
+    /* position: relative; */
     margin-bottom: 20px;
 }
 
-.inputcode,
-.inputpassword{
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 5px;
+.inputcode {
+    width: 20%;
+    padding: 10px;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px; 
+    text-align: center;
+}
+
+.inputpassword {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 5px;
+    /* text-align: center; */
+    border: 1px solid #ccc;
+    border-radius: 5px; 
 }
 
 .button {
@@ -73,14 +83,10 @@
         width: 30px;
         margin-right: 3px;
         margin-top: 5px;
-        border: 1px solid #ccc;
-        text-align: center;
     }
     
     .inputpassword {
         margin-top: 5px;
         padding: 5px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
     }
 }
