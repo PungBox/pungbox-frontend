@@ -1,6 +1,7 @@
-export const getPresignedUrl = async ({files, bucketName, threshold = 1024}: {files: File[]; bucketName: string; threshold?: number }) => {
+export const getPresignedUrl = async ({files, bucketName, threshold = 1024}: {files: {
+  filename: string, size: number}[]; bucketName: string; threshold?: number }) => {
   const response = await fetch(
-    `https://fhxljaiclxngspozkr55elwaba0ifvek.lambda-url.us-west-2.on.aws/?bucketName=${bucketName}&threshold=${threshold}`,
+    `https://mam3pz37pe.execute-api.us-east-1.amazonaws.com/pungbox-api-prod/bucket/url?bucketName=${bucketName}&threshold=${threshold}`,
     {
       method: 'POST',
       headers: {

@@ -70,14 +70,6 @@ const Home = () => {
       ];
     }
 
-    // !!!임시로 주석 처리 해놓음!!!
-    // const urls = await getPresignedUrl({
-    //   files: selectFiles,
-    //   // @TODO: bucketName을 변경하세요.
-    //   bucketName: 'pungbox-test-bucket',
-    // })
-
-    // console.log(urls);
     setFiles(tempFiles);
   };
 
@@ -88,6 +80,24 @@ const Home = () => {
   const toggleFilesVisibility = () => {
     setShowFiles(!showFiles);
   };
+
+  const handleUpload = async () => {
+    const urls = await getPresignedUrl({
+      files: [
+        ...files.map((file: IFileTypes) => {
+          return {
+            filename: file.object.name,
+            size: file.object.size,
+          };
+        }),
+      ],
+      // @TODO: bucketName을 변경하세요.
+      bucketName: 'pungbox-test-bucket',
+      threshold: 1024,
+    })
+
+    console.log(urls);
+  }
 
   const { dragRef } = useDragAndDrop(
     handleDragStart,
@@ -144,8 +154,7 @@ const Home = () => {
      
       <div style={{ textAlign: 'center' }}>
         <Link to="/register">
-        <button className={styles.uploadbutton} >UPLOAD FILE</button> 
-          {/* onClick={handleUpload} */}
+      <button className={styles.uploadbutton} onClick={handleUpload} >UPLOAD FILE</button> 
         </Link>
       </div>
     </div>
