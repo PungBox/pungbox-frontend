@@ -20,8 +20,8 @@
 }                             
 
 .scrollable{
-  overflow-y: auto;
-  height: fit-content;
+  overflow-y: scroll;
+  height: calc(100vh - 60px);
   width: 100%;
   padding: 1rem;
 }

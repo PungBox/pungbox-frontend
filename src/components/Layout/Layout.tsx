@@ -16,12 +16,11 @@ const Layout = ({children }: {
     <div className={styles.layout}>
       <TopBar toggleSidebar={toggleSidebar} />
       <Sidebar sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
-      <div className={`${styles.main} ${sidebarOpen ? styles.withsidebar : ''}`}>
-        <div className={styles.scrollable}>
+      <div className={styles.scrollable}>
+        <div className={`${styles.main} ${sidebarOpen ? styles.withsidebar : ''}`}>
           {/* Main content */}
           {children} 
         </div>
-        <div></div>
       </div>
     </div>
   );
