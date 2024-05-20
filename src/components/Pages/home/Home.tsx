@@ -1,4 +1,3 @@
-// Home.tsx
 import React, {
   ChangeEvent,
   useState,
@@ -89,6 +88,14 @@ const Home = () => {
     setShowFiles(!showFiles);
   };
 
+  const handleUpload = async () => {
+    if (files.length > 0) {
+      window.location.href = '/register'; // 파일이 있으면 "/register"로 이동
+    } else {
+      alert('Please upload at least one file.'); // 파일이 없으면 경고창 표시
+    }
+  }
+
   const { dragRef } = useDragAndDrop(
     handleDragStart,
     handleDragOver,
@@ -143,10 +150,9 @@ const Home = () => {
       </div>
      
       <div style={{ textAlign: 'center' }}>
-        <Link to="/register">
-        <button className={styles.uploadbutton} >UPLOAD FILE</button> 
-          {/* onClick={handleUpload} */}
-        </Link>
+        <button className={styles.uploadbutton} onClick={handleUpload}>
+          UPLOAD FILE
+        </button>
       </div>
     </div>
   );

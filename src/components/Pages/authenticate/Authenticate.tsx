@@ -12,7 +12,7 @@ const Authenticate = () => {
   }
   
   return (
-    <div className="auth-panel">
+    <div className={styles.authPanel}>
       <form method="POST" onSubmit={(e) => submit(e)}>
       <span className="font-bold">Access Code:</span>
         <label htmlFor="access_code" className={styles.label}>

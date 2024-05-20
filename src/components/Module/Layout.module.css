@@ -17,12 +17,10 @@
 
 .withsidebar {
   margin-left: 240px; 
-  height: 100% auto;
 }                             
 
 @media (max-width: 768px) {
   .withsidebar {
-    margin-left: 60px; 
-    height: 100% auto;
+    margin-left: 60px;
   }
 }
