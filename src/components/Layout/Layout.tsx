@@ -17,8 +17,10 @@ const Layout = ({children }: {
       <TopBar toggleSidebar={toggleSidebar} />
       <Sidebar sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
       <div className={`${styles.main} ${sidebarOpen ? styles.withsidebar : ''}`}>
-        {/* Main content */}
-        {children} 
+        <div className={styles.scrollable}>
+          {/* Main content */}
+          {children} 
+        </div>
         <div></div>
       </div>
     </div>
