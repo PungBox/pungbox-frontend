@@ -19,8 +19,10 @@ const Layout = ({children }: {
       {/* Sidebar의 상태와 toggleSidebar 함수를 Sidebar 컴포넌트로 props로 전달 */}
       <Sidebar sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
       <div className={`${styles.main} ${sidebarOpen ? styles.withsidebar : ''}`}>
-        {/* Main content */}
-        {children} 
+        <div className={styles.scrollable}>
+          {/* Main content */}
+          {children} 
+        </div>
         <div></div>
       </div>
     </div>
