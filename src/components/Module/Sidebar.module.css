@@ -1,12 +1,12 @@
 .sidebar {
   position: absolute;
   width: 240px;
-  left: -240px; /* 사이드바를 왼쪽으로 숨김 */
+  left: -240px; 
   /*padding: 1rem;*/
   background-color: #b0b0b0;
-  border-right: 1px rgb(104, 104, 104) solid;
-  box-shadow: 4px 4px 4px rgba(211, 113, 113, 0.25);
-  transition: left 0.35s; /* left 속성 변경 시 애니메이션 적용 */
+  /* border-right: 1px rgb(104, 104, 104) solid; */
+  /* box-shadow: 4px 4px 4px rgba(211, 113, 113, 0.25); */
+  transition: left 0.35s; 
   z-index: 1;
   top: 50px;
   height: calc(100% - 50px);
