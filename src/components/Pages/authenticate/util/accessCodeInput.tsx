@@ -1,5 +1,6 @@
 import React, { useMemo, useRef } from 'react';
 import { authConfig as config } from '../../../../utils/config';
+import styles from '/src/components/Module/Authenticate.module.css';
 
 function allowOnlyOneLastCharacterInInputField(target: HTMLInputElement) {
   if (target.value.length > 1) {
@@ -51,7 +52,7 @@ const useAccessCodeInput = () => {
     <input
       key={i}
       ref={(elem) => (inputsRef.current[i] = elem)}
-      type="number"
+      type="text"
       id={`digit${i}`}
       name={`digit${i}`}
       min="0"
@@ -59,6 +60,7 @@ const useAccessCodeInput = () => {
       onKeyUp={(e) => handleDigitInput(e, i)}
       required
       autoFocus={(i === 0)}
+      className={styles.inputcode}
     />), []);
   
   return { inputsRef, undoDigitInput, accessCodeInput };

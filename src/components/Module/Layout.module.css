@@ -17,19 +17,17 @@
 
 .withsidebar {
   margin-left: 240px; 
-  height: 100%;
 }                             
 
 .scrollable{
-  overflow-y: auto;
-  height: fit-content;
+  overflow-y: scroll;
+  height: calc(100vh - 60px);
   width: 100%;
   padding: 1rem;
 }
 
 @media (max-width: 768px) {
   .withsidebar {
-    margin-left: 60px; 
-    height: 100%;
+    margin-left: 60px;
   }
 }

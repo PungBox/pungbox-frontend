@@ -47,10 +47,10 @@ const View = () => {
         <p className={styles.expiration_date}>expiration date: {expirationDate}</p>
       </div>
       <div className={styles.button_container}>
-        <button className={styles.action_button} onClick={() => downloadFiles(getSelectedFileUrls(fileDescriptions))}>
+        <button className={styles.download_button} onClick={() => downloadFiles(getSelectedFileUrls(fileDescriptions))}>
           <span className="material-symbols-outlined">Download</span>
         </button>
-        <button className={styles.action_button} onClick={() => deleteFiles(getSelectedFileIds())}>
+        <button className={styles.delete_button} onClick={() => deleteFiles(getSelectedFileIds())}>
           <span className="material-symbols-outlined">Delete</span>
         </button>
       </div>

@@ -1,5 +1,5 @@
 .view_panel {
-  min-width: 360px;
+  min-width: 300px;
   width: 100%;
   margin: 20px;
   padding: 20px;
@@ -25,20 +25,81 @@
 
 .button_container {
   margin-bottom: 20px;
+  display: flex;
 }
 
-.action_button {
+.delete_button {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 80px;
+  height: 40px;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.delete_button span {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  box-shadow: 2px 2px 4px 0 rgba(255, 255, 255, .5),
+    -2px -2px 4px 0 rgba(116, 125, 136, .5),
+    inset -2px -2px 4px 0 rgba(255, 255, 255, .2),
+    inset 2px 2px 4px 0 rgba(0, 0, 0, .4);
+  border-radius: 15px;
+  letter-spacing: 1px;
+  color: #ff0000;
+  z-index: 1;
+  transition: .6s;
+}
+
+.delete_button:hover span {
+  letter-spacing: 4px;
+  color: #fff;
+  background: #ff0000;
+}
+
+.download_button {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 80px;
+  height: 40px;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-right: 10px;
-  padding: 8px 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
-.action_button:hover {
-  background-color: #0056b3;
+.download_button span {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  box-shadow: 2px 2px 4px 0 rgba(255, 255, 255, .5),
+    -2px -2px 4px 0 rgba(116, 125, 136, .5),
+    inset -2px -2px 4px 0 rgba(255, 255, 255, .2),
+    inset 2px 2px 4px 0 rgba(0, 0, 0, .4);
+  border-radius: 15px;
+  letter-spacing: 1px;
+  color: #000000;
+  z-index: 1;
+  transition: .6s;
+}
+
+.download_button:hover span {
+  letter-spacing: 4px;
+  color: #fff;
+  background: #555555;
 }
 
 .file_list_table {
@@ -74,7 +135,7 @@
   content: 'Choose File';
   display: inline-block;
   padding: 8px 16px;
-  background-color: #007bff;
+  background-color: #d25d5d;
   color: white;
   border-radius: 4px;
   cursor: pointer;
@@ -82,14 +143,16 @@
 }
 
 .file_upload_label:hover::before {
-  background-color: #0056b3;
+  background-color: #a34747;
 }
 
 @media screen and (max-width: 480px) {
-  /* .file_list_table th:nth-child(2),
-  .file_list_table td:nth-child(2), */
+
+  .file_list_table th:nth-child(2),
+  .file_list_table td:nth-child(2),
   .file_list_table th:nth-child(5),
   .file_list_table td:nth-child(5) {
-    display: none; /* name과 size 정보 숨기기 */
+    display: none;
+    /* name과 file size 정보 숨기기 */
   }
 }

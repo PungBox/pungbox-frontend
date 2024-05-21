@@ -1,16 +1,16 @@
-.outercontainer{
+.outercontainer {
     height: 500px;
     width: 100%;
     margin-top: 50px;
     padding-left: 20px;
     padding-right: 20px;
-    flex-direction: column; 
+    flex-direction: column;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
     /* border: 1px solid #ff0000; */
 }
 
-.innercontainer{
+.innercontainer {
     height: 300px;
     width: 100%;
     padding-left: 20px;
@@ -27,21 +27,23 @@
     cursor: pointer;
     margin: 20px auto;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     transition: background-color 0.3s, border-color 0.3s;
-  }
+}
 
-.dropzone:global(.active){
+.dropzone:global(.active) {
     background-color: rgba(0, 0, 0, 0.1);
     border-color: #333;
 }
-.dropzone.active{
+
+.dropzone.active {
     background-color: rgba(0, 0, 0, 0.1);
     border-color: #333;
 }
-.dropzone:hover{
+
+.dropzone:hover {
     background-color: rgba(0, 0, 0, 0.1);
     border-color: #333;
 }
@@ -51,7 +53,7 @@
     --text-color: #fff;
     position: relative;
     width: 150px;
-    height: 50px; 
+    height: 50px;
     border: none;
     background: var(--bg);
     color: var(--text-color);
@@ -63,62 +65,76 @@
     opacity: 0.8;
     letter-spacing: 1px;
     box-shadow: #c0392b 0px 7px 2px, #000 0px 8px 5px;
-  }
+}
+
 .uploadbutton:hover {
     opacity: 1;
     top: 2px;
-    box-shadow: #c0392b 0px 3px 2px,#000 0px 3px 5px;
-  }
-.uploadbutton.active     {
+    box-shadow: #c0392b 0px 3px 2px, #000 0px 3px 5px;
+}
+
+.uploadbutton.active {
     top: 3px;
-  }
-  
+}
+
 .uploadicon {
     width: 96px;
     height: 96px;
     opacity: 0.30;
-    /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
 }
 
-
-.dragdropFiles{
+.dragdropFiles {
     margin-top: 1rem;
 }
-.dragdropFiles > div {
+
+.dragdropFiles>div {
     width: 300px;
     padding: 8px;
     padding-left: 10px;
     margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
-    background-color: #bcbcbc;
-    padding: 5px;
+    background-color: #cdcdcd;
+    padding: 7px;
     padding-right: 10px;
     font-size: 1rem;
-    border-radius: 1rem;
-    cursor: pointer;
- }
+    border-radius: 15px;
+    white-space: pre-wrap;
+}
+
 
 .dragdropFilesFilter {
     cursor: pointer;
 }
+
 .dragdropFilesFilter:hover {
     opacity: 0.3;
 }
 
-.filelistbutton{
+.dragdropFilesFilter span{
+    font-style: bold;
+    font-size: larger;
+}
+
+.filelistbutton {
+    min-width: 130px;
     display: flex;
     background-color: #e9e9e9;
     border: none;
     padding: 5px;
-    padding-right: 10px;
     font-size: 1rem;
-    border-radius: 1rem;
+    border-radius: 15px;
     color: rgb(205, 108, 108);
+    transition: all 0.3s, color 0.3s;
     cursor: pointer;
 }
-.filelistbutton:hover{
-    background: #d25d5d;
+
+
+.filelistbutton:hover {
+    background: #e17575;
     color: white;
-    text-shadow: 0 0.1rem #bcb4b4;
+    box-shadow: 0 0 5px #e17575,
+              0 0 25px #e17575,
+              0 0 50px #e17575,
+              0 0 100px #e17575;
 }

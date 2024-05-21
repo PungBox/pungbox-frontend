@@ -5,6 +5,10 @@ const Aboutus = () => {
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h1 className="text-3xl font-bold mb-6">About Us</h1>
       <div className="mb-4">
+        <span className="block font-semibold">Cloud Computing Team B - 펑박사</span>
+        <span className="font-serif"></span>
+      </div>
+      <div className="mb-4">
         <span className="block font-semibold">Frontend:</span>
         <span className="font-serif">이예찬, 신건우</span>
       </div>

@@ -1,4 +1,3 @@
-// Home.tsx
 import React, {
   ChangeEvent,
   useState,
@@ -10,7 +9,7 @@ import styles from '/src/components/Module/Home.module.css';
 import iconExpand from '/src/assets/images/icon_expand.svg';
 import iconCollapse from '/src/assets/images/icon_collapse.svg';
 import { getPresignedUrl } from 'service/service';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import uploadUrl from '/src/assets/images/icon-cloud-database.png';
 
 interface IFileTypes {
@@ -22,8 +21,6 @@ const Home = () => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [files, setFiles] = useState<IFileTypes[]>([]);
   const [showFiles, setShowFiles] = useState<boolean>(false);
-
-  const nextFileId = useRef<number>(0);
 
   const handleDragStart = (e: DragEvent) => {
     e.preventDefault();
@@ -50,6 +47,8 @@ const Home = () => {
     onChangeFiles(e);
   };
 
+  const nextFileId = useRef<number>(0);
+
   const onChangeFiles = async (e: ChangeEvent<HTMLInputElement> | any) => {
     let selectFiles: File[] = [];
     let tempFiles: IFileTypes[] = files;
@@ -59,7 +58,7 @@ const Home = () => {
     } else {
       selectFiles = e.target.files;
     }
-
+  
     for (const file of selectFiles) {
       tempFiles = [
         ...tempFiles,
@@ -69,15 +68,6 @@ const Home = () => {
         },
       ];
     }
-
-    // !!!임시로 주석 처리 해놓음!!!
-    // const urls = await getPresignedUrl({
-    //   files: selectFiles,
-    //   // @TODO: bucketName을 변경하세요.
-    //   bucketName: 'pungbox-test-bucket',
-    // })
-
-    // console.log(urls);
     setFiles(tempFiles);
   };
 
@@ -88,6 +78,17 @@ const Home = () => {
   const toggleFilesVisibility = () => {
     setShowFiles(!showFiles);
   };
+
+  const navigate = useNavigate();
+
+  const handleUpload = async () => {
+    if (files.length > 0) {
+      navigate('/register', { state: { files } }); // 파일이 있으면 "/register"로 이동
+      //files는 /register로 이동할 때 state라는 속성에 포함되어 전달됨!
+    } else {
+      alert('Please upload at least one file.'); // 파일이 없으면 경고창 표시
+    }
+  }
 
   const { dragRef } = useDragAndDrop(
     handleDragStart,
@@ -113,12 +114,12 @@ const Home = () => {
           ref={dragRef}
         >
           <img className={styles.uploadicon} src={uploadUrl} />
-          <span>클릭 또는 파일을 이곳에 드롭하세요.</span>
+          <span>Click or Drop files here to upload</span>
         </label>
 
         <button className={styles.filelistbutton} onClick={toggleFilesVisibility}>
           {showFiles ? <img src={iconCollapse} alt="Collapse" /> : <img src={iconExpand} alt="Expand" />}
-          <span>Uploaded file list</span>
+          <span>All uploads</span>
         </button>
         <div className={styles.dragdropFiles} style={{ display: showFiles ? 'block' : 'none' }}>
           {files.map((file: IFileTypes) => {
@@ -134,7 +135,7 @@ const Home = () => {
                   className={styles.dragdropFilesFilter}
                   onClick={() => handleFilterFile(id)}
                 >
-                  X
+                  <span>X</span>
                 </div>
               </div>
             );
@@ -143,10 +144,9 @@ const Home = () => {
       </div>
      
       <div style={{ textAlign: 'center' }}>
-        <Link to="/register">
-        <button className={styles.uploadbutton} >UPLOAD FILE</button> 
-          {/* onClick={handleUpload} */}
-        </Link>
+        <button className={styles.uploadbutton} onClick={handleUpload}>
+          <span>UPLOAD FILE</span>
+        </button>
       </div>
     </div>
   );
