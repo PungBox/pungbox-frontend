@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import RegisterForm from './component/RegisterForm';
 import RegisterResult from './component/RegisterResult';
 

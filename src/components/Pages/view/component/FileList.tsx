@@ -1,5 +1,5 @@
 import React from 'react';
-
+import styles from '/src/components/Module/View.module.css';
 import {
   FileListProps,
   getFileNameExpression,
@@ -13,7 +13,7 @@ export const FileList = ({ fileDescriptions, selected, toggleSelectFile }: FileL
     const splitted = file.fileName.split('.');
     const extension = splitted[splitted.length - 1];
     return (
-      <tr key={file.fileId} onClick={() => toggleSelectFile(file.fileId)}>
+      <tr className={styles.checkbox} key={file.fileId} onClick={() => toggleSelectFile(file.fileId)}>
         <td>
           <input type="checkbox" checked={selected[file.fileId]} onChange={() => toggleSelectFile(file.fileId)} />
         </td>

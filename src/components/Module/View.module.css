@@ -48,9 +48,9 @@
   justify-content: center;
   align-items: center;
   background: none;
-  box-shadow: 2px 2px 4px 0 rgba(255,255,255,.5),
-              -2px -2px 4px 0 rgba(116, 125, 136, .5), 
-    inset -2px -2px 4px 0 rgba(255,255,255,.2),
+  box-shadow: 2px 2px 4px 0 rgba(255, 255, 255, .5),
+    -2px -2px 4px 0 rgba(116, 125, 136, .5),
+    inset -2px -2px 4px 0 rgba(255, 255, 255, .2),
     inset 2px 2px 4px 0 rgba(0, 0, 0, .4);
   border-radius: 15px;
   letter-spacing: 1px;
@@ -85,9 +85,9 @@
   justify-content: center;
   align-items: center;
   background: none;
-  box-shadow: 2px 2px 4px 0 rgba(255,255,255,.5),
-              -2px -2px 4px 0 rgba(116, 125, 136, .5), 
-    inset -2px -2px 4px 0 rgba(255,255,255,.2),
+  box-shadow: 2px 2px 4px 0 rgba(255, 255, 255, .5),
+    -2px -2px 4px 0 rgba(116, 125, 136, .5),
+    inset -2px -2px 4px 0 rgba(255, 255, 255, .2),
     inset 2px 2px 4px 0 rgba(0, 0, 0, .4);
   border-radius: 15px;
   letter-spacing: 1px;
@@ -147,10 +147,12 @@
 }
 
 @media screen and (max-width: 480px) {
+
   .file_list_table th:nth-child(2),
   .file_list_table td:nth-child(2),
   .file_list_table th:nth-child(5),
   .file_list_table td:nth-child(5) {
-    display: none; /* name과 file size 정보 숨기기 */
+    display: none;
+    /* name과 file size 정보 숨기기 */
   }
 }

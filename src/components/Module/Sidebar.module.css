@@ -1,12 +1,11 @@
 .sidebar {
   position: absolute;
   width: 240px;
-  left: -240px; 
-  /*padding: 1rem;*/
+  left: -240px;
   background-color: #b0b0b0;
   /* border-right: 1px rgb(104, 104, 104) solid; */
   /* box-shadow: 4px 4px 4px rgba(211, 113, 113, 0.25); */
-  transition: left 0.35s; 
+  transition: left 0.35s;
   z-index: 1;
   top: 50px;
   height: calc(100% - 50px);
@@ -28,6 +27,7 @@
 
 .frame {
   width: 100%;
+  margin-top: 10px;
   padding-top: 20px;
   position: absolute;
   display: flex;
@@ -44,25 +44,30 @@
   height: 50px;
 }
 
-.menucontainer{
+.menucontainer {
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
-  position: relative; 
-  z-index: 2; 
+  position: relative;
+  z-index: 2;
   transition: opacity 0.3s;
 }
+
 .menucontainer:hover {
-  cursor: pointer; 
+  cursor: pointer;
   opacity: 0.3;
 }
-.menucontainer > * {
-  margin-right: 10px; /* 모든 자식 요소들의 오른쪽에 10px 마진 설정 */
+
+.menucontainer>* {
+  margin-right: 10px;
+  /* 모든 자식 요소들의 오른쪽에 10px 마진 설정 */
 }
-.menucontainer:active{
-  transition: background-color 0.3s ease; 
+
+.menucontainer:active {
+  transition: background-color 0.3s ease;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   position: relative;
-  top:2px;
+  top: 2px;
 }
 
 /*media queury 기준*/
@@ -75,23 +80,18 @@
   .frame {
     justify-content: space-around;
     align-items: center;
-    gap: 15px; 
+    gap: 15px;
   }
-  
+
   .folder,
   .search,
   .information {
     margin-left: 10px;
-    width: 40px; 
+    width: 40px;
     height: 40px;
   }
 
   .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
     width: 60px;
   }
 }
