@@ -68,15 +68,6 @@ const Home = () => {
         },
       ];
     }
-
-    // !!!임시로 주석 처리 해놓음!!!
-    // const urls = await getPresignedUrl({
-    //   files: selectFiles,
-    //   // @TODO: bucketName을 변경하세요.
-    //   bucketName: 'pungbox-test-bucket',
-    // })
-
-    // console.log(urls);
     setFiles(tempFiles);
   };
 
