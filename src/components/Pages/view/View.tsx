@@ -5,9 +5,9 @@ import { FileListTableBody } from './component/FileListTableBody';
 import { fileListConfig } from '../../../utils/config';
 import { useSortingOrder } from './util/view/sortingOrder';
 import { useFileDescription } from './util/view/fileDescription';
-import styles from '/src/components/Module/View.module.css';
 import { useSelected } from './util/view/selected';
 import { downloadFiles } from './util/view/view';
+import styles from '/src/components/Module/View.module.css';
 
 const View = () => {
   const storageNumber = 192837;
@@ -37,7 +37,12 @@ const View = () => {
     reSortFileDescriptions(fileDescriptions, setFileDescriptions);
   }, [reSortFileDescriptions]);
   
-  
+  const handleRefresh = () => {
+    fetchFileDescriptions().then((fileDescriptions) => {
+      displayFileDescriptions(fileDescriptions);
+    });
+  };
+
   // TODO: dummy json 사용 중이지만, backend로부터 가져오도록 변경해야 함
   // TODO 추가: 인증키 유효하지 않으면 Expired 페이지로 이동하게 (만료일자 및 고유번호 포함)
   return (
@@ -52,6 +57,9 @@ const View = () => {
         </button>
         <button className={styles.delete_button} onClick={() => deleteFiles(getSelectedFileIds())}>
           <span className="material-symbols-outlined">Delete</span>
+        </button>
+        <button className={styles.refresh_button} onClick={handleRefresh}>
+          <span className="material-symbols-outlined">Refresh</span>
         </button>
       </div>
       <table className={styles.file_list_table}>
