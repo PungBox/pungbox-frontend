@@ -8,7 +8,7 @@ import { useFileDescription } from './util/view/fileDescription';
 import { useSelected } from './util/view/selected';
 import { downloadFiles } from './util/view/view';
 import styles from '/src/components/Module/View.module.css';
-import { getFilesFromBucket } from 'service/service';
+import { viewBucket } from 'service/service';
 
 const DUMMY_BUCKET_ID = '001bc76f-436f-4a7e-a1a0-e1ed389e9262';
 
@@ -30,7 +30,7 @@ const View = () => {
 
   useEffect(() => {
     //@TODO: replace DUMMY_BUCKET_ID with actual bucketId
-    getFilesFromBucket({ bucketId: DUMMY_BUCKET_ID }).then((fileDescriptions) => {
+    viewBucket({ bucketId: DUMMY_BUCKET_ID }).then((fileDescriptions) => {
       displayFileDescriptions(fileDescriptions);
       resetToDefaultSortingOrder(fileListConfig.defaultSortingCriteria);
     });
@@ -39,7 +39,7 @@ const View = () => {
   useEffect(() => {
     reSortFileDescriptions(fileDescriptions, setFileDescriptions);
   }, [reSortFileDescriptions]);
-  
+
   const handleRefresh = () => {
     setIsLoading(true);
     fetchFileDescriptions().then((fileDescriptions) => {
@@ -47,7 +47,7 @@ const View = () => {
       setIsLoading(false);
     });
   };
-  
+
   // TODO 추가: 인증키 유효하지 않으면 Expired 페이지로 이동하게 (만료일자 및 고유번호 포함)
   return (
     <div className={styles.view_panel}>
@@ -63,24 +63,12 @@ const View = () => {
         >
           <span className="material-symbols-outlined">Download</span>
         </button>
-        <button
-          className={styles.delete_button}
-          onClick={() => deleteFiles(getSelectedFileIds())}
-          disabled={isLoading}
-        >
+        <button className={styles.delete_button} onClick={() => deleteFiles(getSelectedFileIds())} disabled={isLoading}>
           <span className="material-symbols-outlined">Delete</span>
         </button>
-        <button
-          className={styles.refresh_button}
-          onClick={handleRefresh}
-          disabled={isLoading}
-        >
+        <button className={styles.refresh_button} onClick={handleRefresh} disabled={isLoading}>
           <span className="material-symbols-outlined">
-            {isLoading ? (
-              <div className={styles.loading_animation}></div>
-            ) : (
-              'Refresh'
-            )}
+            {isLoading ? <div className={styles.loading_animation}></div> : 'Refresh'}
           </span>
         </button>
       </div>

@@ -1,11 +1,6 @@
-import React, {
-  ChangeEvent,
-  useState,
-  useEffect,
-  useRef,
-} from 'react';
+import React, { ChangeEvent, useState, useEffect, useRef } from 'react';
 import useDragAndDrop from '../../../utils/component/UseDragDrop';
-import styles from '/src/components/Module/Home.module.css'; 
+import styles from '/src/components/Module/Home.module.css';
 import iconExpand from '/src/assets/images/icon_expand.svg';
 import iconCollapse from '/src/assets/images/icon_collapse.svg';
 import { Link, useNavigate } from 'react-router-dom';
@@ -57,7 +52,7 @@ const Home = () => {
     } else {
       selectFiles = e.target.files;
     }
-  
+
     for (const file of selectFiles) {
       tempFiles = [
         ...tempFiles,
@@ -90,7 +85,7 @@ const Home = () => {
   };
 
   const { dragRef } = useDragAndDrop(handleDragStart, handleDragOver, handleDragEnd, handleDrop);
-  
+
   return (
     <div className={styles.outercontainer}>
       <div className={styles.innercontainer}>
@@ -123,7 +118,7 @@ const Home = () => {
           })}
         </div>
       </div>
-     
+
       <div style={{ textAlign: 'center' }}>
         <button className={styles.uploadbutton} onClick={handleUpload}>
           <span>UPLOAD FILE</span>
