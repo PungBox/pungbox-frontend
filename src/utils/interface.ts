@@ -3,8 +3,8 @@ interface FileDescription {
   fileName: string;
   fileUrl: string;
   fileSize: number;
-  created: string;
-  modified: string;
+  createdAt: string;
+  modifiedAt: string;
 }
 
 export type { FileDescription };
