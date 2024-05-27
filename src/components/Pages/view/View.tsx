@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { fetchFileDescriptions } from '../../../utils/dummyData';
 import { FileListTableHeader } from './component/FileListTableHeader';
 import { FileListTableBody } from './component/FileListTableBody';
@@ -12,6 +12,7 @@ import styles from '/src/components/Module/View.module.css';
 const View = () => {
   const storageNumber = 192837;
   const expirationDate = `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`;
+  const [isLoading, setIsLoading] = useState(false);
   const { sortingCriteria, isSortingAscending, resetToDefaultSortingOrder, handleSorting, reSortFileDescriptions } =
     useSortingOrder();
   const {
@@ -38,10 +39,13 @@ const View = () => {
   }, [reSortFileDescriptions]);
   
   const handleRefresh = () => {
+    setIsLoading(true);
     fetchFileDescriptions().then((fileDescriptions) => {
       displayFileDescriptions(fileDescriptions);
+      setIsLoading(false);
     });
   };
+
 
   // TODO: dummy json 사용 중이지만, backend로부터 가져오도록 변경해야 함
   // TODO 추가: 인증키 유효하지 않으면 Expired 페이지로 이동하게 (만료일자 및 고유번호 포함)
@@ -52,14 +56,32 @@ const View = () => {
         <p className={styles.expiration_date}>expiration date: {expirationDate}</p>
       </div>
       <div className={styles.button_container}>
-        <button className={styles.download_button} onClick={() => downloadFiles(getSelectedFileUrls(fileDescriptions))}>
+        <button
+          className={styles.download_button}
+          onClick={() => downloadFiles(getSelectedFileUrls(fileDescriptions))}
+          disabled={isLoading}
+        >
           <span className="material-symbols-outlined">Download</span>
         </button>
-        <button className={styles.delete_button} onClick={() => deleteFiles(getSelectedFileIds())}>
+        <button
+          className={styles.delete_button}
+          onClick={() => deleteFiles(getSelectedFileIds())}
+          disabled={isLoading}
+        >
           <span className="material-symbols-outlined">Delete</span>
         </button>
-        <button className={styles.refresh_button} onClick={handleRefresh}>
-          <span className="material-symbols-outlined">Refresh</span>
+        <button
+          className={styles.refresh_button}
+          onClick={handleRefresh}
+          disabled={isLoading}
+        >
+          <span className="material-symbols-outlined">
+            {isLoading ? (
+              <div className={styles.loading_animation}></div>
+            ) : (
+              'Refresh'
+            )}
+          </span>
         </button>
       </div>
       <table className={styles.file_list_table}>
