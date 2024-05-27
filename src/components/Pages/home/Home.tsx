@@ -4,11 +4,10 @@ import React, {
   useEffect,
   useRef,
 } from 'react';
-import useDragAndDrop from './UseDragDrop';
+import useDragAndDrop from '../../../utils/component/UseDragDrop';
 import styles from '/src/components/Module/Home.module.css'; 
 import iconExpand from '/src/assets/images/icon_expand.svg';
 import iconCollapse from '/src/assets/images/icon_collapse.svg';
-import { getPresignedUrl } from 'service/service';
 import { Link, useNavigate } from 'react-router-dom';
 import uploadUrl from '/src/assets/images/icon-cloud-database.png';
 

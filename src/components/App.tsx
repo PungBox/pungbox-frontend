@@ -16,9 +16,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/view" element={<View />} />
-          <Route path="/expired" element={<Expired />} />
           <Route path="/authenticate" element={<Authenticate />} />
           <Route path="/aboutus" element={<Aboutus />} />
+          {/* Todo: expired route 삭제하고 view와 통합 예정 */}
+          <Route path="/expired" element={<Expired />} />
         </Routes>
       </Layout>
     </Router>
