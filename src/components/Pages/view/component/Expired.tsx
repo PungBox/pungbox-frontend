@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import GoToPreviousPageButton from '../../../../utils/component/GoToPreviousPageButton';
 import expiredUrl from '/src/assets/images/icon-cloud-connection.png';
 
