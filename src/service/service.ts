@@ -1,6 +1,3 @@
-//@TODO: endpoint 는 env 환경변수로 관리하도록 수정
-const DEFAULT_ENDPOINT = 'https://nmxnc3h7a8.execute-api.ap-northeast-2.amazonaws.com/production';
-
 const generateEndpoint = ({
   endpoint,
   params = {},
@@ -8,7 +5,7 @@ const generateEndpoint = ({
   endpoint: string;
   params?: Record<string, string | number>;
 }) => {
-  return `${DEFAULT_ENDPOINT}${endpoint}${
+  return `${import.meta.env.REACT_APP_PROD_ENDPOINT}${endpoint}${
     params
       ? `?${Object.keys(params)
           .map((key) => `${key}=${params[key]}`)
