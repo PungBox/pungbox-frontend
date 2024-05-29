@@ -36,7 +36,7 @@ export const getUploadUrls = async ({
 };
 
 export const getDownloadUrls = async (fileIds: string[]) => {
-  const response = await fetch(generateEndpoint({ endpoint: '/file/get-upload-url' }), {
+  const response = await fetch(generateEndpoint({ endpoint: '/file/get-download-url' }), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
