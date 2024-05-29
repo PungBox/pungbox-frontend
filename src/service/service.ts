@@ -1,3 +1,5 @@
+import { FileDescription } from 'utils/interface';
+
 const generateEndpoint = ({
   endpoint,
   params = {},
@@ -47,22 +49,7 @@ export const getDownloadUrls = async (fileIds: string[]): Promise<Record<string,
   return data;
 };
 
-export const viewBucket = async ({
-  bucketId,
-}: {
-  bucketId: string;
-}): Promise<
-  {
-    files: {
-      id: string;
-      fileName: string;
-      fileSize: number;
-      createdAt: string;
-      merged: boolean;
-      deleted: boolean;
-    }[];
-  }[]
-> => {
+export const viewBucket = async ({ bucketId }: { bucketId: string }): Promise<FileDescription[]> => {
   const response = await fetch(generateEndpoint({ endpoint: '/bucket/view', params: { bucketId } }), {
     method: 'GET',
     headers: {

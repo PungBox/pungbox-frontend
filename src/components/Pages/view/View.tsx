@@ -8,7 +8,8 @@ import { useFileDescription } from './util/view/fileDescription';
 import { useSelected } from './util/view/selected';
 import { downloadFiles } from './util/view/view';
 import styles from '/src/components/Module/View.module.css';
-import { viewBucket } from 'service/service';
+import { getDownloadUrls, viewBucket } from 'service/service';
+import axios from 'axios';
 
 const DUMMY_BUCKET_ID = '001bc76f-436f-4a7e-a1a0-e1ed389e9262';
 
@@ -26,7 +27,7 @@ const View = () => {
     addFile,
     deleteFiles,
   } = useFileDescription();
-  const { selected, getSelectedFileIds, getSelectedFileUrls, toggleSelectFile } = useSelected(fileDescriptions);
+  const { selected, getSelectedFileIds, toggleSelectFile } = useSelected(fileDescriptions);
 
   useEffect(() => {
     //@TODO: replace DUMMY_BUCKET_ID with actual bucketId
@@ -48,6 +49,28 @@ const View = () => {
     });
   };
 
+  const downloadFiles = (): void => {
+    const fileIds = getSelectedFileIds();
+
+    getDownloadUrls(fileIds).then((downloadUrls) => {
+      Object.entries(downloadUrls).forEach(([fileId, url]) => {
+        axios
+          .get(url, { responseType: 'blob' })
+          .then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', fileId);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+          })
+          // @TODO: 에러 핸들링을 개별적으로 처리하도록 하면 좋겠습니다.
+          .catch((error) => console.error(`Error downloading file: ${fileId}`, error));
+      });
+    });
+  };
+
   // TODO 추가: 인증키 유효하지 않으면 Expired 페이지로 이동하게 (만료일자 및 고유번호 포함)
   return (
     <div className={styles.view_panel}>
@@ -56,11 +79,7 @@ const View = () => {
         <p className={styles.expiration_date}>expiration date: {expirationDate}</p>
       </div>
       <div className={styles.button_container}>
-        <button
-          className={styles.download_button}
-          onClick={() => downloadFiles(getSelectedFileUrls(fileDescriptions))}
-          disabled={isLoading}
-        >
+        <button className={styles.download_button} onClick={downloadFiles} disabled={isLoading}>
           <span className="material-symbols-outlined">Download</span>
         </button>
         <button className={styles.delete_button} onClick={() => deleteFiles(getSelectedFileIds())} disabled={isLoading}>
