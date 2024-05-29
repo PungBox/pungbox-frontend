@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { fetchFileDescriptions } from '../../../utils/dummyData';
 import { FileListTableHeader } from './component/FileListTableHeader';
 import { FileListTableBody } from './component/FileListTableBody';
 import { fileListConfig } from '../../../utils/config';
 import { useSortingOrder } from './util/view/sortingOrder';
 import { useFileDescription } from './util/view/fileDescription';
-import styles from '/src/components/Module/View.module.css';
 import { useSelected } from './util/view/selected';
 import { downloadFiles } from './util/view/view';
+import styles from '/src/components/Module/View.module.css';
 import { getFilesFromBucket } from 'service/service';
 
 const DUMMY_BUCKET_ID = '001bc76f-436f-4a7e-a1a0-e1ed389e9262';
@@ -14,6 +15,7 @@ const DUMMY_BUCKET_ID = '001bc76f-436f-4a7e-a1a0-e1ed389e9262';
 const View = () => {
   const storageNumber = 192837;
   const expirationDate = `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`;
+  const [isLoading, setIsLoading] = useState(false);
   const { sortingCriteria, isSortingAscending, resetToDefaultSortingOrder, handleSorting, reSortFileDescriptions } =
     useSortingOrder();
   const {
@@ -37,7 +39,15 @@ const View = () => {
   useEffect(() => {
     reSortFileDescriptions(fileDescriptions, setFileDescriptions);
   }, [reSortFileDescriptions]);
-
+  
+  const handleRefresh = () => {
+    setIsLoading(true);
+    fetchFileDescriptions().then((fileDescriptions) => {
+      displayFileDescriptions(fileDescriptions);
+      setIsLoading(false);
+    });
+  };
+  
   // TODO 추가: 인증키 유효하지 않으면 Expired 페이지로 이동하게 (만료일자 및 고유번호 포함)
   return (
     <div className={styles.view_panel}>
@@ -46,11 +56,32 @@ const View = () => {
         <p className={styles.expiration_date}>expiration date: {expirationDate}</p>
       </div>
       <div className={styles.button_container}>
-        <button className={styles.download_button} onClick={() => downloadFiles(getSelectedFileUrls(fileDescriptions))}>
+        <button
+          className={styles.download_button}
+          onClick={() => downloadFiles(getSelectedFileUrls(fileDescriptions))}
+          disabled={isLoading}
+        >
           <span className="material-symbols-outlined">Download</span>
         </button>
-        <button className={styles.delete_button} onClick={() => deleteFiles(getSelectedFileIds())}>
+        <button
+          className={styles.delete_button}
+          onClick={() => deleteFiles(getSelectedFileIds())}
+          disabled={isLoading}
+        >
           <span className="material-symbols-outlined">Delete</span>
+        </button>
+        <button
+          className={styles.refresh_button}
+          onClick={handleRefresh}
+          disabled={isLoading}
+        >
+          <span className="material-symbols-outlined">
+            {isLoading ? (
+              <div className={styles.loading_animation}></div>
+            ) : (
+              'Refresh'
+            )}
+          </span>
         </button>
       </div>
       <table className={styles.file_list_table}>

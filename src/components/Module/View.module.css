@@ -26,54 +26,23 @@
 .button_container {
   margin-bottom: 20px;
   display: flex;
-}
-
-.delete_button {
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 80px;
-  height: 40px;
-  margin: 0;
-  display: flex;
-  justify-content: center;
+  justify-content: space-between; 
   align-items: center;
-  margin-right: 20px;
-}
-
-.delete_button span {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: none;
-  box-shadow: 2px 2px 4px 0 rgba(255, 255, 255, .5),
-    -2px -2px 4px 0 rgba(116, 125, 136, .5),
-    inset -2px -2px 4px 0 rgba(255, 255, 255, .2),
-    inset 2px 2px 4px 0 rgba(0, 0, 0, .4);
-  border-radius: 15px;
-  color: #ff0000;
-  z-index: 1;
-  transition: .6s;
-}
-
-.delete_button:hover span {
-  color: #fff;
-  background: #ff0000;
+  
 }
 
 .download_button {
   position: relative;
   top: 0;
   left: 0;
-  width: 80px;
+  width: 100%;
+  min-width: 80px;
   height: 40px;
   margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 10px;
+  margin-right: 12px;
 }
 
 .download_button span {
@@ -98,6 +67,91 @@
   background: #555555;
 }
 
+.delete_button {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-width: 80px;
+  height: 40px;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 12px;
+}
+
+.delete_button span {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  box-shadow: 2px 2px 4px 0 rgba(255, 255, 255, .5),
+    -2px -2px 4px 0 rgba(116, 125, 136, .5),
+    inset -2px -2px 4px 0 rgba(255, 255, 255, .2),
+    inset 2px 2px 4px 0 rgba(0, 0, 0, .4);
+  border-radius: 15px;
+  color: #e25656;
+  z-index: 1;
+  transition: .6s;
+}
+
+.delete_button:hover span {
+  color: #fff;
+  background: #e25656;
+}
+
+.refresh_button {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-width: 80px;
+  height: 40px;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.refresh_button span {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  box-shadow: 2px 2px 4px 0 rgba(255, 255, 255, .5),
+    -2px -2px 4px 0 rgba(116, 125, 136, .5),
+    inset -2px -2px 4px 0 rgba(255, 255, 255, .2),
+    inset 2px 2px 4px 0 rgba(0, 0, 0, .4);
+  border-radius: 15px;
+  color: #474ed8;
+  z-index: 1;
+  transition: .6s;
+}
+
+.refresh_button:hover span {
+  color: #fff;
+  background: #474ed8;
+}
+
+.loading_animation {
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #3498db;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 .file_list_table {
   width: 100%;
   border-collapse: separate;
@@ -117,10 +171,15 @@
 
 .file_upload_label {
   padding: 10px;
-  border: 1px solid #707070;
+  border: 1px dashed #999999;
   border-radius: 8px;
   display: block;
   width: 100%;
+}
+
+.file_upload_label:hover{
+  background-color: rgba(0, 0, 0, 0.1);
+  border-color: #333;
 }
 
 .file_upload_input {
@@ -128,7 +187,7 @@
 }
 
 .file_upload_label::before {
-  content: 'Choose File';
+  content: 'Select File';
   display: inline-block;
   padding: 8px 16px;
   background-color: #d25d5d;
@@ -139,7 +198,12 @@
 }
 
 .file_upload_label:hover::before {
-  background-color: #a34747;
+  background: #e17575;
+    color: white;
+    box-shadow: 0 0 10px #e17575,
+              0 0 10px #e17575,
+              0 0 25px #e17575,
+              0 0 50px #e17575;
 }
 
 @media screen and (max-width: 480px) {
