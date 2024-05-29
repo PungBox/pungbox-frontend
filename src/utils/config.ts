@@ -39,10 +39,10 @@ const headers: HeaderConfig[] = [
   },
 ];
 
-const mappings: { [key: string]: 'fileName' | 'fileSize' | 'created' } = {
+const mappings: { [key: string]: 'fileName' | 'fileSize' | 'createdAt' } = {
   name: 'fileName',
   size: 'fileSize',
-  date: 'created',
+  date: 'createdAt',
 };
 
 const fileListConfig = {
@@ -54,7 +54,6 @@ const fileListConfig = {
 const authConfig = {
   DIGIT_LENGTH: 6,
 };
-
 
 export type { HeaderConfig };
 export { fileListConfig, authConfig };

@@ -1,6 +1,30 @@
-export const getPresignedUrl = async ({files, bucketName, threshold = 1024}: {files: File[]; bucketName: string; threshold?: number }) => {
+const generateEndpoint = ({
+  endpoint,
+  params = {},
+}: {
+  endpoint: string;
+  params?: Record<string, string | number>;
+}) => {
+  return `${import.meta.env.REACT_APP_PROD_ENDPOINT}${endpoint}${
+    params
+      ? `?${Object.keys(params)
+          .map((key) => `${key}=${params[key]}`)
+          .join('&')}`
+      : ''
+  }`;
+};
+
+export const getPresignedUrl = async ({
+  files,
+  bucketName,
+  threshold = 1024,
+}: {
+  files: File[];
+  bucketName: string;
+  threshold?: number;
+}) => {
   const response = await fetch(
-    `https://fhxljaiclxngspozkr55elwaba0ifvek.lambda-url.us-west-2.on.aws/?bucketName=${bucketName}&threshold=${threshold}`,
+    generateEndpoint({ endpoint: '/bucket/presigned-url', params: { bucketName, threshold } }),
     {
       method: 'POST',
       headers: {
@@ -8,8 +32,19 @@ export const getPresignedUrl = async ({files, bucketName, threshold = 1024}: {fi
       },
 
       body: JSON.stringify({ files }),
-    }
+    },
   );
   const data = await response.json();
   return data.url;
-}
+};
+
+export const getFilesFromBucket = async ({ bucketId }: { bucketId: string }) => {
+  const response = await fetch(generateEndpoint({ endpoint: '/bucket/files', params: { bucketId } }), {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  const data = await response.json();
+  return data.files;
+};
