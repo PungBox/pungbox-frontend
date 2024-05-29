@@ -1,10 +1,10 @@
 interface FileDescription {
-  fileId: number;
+  id: string;
   fileName: string;
-  fileUrl: string;
   fileSize: number;
+  merged: boolean;
+  deleted: boolean;
   createdAt: string;
-  modifiedAt: string;
 }
 
 export type { FileDescription };

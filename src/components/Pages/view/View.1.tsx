@@ -6,14 +6,12 @@ import { fileListConfig } from '../../../utils/config';
 import { useSortingOrder } from './util/view/sortingOrder';
 import { useFileDescription } from './util/view/fileDescription';
 import { useSelected } from './util/view/selected';
-import { downloadFiles } from './util/view/view';
 import styles from '/src/components/Module/View.module.css';
-import { deleteFiles, getDownloadUrls, viewBucket } from 'service/service';
+import { getDownloadUrls, viewBucket } from 'service/service';
 import axios from 'axios';
+import { DUMMY_BUCKET_ID } from './View';
 
-const DUMMY_BUCKET_ID = '001bc76f-436f-4a7e-a1a0-e1ed389e9262';
-
-const View = () => {
+export const View = () => {
   const storageNumber = 192837;
   const expirationDate = `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`;
   const [isLoading, setIsLoading] = useState(false);
@@ -65,20 +63,6 @@ const View = () => {
     });
   }, []);
 
-  const deleteSelectedFiles = useCallback(() => {
-    const fileIds = getSelectedFileIds();
-    setIsLoading(true);
-    deleteFiles(fileIds)
-      .then((data) => {
-        if (data.success) {
-          handleRefresh();
-        } else {
-          alert('Failed to delete files');
-        }
-      })
-      .finally(() => setIsLoading(false));
-  }, []);
-
   // TODO 추가: 인증키 유효하지 않으면 Expired 페이지로 이동하게 (만료일자 및 고유번호 포함)
   return (
     <div className={styles.view_panel}>
@@ -90,7 +74,7 @@ const View = () => {
         <button className={styles.download_button} onClick={downloadFiles} disabled={isLoading}>
           <span className="material-symbols-outlined">Download</span>
         </button>
-        <button className={styles.delete_button} onClick={deleteSelectedFiles} disabled={isLoading}>
+        <button className={styles.delete_button} onClick={() => deleteFiles(getSelectedFileIds())} disabled={isLoading}>
           <span className="material-symbols-outlined">Delete</span>
         </button>
         <button className={styles.refresh_button} onClick={handleRefresh} disabled={isLoading}>
@@ -129,5 +113,3 @@ const View = () => {
     </div>
   );
 };
-
-export default View;

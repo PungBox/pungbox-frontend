@@ -33,13 +33,9 @@ function useFileDescription() {
 
   function getNewFileDescription(file: File) {
     return {
-      fileId: fileDescriptions.length + 1,
       fileName: file.name,
-      fileUrl: '',
       fileSize: Math.floor(file.size / 1000),
-      createdAt: new Date().toISOString(),
-      modifiedAt: new Date().toISOString(),
-    } as FileDescription;
+    };
   }
 
   function addFile(e: ChangeEvent<HTMLInputElement>) {
@@ -51,20 +47,12 @@ function useFileDescription() {
     setFileDescriptions(newFileDescriptions);
   }
 
-  function deleteFiles(fileIds: number[]) {
-    const newFileDescriptions = fileDescriptions.slice().filter((file) => {
-      return !fileIds.includes(file.fileId);
-    });
-    setFileDescriptions(newFileDescriptions);
-  }
-
   return {
     fileDescriptions,
     setFileDescriptions,
     isFileDescriptionsLoaded,
     displayFileDescriptions,
     addFile,
-    deleteFiles,
   };
 }
 
