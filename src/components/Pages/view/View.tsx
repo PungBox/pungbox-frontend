@@ -30,8 +30,9 @@ const View = () => {
 
   useEffect(() => {
     //@TODO: replace DUMMY_BUCKET_ID with actual bucketId
-    viewBucket({ bucketId: DUMMY_BUCKET_ID }).then((fileDescriptions) => {
-      displayFileDescriptions(fileDescriptions);
+    viewBucket({ bucketId: DUMMY_BUCKET_ID }).then((res) => {
+      const {files } = res;
+      displayFileDescriptions(files);
       resetToDefaultSortingOrder(fileListConfig.defaultSortingCriteria);
     });
   }, []);

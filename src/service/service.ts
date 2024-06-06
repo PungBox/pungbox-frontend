@@ -61,7 +61,7 @@ export const viewBucket = async ({
       merged: boolean;
       deleted: boolean;
     }[];
-  }[]
+  }
 > => {
   const response = await fetch(generateEndpoint({ endpoint: '/bucket/view', params: { bucketId } }), {
     method: 'GET',
