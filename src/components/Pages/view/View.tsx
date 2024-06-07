@@ -48,7 +48,7 @@ const View = () => {
   };
 
   // TODO: storage 인증키 유효성 검사 함수 (구현해야함)
-  const isStorageNumberValid = storageNumber < 0;
+  const isStorageNumberValid = storageNumber > 0;
 
   // TODO: dummy json 사용 중이지만, backend로부터 가져오도록 변경해야 함
   return (
