@@ -29,7 +29,6 @@ export const getUploadUrls = async ({
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
     },
     body: JSON.stringify({ files }),
   });
@@ -43,7 +42,6 @@ export const getDownloadUrls = async (fileIds: string[]): Promise<Record<string,
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
     },
     body: JSON.stringify({ fileIds }),
   });
@@ -72,7 +70,6 @@ export const viewBucket = async ({
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
     },
   });
   const data = await response.json();
@@ -91,7 +88,6 @@ export const createBucket = async ({
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
     },
     body: JSON.stringify({ bucketName, password }),
   });
@@ -105,7 +101,6 @@ export const deleteFiles = async (fileIds: string[]): Promise<{ success: boolean
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
     },
     body: JSON.stringify({ fileIds }),
   });
