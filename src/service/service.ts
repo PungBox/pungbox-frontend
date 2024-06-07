@@ -5,7 +5,7 @@ const generateEndpoint = ({
   endpoint: string;
   params?: Record<string, string | number>;
 }) => {
-  return `${import.meta.env.REACT_APP_PROD_ENDPOINT}${endpoint}${
+  return `${import.meta.env.VITE_PROD_ENDPOINT}${endpoint}${
     params
       ? `?${Object.keys(params)
           .map((key) => `${key}=${params[key]}`)
@@ -16,18 +16,20 @@ const generateEndpoint = ({
 
 export const getUploadUrls = async ({
   files,
-  bucketName,
+  bucketId,
 }: {
   files: {
     fileName: string;
     fileSize: number;
   }[];
-  bucketName: string;
+  bucketId: string;
 }): Promise<Record<string, string>> => {
-  const response = await fetch(generateEndpoint({ endpoint: '/file/get-upload-url', params: { bucketName } }), {
+  const endpoint = generateEndpoint({ endpoint: '/file/get-upload-url', params: { bucketId } });
+  const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
     },
     body: JSON.stringify({ files }),
   });
@@ -36,10 +38,12 @@ export const getUploadUrls = async ({
 };
 
 export const getDownloadUrls = async (fileIds: string[]): Promise<Record<string, string>> => {
-  const response = await fetch(generateEndpoint({ endpoint: '/file/get-download-url' }), {
+  const endpoint = generateEndpoint({ endpoint: '/file/get-download-url' });
+  const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
     },
     body: JSON.stringify({ fileIds }),
   });
@@ -63,10 +67,12 @@ export const viewBucket = async ({
     }[];
   }
 > => {
-  const response = await fetch(generateEndpoint({ endpoint: '/bucket/view', params: { bucketId } }), {
+  const endpoint = generateEndpoint({ endpoint: '/bucket/view', params: { bucketId } });
+  const response = await fetch(endpoint, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
     },
   });
   const data = await response.json();
@@ -80,10 +86,12 @@ export const createBucket = async ({
   bucketName: string;
   password: string;
 }): Promise<{ bucketId: string }> => {
-  const response = await fetch(generateEndpoint({ endpoint: '/bucket/create' }), {
+  const endpoint = generateEndpoint({ endpoint: '/bucket/create' })
+  const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
     },
     body: JSON.stringify({ bucketName, password }),
   });
@@ -92,10 +100,12 @@ export const createBucket = async ({
 };
 
 export const deleteFiles = async (fileIds: string[]): Promise<{ success: boolean }> => {
-  const response = await fetch(generateEndpoint({ endpoint: '/file/delete' }), {
+  const endpoint = generateEndpoint({ endpoint: '/file/delete' });
+  const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
     },
     body: JSON.stringify({ fileIds }),
   });
