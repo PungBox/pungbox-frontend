@@ -7,6 +7,7 @@ import { useSortingOrder } from './util/view/sortingOrder';
 import { useFileDescription } from './util/view/fileDescription';
 import { useSelected } from './util/view/selected';
 import { downloadFiles } from './util/view/view';
+import Expired from './component/Expired'; 
 import styles from '/src/components/Module/View.module.css';
 import { getDownloadUrls, viewBucket } from 'service/service';
 
@@ -60,57 +61,65 @@ const View = () => {
     setIsLoading(false);
   }, [])
 
-  // TODO 추가: 인증키 유효하지 않으면 Expired 페이지로 이동하게 (만료일자 및 고유번호 포함)
+  // TODO: storage 인증키 유효성 검사 함수 구현 (storage가 만료되었는지)
+  const isStorageNumberValid = storageNumber > 0;
+
   return (
     <div className={styles.view_panel}>
       <div className={styles.view_panel_header}>
         <p className={styles.storage_number}>Storage No. {storageNumber}</p>
         <p className={styles.expiration_date}>expiration date: {expirationDate}</p>
       </div>
-      <div className={styles.button_container}>
-        <button
-          className={styles.download_button}
-          onClick={downloadSelectedFiles}
-          disabled={isLoading}
-        >
-          <span className="material-symbols-outlined">Download</span>
-        </button>
-        <button className={styles.delete_button} onClick={() => deleteFiles(getSelectedFileIds())} disabled={isLoading}>
-          <span className="material-symbols-outlined">Delete</span>
-        </button>
-        <button className={styles.refresh_button} onClick={handleRefresh} disabled={isLoading}>
-          <span className="material-symbols-outlined">
-            {isLoading ? <div className={styles.loading_animation}></div> : 'Refresh'}
-          </span>
-        </button>
-      </div>
-      <table className={styles.file_list_table}>
-        <thead>
-          <FileListTableHeader
-            handleSorting={handleSorting}
-            sortingCriteria={sortingCriteria}
-            isSortingAscending={isSortingAscending}
-          />
-        </thead>
-        <tbody>
-          <FileListTableBody
-            fileDescriptions={fileDescriptions}
-            isFileDescriptionsLoaded={isFileDescriptionsLoaded}
-            selected={selected}
-            toggleSelectFile={toggleSelectFile}
-          />
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colSpan={6}>
-              <label htmlFor="file_upload" className={styles.file_upload_label}>
-                <input type="file" id="file_upload" className={styles.file_upload_input} onChange={addFile} />
-                Upload File
-              </label>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+      {!isStorageNumberValid ? (
+        <Expired />
+      ) : (
+        <>
+          <div className={styles.button_container}>
+            <button
+              className={styles.download_button}
+              onClick={downloadSelectedFiles}
+              disabled={isLoading}
+            >
+              <span className="material-symbols-outlined">Download</span>
+            </button>
+            <button className={styles.delete_button} onClick={() => deleteFiles(getSelectedFileIds())} disabled={isLoading}>
+              <span className="material-symbols-outlined">Delete</span>
+            </button>
+            <button className={styles.refresh_button} onClick={handleRefresh} disabled={isLoading}>
+              <span className="material-symbols-outlined">
+                {isLoading ? <div className={styles.loading_animation}></div> : 'Refresh'}
+              </span>
+            </button>
+          </div>
+          <table className={styles.file_list_table}>
+            <thead>
+              <FileListTableHeader
+                handleSorting={handleSorting}
+                sortingCriteria={sortingCriteria}
+                isSortingAscending={isSortingAscending}
+              />
+            </thead>
+            <tbody>
+              <FileListTableBody
+                fileDescriptions={fileDescriptions}
+                isFileDescriptionsLoaded={isFileDescriptionsLoaded}
+                selected={selected}
+                toggleSelectFile={toggleSelectFile}
+              />
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colSpan={6}>
+                  <label htmlFor="file_upload" className={styles.file_upload_label}>
+                    <input type="file" id="file_upload" className={styles.file_upload_input} onChange={addFile} />
+                    Upload File
+                  </label>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </>
+      )}
     </div>
   );
 };
