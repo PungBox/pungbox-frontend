@@ -1,11 +1,6 @@
-import React, {
-  ChangeEvent,
-  useState,
-  useEffect,
-  useRef,
-} from 'react';
+import React, { ChangeEvent, useState, useEffect, useRef } from 'react';
 import useDragAndDrop from '../../../utils/component/UseDragDrop';
-import styles from '/src/components/Module/Home.module.css'; 
+import styles from '/src/components/Module/Home.module.css';
 import iconExpand from '/src/assets/images/icon_expand.svg';
 import iconCollapse from '/src/assets/images/icon_collapse.svg';
 import { Link, useNavigate } from 'react-router-dom';
@@ -57,7 +52,7 @@ const Home = () => {
     } else {
       selectFiles = e.target.files;
     }
-  
+
     for (const file of selectFiles) {
       tempFiles = [
         ...tempFiles,
@@ -87,31 +82,16 @@ const Home = () => {
     } else {
       alert('Please upload at least one file.'); // 파일이 없으면 경고창 표시
     }
-  }
+  };
 
-  const { dragRef } = useDragAndDrop(
-    handleDragStart,
-    handleDragOver,
-    handleDragEnd,
-    handleDrop
-  );
-  
+  const { dragRef } = useDragAndDrop(handleDragStart, handleDragOver, handleDragEnd, handleDrop);
+
   return (
     <div className={styles.outercontainer}>
       <div className={styles.innercontainer}>
         {/* 드래그 앤 드롭 영역 */}
-        <input
-          type="file"
-          id="fileUpload"
-          style={{ display: 'none' }}
-          multiple={true}
-          onChange={onChangeFiles}
-        />
-        <label
-          className={`${styles.dropzone} ${isDragging ? 'active' : ''}`}
-          htmlFor="fileUpload"
-          ref={dragRef}
-        >
+        <input type="file" id="fileUpload" style={{ display: 'none' }} multiple={true} onChange={onChangeFiles} />
+        <label className={`${styles.dropzone} ${isDragging ? 'active' : ''}`} htmlFor="fileUpload" ref={dragRef}>
           <img className={styles.uploadicon} src={uploadUrl} />
           <span>Click or Drop files here to upload</span>
         </label>
@@ -124,16 +104,13 @@ const Home = () => {
           {files.map((file: IFileTypes) => {
             const {
               id,
-              object: { name } 
+              object: { name },
             } = file;
 
             return (
               <div key={id}>
                 <div>{name}</div>
-                <div
-                  className={styles.dragdropFilesFilter}
-                  onClick={() => handleFilterFile(id)}
-                >
+                <div className={styles.dragdropFilesFilter} onClick={() => handleFilterFile(id)}>
                   <span>X</span>
                 </div>
               </div>
@@ -141,7 +118,7 @@ const Home = () => {
           })}
         </div>
       </div>
-     
+
       <div style={{ textAlign: 'center' }}>
         <button className={styles.uploadbutton} onClick={handleUpload}>
           <span>UPLOAD FILE</span>

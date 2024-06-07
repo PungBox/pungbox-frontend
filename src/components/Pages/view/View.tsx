@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { fetchFileDescriptions } from '../../../utils/dummyData';
 import { FileListTableHeader } from './component/FileListTableHeader';
 import { FileListTableBody } from './component/FileListTableBody';
@@ -9,6 +9,9 @@ import { useSelected } from './util/view/selected';
 import { downloadFiles } from './util/view/view';
 import Expired from './component/Expired'; 
 import styles from '/src/components/Module/View.module.css';
+import { getDownloadUrls, viewBucket } from 'service/service';
+
+const DUMMY_BUCKET_ID = '001bc76f-436f-4a7e-a1a0-e1ed389e9262';
 
 const View = () => {
   const storageNumber = 192837;
@@ -24,21 +27,21 @@ const View = () => {
     addFile,
     deleteFiles,
   } = useFileDescription();
-  const {
-    selected, getSelectedFileIds, getSelectedFileUrls, toggleSelectFile,
-  } = useSelected(fileDescriptions);
-  
+  const { selected, getSelectedFileIds, toggleSelectFile } = useSelected(fileDescriptions);
+
   useEffect(() => {
-    fetchFileDescriptions().then((fileDescriptions) => {
-      displayFileDescriptions(fileDescriptions);
+    //@TODO: replace DUMMY_BUCKET_ID with actual bucketId
+    viewBucket({ bucketId: DUMMY_BUCKET_ID }).then((res) => {
+      const {files } = res;
+      displayFileDescriptions(files);
       resetToDefaultSortingOrder(fileListConfig.defaultSortingCriteria);
     });
   }, []);
-  
+
   useEffect(() => {
     reSortFileDescriptions(fileDescriptions, setFileDescriptions);
   }, [reSortFileDescriptions]);
-  
+
   const handleRefresh = () => {
     setIsLoading(true);
     fetchFileDescriptions().then((fileDescriptions) => {
@@ -47,10 +50,20 @@ const View = () => {
     });
   };
 
-  // TODO: storage 인증키 유효성 검사 함수 (구현해야함)
+  const downloadSelectedFiles = useCallback(async ()=> {
+    
+    setIsLoading(true);
+    const selectedFileIds = getSelectedFileIds()
+    const downloadUrls = await getDownloadUrls(selectedFileIds)
+
+    Object.values(downloadUrls).forEach((url) => window.open(url));
+    
+    setIsLoading(false);
+  }, [])
+
+  // TODO: storage 인증키 유효성 검사 함수 구현 (storage가 만료되었는지)
   const isStorageNumberValid = storageNumber > 0;
 
-  // TODO: dummy json 사용 중이지만, backend로부터 가져오도록 변경해야 함
   return (
     <div className={styles.view_panel}>
       <div className={styles.view_panel_header}>
@@ -64,29 +77,17 @@ const View = () => {
           <div className={styles.button_container}>
             <button
               className={styles.download_button}
-              onClick={() => downloadFiles(getSelectedFileUrls(fileDescriptions))}
+              onClick={downloadSelectedFiles}
               disabled={isLoading}
             >
               <span className="material-symbols-outlined">Download</span>
             </button>
-            <button
-              className={styles.delete_button}
-              onClick={() => deleteFiles(getSelectedFileIds())}
-              disabled={isLoading}
-            >
+            <button className={styles.delete_button} onClick={() => deleteFiles(getSelectedFileIds())} disabled={isLoading}>
               <span className="material-symbols-outlined">Delete</span>
             </button>
-            <button
-              className={styles.refresh_button}
-              onClick={handleRefresh}
-              disabled={isLoading}
-            >
+            <button className={styles.refresh_button} onClick={handleRefresh} disabled={isLoading}>
               <span className="material-symbols-outlined">
-                {isLoading ? (
-                  <div className={styles.loading_animation}></div>
-                ) : (
-                  'Refresh'
-                )}
+                {isLoading ? <div className={styles.loading_animation}></div> : 'Refresh'}
               </span>
             </button>
           </div>

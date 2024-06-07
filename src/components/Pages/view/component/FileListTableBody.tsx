@@ -7,8 +7,8 @@ import { FileDescription } from '../../../../utils/interface';
 interface FileListTableBodyProps {
   fileDescriptions: FileDescription[];
   isFileDescriptionsLoaded: boolean;
-  selected: { [key: number]: boolean };
-  toggleSelectFile: (fileId: number) => void;
+  selected: { [key: string]: boolean };
+  toggleSelectFile: (fileId: string) => void;
 }
 
 export const FileListTableBody = (

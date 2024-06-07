@@ -3,8 +3,8 @@ import { FileDescription } from '../../../../utils/interface';
 
 interface FileListProps {
   fileDescriptions: FileDescription[];
-  selected: { [key: number]: boolean };
-  toggleSelectFile: (fileId: number) => void;
+  selected: { [key: string]: boolean };
+  toggleSelectFile: (fileId: string) => void;
 }
 
 function getIconByFileExtension(extension: string) {

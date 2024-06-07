@@ -25,39 +25,40 @@ function getNewlySortedFileDescriptions(
 function useFileDescription() {
   const [fileDescriptions, setFileDescriptions] = useState([] as FileDescription[]);
   const [isFileDescriptionsLoaded, setIsFileDescriptionsLoaded] = useState(false);
-  
+
   function displayFileDescriptions(fileDescriptions: FileDescription[]) {
     setFileDescriptions(fileDescriptions);
     setIsFileDescriptionsLoaded(true);
   }
-  
+
   function getNewFileDescription(file: File) {
     return {
-      fileId: fileDescriptions.length + 1,
+      id: '',
       fileName: file.name,
-      fileUrl: '',
       fileSize: Math.floor(file.size / 1000),
-      created: new Date().toISOString(),
-      modified: new Date().toISOString(),
-    } as FileDescription;
+      merged: false,
+      deleted: false,
+      createdAt: new Date().toISOString(),
+      modifiedAt: new Date().toISOString(),
+    }
   }
-  
+
   function addFile(e: ChangeEvent<HTMLInputElement>) {
     if (e.target.files === null) return;
     const file = e.target.files[0];
-    
+
     const newFileDescriptions = fileDescriptions.slice();
     newFileDescriptions.push(getNewFileDescription(file));
     setFileDescriptions(newFileDescriptions);
   }
-  
-  function deleteFiles(fileIds: number[]) {
+
+  function deleteFiles(fileIds: string[]) {
     const newFileDescriptions = fileDescriptions.slice().filter((file) => {
-      return !fileIds.includes(file.fileId);
+      return !fileIds.includes(file.id);
     });
     setFileDescriptions(newFileDescriptions);
   }
-  
+
   return {
     fileDescriptions,
     setFileDescriptions,

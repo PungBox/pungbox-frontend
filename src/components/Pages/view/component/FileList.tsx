@@ -13,14 +13,14 @@ export const FileList = ({ fileDescriptions, selected, toggleSelectFile }: FileL
     const splitted = file.fileName.split('.');
     const extension = splitted[splitted.length - 1];
     return (
-      <tr className={styles.checkbox} key={file.fileId} onClick={() => toggleSelectFile(file.fileId)}>
+      <tr className={styles.checkbox} key={file.id} onClick={() => toggleSelectFile(file.id)}>
         <td>
-          <input type="checkbox" checked={selected[file.fileId]} onChange={() => toggleSelectFile(file.fileId)} />
+          <input type="checkbox" checked={selected[file.id]} onChange={() => toggleSelectFile(file.id)} />
         </td>
         <td>{getIconByFileExtension(extension)}</td>
         <td>{getFileNameExpression(file.fileName)}</td>
         <td>{getFileSizeExpression(file.fileSize)}</td>
-        <td>{getUploadedDatetimeExpression(file.created)}</td>
+        <td>{getUploadedDatetimeExpression(file.createdAt)}</td>
       </tr>
     );
   });
