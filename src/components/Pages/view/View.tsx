@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { fetchFileDescriptions } from '../../../utils/dummyData';
 import { FileListTableHeader } from './component/FileListTableHeader';
 import { FileListTableBody } from './component/FileListTableBody';
@@ -8,7 +8,7 @@ import { useFileDescription } from './util/view/fileDescription';
 import { useSelected } from './util/view/selected';
 import { downloadFiles } from './util/view/view';
 import styles from '/src/components/Module/View.module.css';
-import { viewBucket } from 'service/service';
+import { getDownloadUrls, viewBucket } from 'service/service';
 
 const DUMMY_BUCKET_ID = '001bc76f-436f-4a7e-a1a0-e1ed389e9262';
 
@@ -26,7 +26,7 @@ const View = () => {
     addFile,
     deleteFiles,
   } = useFileDescription();
-  const { selected, getSelectedFileIds, getSelectedFileUrls, toggleSelectFile } = useSelected(fileDescriptions);
+  const { selected, getSelectedFileIds, toggleSelectFile } = useSelected(fileDescriptions);
 
   useEffect(() => {
     //@TODO: replace DUMMY_BUCKET_ID with actual bucketId
@@ -49,6 +49,17 @@ const View = () => {
     });
   };
 
+  const downloadSelectedFiles = useCallback(async ()=> {
+    
+    setIsLoading(true);
+    const selectedFileIds = getSelectedFileIds()
+    const downloadUrls = await getDownloadUrls(selectedFileIds)
+
+    Object.values(downloadUrls).forEach((url) => window.open(url));
+    
+    setIsLoading(false);
+  }, [])
+
   // TODO 추가: 인증키 유효하지 않으면 Expired 페이지로 이동하게 (만료일자 및 고유번호 포함)
   return (
     <div className={styles.view_panel}>
@@ -59,7 +70,7 @@ const View = () => {
       <div className={styles.button_container}>
         <button
           className={styles.download_button}
-          onClick={() => downloadFiles(getSelectedFileUrls(fileDescriptions))}
+          onClick={downloadSelectedFiles}
           disabled={isLoading}
         >
           <span className="material-symbols-outlined">Download</span>

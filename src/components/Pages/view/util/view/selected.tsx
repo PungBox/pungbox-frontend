@@ -10,13 +10,7 @@ function useSelected(fileDescriptions: FileDescription[]) {
     return Object.keys(selected)
       .filter((key) => selected[key] ? key : false);
   }
-  
-  function getSelectedFileUrls(fileDescriptions: FileDescription[]) {
-    const fileIds = getSelectedFileIds();
-    return fileDescriptions
-      .map((file) => (fileIds.includes(file.id)) ? file.id : null)
-      .filter((x) => x !== null) as string[];
-  }
+
   
   const toggleSelectFile = (fileId: string) => {
     const newSelected = JSON.parse(JSON.stringify(selected));
@@ -24,7 +18,7 @@ function useSelected(fileDescriptions: FileDescription[]) {
     setSelected(newSelected);
   };
   
-  return { selected, getSelectedFileIds, getSelectedFileUrls, toggleSelectFile };
+  return { selected, getSelectedFileIds, toggleSelectFile };
 }
 
 export { useSelected };
