@@ -49,8 +49,8 @@ function useFileDescription() {
     return {
       id: file.id,
       fileName: file.fileName,
-      fileSize: file.fileSize,
-      createdAt: file.createAt,
+      fileSize: Math.floor(file.fileSize / 1000),
+      createdAt: file.createdAt,
       modifiedAt: null,
       merged: file.merged,
       deleted: file.deleted,
