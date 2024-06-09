@@ -1,9 +1,7 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { FileDescription } from '../../../../../utils/interface';
 import { fileListConfig } from '../../../../../utils/config';
-import { getUploadUrls, uploadFile } from '../../../../../service/service';
-
-const DUMMY_BUCKET_ID = '001bc76f-436f-4a7e-a1a0-e1ed389e9262';
+import { ViewBucketResponse } from '../../../../../service/service';
 
 function getFileNameAndSizeFromFileObject(files: File[]) {
   return files.map((file) => {
@@ -40,7 +38,7 @@ function useFileDescription() {
     setIsFileDescriptionsLoaded(true);
   }
   
-  function getNewFileDescription(file: File) {
+  function fileDescriptionFromFileObject(file: File) {
     return {
       id: '',
       fileName: file.name,
@@ -49,27 +47,29 @@ function useFileDescription() {
       deleted: false,
       createdAt: new Date().toISOString(),
       modifiedAt: new Date().toISOString(),
+      type: file.type,
     };
   }
   
-  async function uploadFiles(files: FileList | File[] | null) {
-    if (files === null) return;
-    if (files instanceof FileList) files = [...files];
+  function fileDescriptionFromFetchResult(file: ViewBucketResponse) {
+    return {
+      id: file.id,
+      fileName: file.fileName,
+      fileSize: Math.floor(file.fileSize / 1000),
+      createdAt: file.createdAt,
+      modifiedAt: null,
+      merged: file.merged,
+      deleted: file.deleted,
+      type: file.type,
+    } as FileDescription;
+  }
+  
+  function addFile(e: ChangeEvent<HTMLInputElement>) {
+    if (e.target.files === null) return;
+    const file = e.target.files[0];
+    
     const newFileDescriptions = fileDescriptions.slice();
-    const uploadUrls = await getUploadUrls({
-      files: getFileNameAndSizeFromFileObject(files),
-      bucketId: DUMMY_BUCKET_ID,
-    });
-    for (const file of files) {
-      const upload = (Object.values(uploadUrls).filter((x) => x.fileName === file.name)[0]);
-      const urls = upload.urls;
-      const uploadId = upload.uploadId;
-      const uploadResult = await uploadFile(file, urls, DUMMY_BUCKET_ID, uploadId);
-      if (!uploadResult['success']) {
-        console.error(`Failed to upload file: ${file}`);
-      }
-      newFileDescriptions.push(getNewFileDescription(file));
-    }
+    newFileDescriptions.push(fileDescriptionFromFileObject(file));
     setFileDescriptions(newFileDescriptions);
   }
   
@@ -85,7 +85,8 @@ function useFileDescription() {
     setFileDescriptions,
     isFileDescriptionsLoaded,
     displayFileDescriptions,
-    uploadFiles,
+    fileDescriptionFromFetchResult,
+    addFile,
     deleteFiles,
   };
 }

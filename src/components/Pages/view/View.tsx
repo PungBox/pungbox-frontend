@@ -24,20 +24,20 @@ const View = () => {
     setFileDescriptions,
     isFileDescriptionsLoaded,
     displayFileDescriptions,
-    uploadFiles,
+    fileDescriptionFromFetchResult,
+    addFile,
     deleteFiles,
   } = useFileDescription();
   const { selected, getSelectedFileIds, toggleSelectFile } = useSelected(fileDescriptions);
-  const location = useLocation();
-  
+
   useEffect(() => {
-    uploadFiles(location.state.files);
+    addFiles(location.state.files);
     location.state.files = null;
     
     //@TODO: replace DUMMY_BUCKET_ID with actual bucketId
     viewBucket({ bucketId: DUMMY_BUCKET_ID }).then((res) => {
       const { files } = res;
-      displayFileDescriptions(files);
+      displayFileDescriptions(files.map((file) => fileDescriptionFromFetchResult(file)));
       resetToDefaultSortingOrder(fileListConfig.defaultSortingCriteria);
     });
   }, []);
@@ -85,8 +85,7 @@ const View = () => {
             >
               <span className="material-symbols-outlined">Download</span>
             </button>
-            <button className={styles.delete_button} onClick={() => deleteFiles(getSelectedFileIds())}
-                    disabled={isLoading}>
+            <button className={styles.delete_button} onClick={() => deleteFiles(getSelectedFileIds())} disabled={isLoading}>
               <span className="material-symbols-outlined">Delete</span>
             </button>
             <button className={styles.refresh_button} onClick={handleRefresh} disabled={isLoading}>
@@ -97,30 +96,29 @@ const View = () => {
           </div>
           <table className={styles.file_list_table}>
             <thead>
-            <FileListTableHeader
-              handleSorting={handleSorting}
-              sortingCriteria={sortingCriteria}
-              isSortingAscending={isSortingAscending}
-            />
+              <FileListTableHeader
+                handleSorting={handleSorting}
+                sortingCriteria={sortingCriteria}
+                isSortingAscending={isSortingAscending}
+              />
             </thead>
             <tbody>
-            <FileListTableBody
-              fileDescriptions={fileDescriptions}
-              isFileDescriptionsLoaded={isFileDescriptionsLoaded}
-              selected={selected}
-              toggleSelectFile={toggleSelectFile}
-            />
+              <FileListTableBody
+                fileDescriptions={fileDescriptions}
+                isFileDescriptionsLoaded={isFileDescriptionsLoaded}
+                selected={selected}
+                toggleSelectFile={toggleSelectFile}
+              />
             </tbody>
             <tfoot>
-            <tr>
-              <td colSpan={6}>
-                <label htmlFor="file_upload" className={styles.file_upload_label}>
-                  <input type="file" id="file_upload" className={styles.file_upload_input}
-                         onChange={(e) => uploadFiles(e.target.files)} />
-                  Upload File
-                </label>
-              </td>
-            </tr>
+              <tr>
+                <td colSpan={6}>
+                  <label htmlFor="file_upload" className={styles.file_upload_label}>
+                    <input type="file" id="file_upload" className={styles.file_upload_input} onChange={addFile} />
+                    Upload File
+                  </label>
+                </td>
+              </tr>
             </tfoot>
           </table>
         </>
