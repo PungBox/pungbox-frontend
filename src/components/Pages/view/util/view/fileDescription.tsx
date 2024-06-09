@@ -60,14 +60,14 @@ function useFileDescription() {
       files: getFileNameAndSizeFromFileObject(files),
       bucketId: DUMMY_BUCKET_ID,
     });
-    files.forEach(async (file) => {
+    for (const file of files) {
       const urls = (Object.values(uploadUrls).filter((x) => x.fileName === file.name)[0]).urls;
       const uploadResult = await uploadFile(file, urls);
       if (!uploadResult['success']) {
         console.error(`Failed to upload file: ${file}`);
       }
       newFileDescriptions.push(getNewFileDescription(file));
-    });
+    }
     setFileDescriptions(newFileDescriptions);
   }
   

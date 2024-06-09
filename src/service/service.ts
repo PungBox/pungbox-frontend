@@ -1,7 +1,4 @@
-const generateEndpoint = ({
-                            endpoint,
-                            params = {},
-                          }: {
+const generateEndpoint = ({ endpoint, params = {} }: {
   endpoint: string;
   params?: Record<string, string | number>;
 }) => {
@@ -22,10 +19,7 @@ interface GetUploadUrlsReturn {
   };
 }
 
-export const getUploadUrls = async ({
-                                      files,
-                                      bucketId,
-                                    }: {
+export const getUploadUrls = async ({ files, bucketId }: {
   files: {
     fileName: string;
     fileSize: number;
@@ -57,9 +51,7 @@ export const getDownloadUrls = async (fileIds: string[]): Promise<Record<string,
   return data;
 };
 
-export const viewBucket = async ({
-                                   bucketId,
-                                 }: {
+export const viewBucket = async ({ bucketId }: {
   bucketId: string;
 }): Promise<
   {
@@ -84,10 +76,7 @@ export const viewBucket = async ({
   return data.files;
 };
 
-export const createBucket = async ({
-                                     bucketName,
-                                     password,
-                                   }: {
+export const createBucket = async ({ bucketName, password }: {
   bucketName: string;
   password: string;
 }): Promise<{ bucketId: string }> => {
