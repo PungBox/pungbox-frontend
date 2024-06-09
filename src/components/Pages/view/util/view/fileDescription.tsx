@@ -3,12 +3,6 @@ import { FileDescription } from '../../../../../utils/interface';
 import { fileListConfig } from '../../../../../utils/config';
 import { ViewBucketResponse } from '../../../../../service/service';
 
-function getFileNameAndSizeFromFileObject(files: File[]) {
-  return files.map((file) => {
-    return { fileName: file.name, fileSize: file.size };
-  });
-}
-
 function getNewlySortedFileDescriptions(
   fileDescriptions: FileDescription[],
   sortingCriteria: string,
