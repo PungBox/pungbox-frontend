@@ -35,9 +35,7 @@ const View = () => {
     try {
       uploadFiles(location.state.files);
       location.state.files = null;
-    } catch (e) {
-      console.log('Failed initial upload');
-      console.log(JSON.stringify(e));
+    } catch {
     }
     
     //@TODO: replace DUMMY_BUCKET_ID with actual bucketId
