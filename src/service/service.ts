@@ -1,3 +1,5 @@
+import { uploadConfig } from '../utils/config';
+
 const generateEndpoint = ({ endpoint, params = {} }: {
   endpoint: string;
   params?: Record<string, string | number>;
@@ -105,8 +107,25 @@ export const deleteFiles = async (fileIds: string[]): Promise<{ success: boolean
   return data;
 };
 
-export const uploadFile = async (file: File, urls: string[]): Promise<{ success: boolean }> => {
-  return new Promise((resolve, reject) => {
-    return { success: true };
-  });
+export const uploadFile = async (file: File, urls: string[], bucketId: string, uploadId: number): Promise<Promise<{
+  success: boolean
+}>[]> => {
+  const fileChunkCount = Math.ceil(file.size / uploadConfig.FILE_CHUNK_SIZE);
+  const fileChunks = [];
+  for (let i = 0; i < fileChunkCount; i++) {
+    fileChunks.push(file.slice(i * uploadConfig.FILE_CHUNK_SIZE, Math.min(file.size + 1, (i + 1) * uploadConfig.FILE_CHUNK_SIZE)));
+  }
+  const result = [] as Promise<{ success: boolean }>[];
+  for (let i = 0; i < fileChunks.length; i++) {
+    const fileChunk = fileChunks[i];
+    const response = await fetch(urls[i], {
+      method: 'PUT',
+      headers: {
+        'Content-Type': file.type,
+      },
+      body: fileChunk,
+    });
+    result.push(response.json());
+  }
+  return result;
 };

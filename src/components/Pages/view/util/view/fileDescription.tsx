@@ -61,8 +61,10 @@ function useFileDescription() {
       bucketId: DUMMY_BUCKET_ID,
     });
     for (const file of files) {
-      const urls = (Object.values(uploadUrls).filter((x) => x.fileName === file.name)[0]).urls;
-      const uploadResult = await uploadFile(file, urls);
+      const upload = (Object.values(uploadUrls).filter((x) => x.fileName === file.name)[0]);
+      const urls = upload.urls;
+      const uploadId = upload.uploadId;
+      const uploadResult = await uploadFile(file, urls, DUMMY_BUCKET_ID, uploadId);
       if (!uploadResult['success']) {
         console.error(`Failed to upload file: ${file}`);
       }
