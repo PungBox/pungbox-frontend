@@ -43,20 +43,19 @@ export const getDownloadUrls = async (fileIds: string[]): Promise<Record<string,
   return data;
 };
 
+interface ViewBucketResponse {
+  id: string;
+  fileName: string;
+  fileSize: number;
+  createdAt: string;
+  merged: boolean;
+  deleted: boolean;
+  type: string;
+}
+
 export const viewBucket = async ({ bucketId }: {
   bucketId: string;
-}): Promise<
-  {
-    files: {
-      id: string;
-      fileName: string;
-      fileSize: number;
-      createdAt: string;
-      merged: boolean;
-      deleted: boolean;
-    }[];
-  }
-> => {
+}): Promise<{ files: ViewBucketResponse[] }> => {
   const endpoint = generateEndpoint({ endpoint: '/bucket/view', params: { bucketId } });
   const response = await fetch(endpoint, {
     method: 'GET',
@@ -65,8 +64,7 @@ export const viewBucket = async ({ bucketId }: {
     },
   });
   const data = await response.json();
-  const result = JSON.parse(data.body).files;
-  return result;
+  return JSON.parse(data.body);
 };
 
 export const createBucket = async ({ bucketName, password }: {
@@ -97,3 +95,5 @@ export const deleteFiles = async (fileIds: string[]): Promise<{ success: boolean
   const data = await response.json();
   return data;
 };
+
+export type { ViewBucketResponse };
