@@ -1,23 +1,17 @@
-const generateEndpoint = ({
-  endpoint,
-  params = {},
-}: {
+const generateEndpoint = ({ endpoint, params = {} }: {
   endpoint: string;
   params?: Record<string, string | number>;
 }) => {
   return `${import.meta.env.VITE_PROD_ENDPOINT}${endpoint}${
     params
       ? `?${Object.keys(params)
-          .map((key) => `${key}=${params[key]}`)
-          .join('&')}`
+        .map((key) => `${key}=${params[key]}`)
+        .join('&')}`
       : ''
   }`;
 };
 
-export const getUploadUrls = async ({
-  files,
-  bucketId,
-}: {
+export const getUploadUrls = async ({ files, bucketId }: {
   files: {
     fileName: string;
     fileSize: number;
@@ -49,9 +43,7 @@ export const getDownloadUrls = async (fileIds: string[]): Promise<Record<string,
   return data;
 };
 
-export const viewBucket = async ({
-  bucketId,
-}: {
+export const viewBucket = async ({ bucketId }: {
   bucketId: string;
 }): Promise<
   {
@@ -73,17 +65,15 @@ export const viewBucket = async ({
     },
   });
   const data = await response.json();
-  return data.files;
+  const result = JSON.parse(data.body).files;
+  return result;
 };
 
-export const createBucket = async ({
-  bucketName,
-  password,
-}: {
+export const createBucket = async ({ bucketName, password }: {
   bucketName: string;
   password: string;
 }): Promise<{ bucketId: string }> => {
-  const endpoint = generateEndpoint({ endpoint: '/bucket/create' })
+  const endpoint = generateEndpoint({ endpoint: '/bucket/create' });
   const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
