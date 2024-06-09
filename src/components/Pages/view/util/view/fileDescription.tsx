@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 import { FileDescription } from '../../../../../utils/interface';
 import { fileListConfig } from '../../../../../utils/config';
 import { ViewBucketResponse } from '../../../../../service/service';
@@ -64,12 +64,14 @@ function useFileDescription() {
     } as FileDescription;
   }
   
-  function addFile(e: ChangeEvent<HTMLInputElement>) {
-    if (e.target.files === null) return;
-    const file = e.target.files[0];
+  function uploadFiles(files: FileList | File[] | null) {
+    if (files === null) return;
+    if (files instanceof FileList) files = [...files];
     
     const newFileDescriptions = fileDescriptions.slice();
-    newFileDescriptions.push(fileDescriptionFromFileObject(file));
+    for (const file of files) {
+      newFileDescriptions.push(fileDescriptionFromFileObject(file));
+    }
     setFileDescriptions(newFileDescriptions);
   }
   
@@ -86,7 +88,7 @@ function useFileDescription() {
     isFileDescriptionsLoaded,
     displayFileDescriptions,
     fileDescriptionFromFetchResult,
-    addFile,
+    uploadFiles,
     deleteFiles,
   };
 }
