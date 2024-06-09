@@ -78,7 +78,7 @@ function useFileDescription() {
           uploadId = value.uploadId;
         }
       }
-      uploadFile(files[i], uploadUrls, DUMMY_BUCKET_ID, uploadId);
+      await uploadFile(files[i], uploadUrls, DUMMY_BUCKET_ID, uploadId);
     }
     
     // const newFileDescriptions = fileDescriptions.slice();
