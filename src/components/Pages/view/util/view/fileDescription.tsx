@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { FileDescription } from '../../../../../utils/interface';
 import { fileListConfig } from '../../../../../utils/config';
-import { ViewBucketResponse } from '../../../../../service/service';
+import { getUploadUrls, GetUploadUrlsResponse, uploadFile, ViewBucketResponse } from '../../../../../service/service';
+
+const DUMMY_BUCKET_ID = '001bc76f-436f-4a7e-a1a0-e1ed389e9262';
 
 function getNewlySortedFileDescriptions(
   fileDescriptions: FileDescription[],
@@ -58,15 +60,32 @@ function useFileDescription() {
     } as FileDescription;
   }
   
-  function uploadFiles(files: FileList | File[] | null) {
+  async function uploadFiles(files: FileList | File[] | null) {
     if (files === null) return;
     if (files instanceof FileList) files = [...files];
+    const fileNamesAndSizes = files.map((file: File) => {
+      const { name, size } = file;
+      return { fileName: name, fileSize: size };
+    });
+    const urls: GetUploadUrlsResponse = await getUploadUrls({ files: fileNamesAndSizes, bucketId: DUMMY_BUCKET_ID });
     
-    const newFileDescriptions = fileDescriptions.slice();
-    for (const file of files) {
-      newFileDescriptions.push(fileDescriptionFromFileObject(file));
+    for (let i = 0; i < files.length; i++) {
+      let fileId, uploadUrls, uploadId;
+      for (const [key, value] of Object.entries(urls)) {
+        if (value.fileName === files[i].name) {
+          fileId = key;
+          uploadUrls = value.urls;
+          uploadId = value.uploadId;
+        }
+      }
+      uploadFile(files[i], uploadUrls, DUMMY_BUCKET_ID, uploadId);
     }
-    setFileDescriptions(newFileDescriptions);
+    
+    // const newFileDescriptions = fileDescriptions.slice();
+    // for (const file of files) {
+    //   newFileDescriptions.push(fileDescriptionFromFileObject(file));
+    // }
+    // setFileDescriptions(newFileDescriptions);
   }
   
   function deleteFiles(fileIds: string[]) {

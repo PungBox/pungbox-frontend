@@ -1,17 +1,16 @@
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ResultContainer from './ResultContainer';
 import styles from '/src/components/Module/Register.module.css';
 
-const RegisterResult = () => {
+const RegisterResult = ({ files }: { files: File[] }) => {
   const url = 'https://www.pungbox.com/box/135790';
   const accessCode = '135790';
   const expirationDate = new Date().toLocaleString();
-  const location = useLocation();
   const navigate = useNavigate();
   
   function navigateToViewPage() {
-    navigate('/view', { state: { files: location.state.files } });
+    navigate('/view', { state: { files } });
   }
   
   return (

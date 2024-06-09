@@ -13,7 +13,7 @@ const generateEndpoint = ({ endpoint, params = {} }: {
   }`;
 };
 
-interface GetUploadUrlsReturn {
+interface GetUploadUrlsResponse {
   id: {
     fileName: string;
     urls: string[];
@@ -27,7 +27,7 @@ export const getUploadUrls = async ({ files, bucketId }: {
     fileSize: number;
   }[];
   bucketId: string;
-}): Promise<GetUploadUrlsReturn> => {
+}): Promise<GetUploadUrlsResponse> => {
   const endpoint = generateEndpoint({ endpoint: '/file/get-upload-url', params: { bucketId } });
   const response = await fetch(endpoint, {
     method: 'POST',
@@ -129,4 +129,4 @@ export const uploadFile = async (file: File, urls: string[], bucketId: string, u
   return result;
 };
 
-export type { ViewBucketResponse };
+export type { ViewBucketResponse, GetUploadUrlsResponse };

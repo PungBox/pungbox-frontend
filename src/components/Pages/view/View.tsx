@@ -35,7 +35,9 @@ const View = () => {
     try {
       uploadFiles(location.state.files);
       location.state.files = null;
-    } catch {
+    } catch (e) {
+      console.log('Failed initial upload');
+      console.log(JSON.stringify(e));
     }
     
     //@TODO: replace DUMMY_BUCKET_ID with actual bucketId
@@ -120,7 +122,7 @@ const View = () => {
               <td colSpan={6}>
                 <label htmlFor="file_upload" className={styles.file_upload_label}>
                   <input type="file" id="file_upload" className={styles.file_upload_input}
-                         onChange={(e) => uploadFiles(e.target.files)} />
+                         onChange={async (e) => await uploadFiles(e.target.files)} />
                   Upload File
                 </label>
               </td>
