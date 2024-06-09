@@ -1,29 +1,37 @@
 const generateEndpoint = ({
-  endpoint,
-  params = {},
-}: {
+                            endpoint,
+                            params = {},
+                          }: {
   endpoint: string;
   params?: Record<string, string | number>;
 }) => {
   return `${import.meta.env.VITE_PROD_ENDPOINT}${endpoint}${
     params
       ? `?${Object.keys(params)
-          .map((key) => `${key}=${params[key]}`)
-          .join('&')}`
+        .map((key) => `${key}=${params[key]}`)
+        .join('&')}`
       : ''
   }`;
 };
 
+interface GetUploadUrlsReturn {
+  id: {
+    fileName: string;
+    urls: string[];
+    uploadId: number;
+  };
+}
+
 export const getUploadUrls = async ({
-  files,
-  bucketId,
-}: {
+                                      files,
+                                      bucketId,
+                                    }: {
   files: {
     fileName: string;
     fileSize: number;
   }[];
   bucketId: string;
-}): Promise<Record<string, string>> => {
+}): Promise<GetUploadUrlsReturn> => {
   const endpoint = generateEndpoint({ endpoint: '/file/get-upload-url', params: { bucketId } });
   const response = await fetch(endpoint, {
     method: 'POST',
@@ -50,8 +58,8 @@ export const getDownloadUrls = async (fileIds: string[]): Promise<Record<string,
 };
 
 export const viewBucket = async ({
-  bucketId,
-}: {
+                                   bucketId,
+                                 }: {
   bucketId: string;
 }): Promise<
   {
@@ -77,13 +85,13 @@ export const viewBucket = async ({
 };
 
 export const createBucket = async ({
-  bucketName,
-  password,
-}: {
+                                     bucketName,
+                                     password,
+                                   }: {
   bucketName: string;
   password: string;
 }): Promise<{ bucketId: string }> => {
-  const endpoint = generateEndpoint({ endpoint: '/bucket/create' })
+  const endpoint = generateEndpoint({ endpoint: '/bucket/create' });
   const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
@@ -106,4 +114,10 @@ export const deleteFiles = async (fileIds: string[]): Promise<{ success: boolean
   });
   const data = await response.json();
   return data;
+};
+
+export const uploadFile = async (file: File, urls: string[]): Promise<{ success: boolean }> => {
+  return new Promise((resolve, reject) => {
+    return { success: true };
+  });
 };

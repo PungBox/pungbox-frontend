@@ -1,6 +1,15 @@
 import { useState } from 'react';
 import { FileDescription } from '../../../../../utils/interface';
 import { fileListConfig } from '../../../../../utils/config';
+import { getUploadUrls, uploadFile } from '../../../../../service/service';
+
+const DUMMY_BUCKET_ID = '001bc76f-436f-4a7e-a1a0-e1ed389e9262';
+
+function getFileNameAndSizeFromFileObject(files: File[]) {
+  return files.map((file) => {
+    return { fileName: file.name, fileSize: file.size };
+  });
+}
 
 function getNewlySortedFileDescriptions(
   fileDescriptions: FileDescription[],
@@ -43,12 +52,22 @@ function useFileDescription() {
     };
   }
   
-  function uploadFiles(files: FileList | File[] | null) {
+  async function uploadFiles(files: FileList | File[] | null) {
     if (files === null) return;
+    if (files instanceof FileList) files = [...files];
     const newFileDescriptions = fileDescriptions.slice();
-    for (const file of files) {
+    const uploadUrls = await getUploadUrls({
+      files: getFileNameAndSizeFromFileObject(files),
+      bucketId: DUMMY_BUCKET_ID,
+    });
+    files.forEach(async (file) => {
+      const urls = (Object.values(uploadUrls).filter((x) => x.fileName === file.name)[0]).urls;
+      const uploadResult = await uploadFile(file, urls);
+      if (!uploadResult['success']) {
+        console.error(`Failed to upload file: ${file}`);
+      }
       newFileDescriptions.push(getNewFileDescription(file));
-    }
+    });
     setFileDescriptions(newFileDescriptions);
   }
   
