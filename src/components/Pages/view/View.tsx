@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { fetchFileDescriptions } from '../../../utils/dummyData';
 import { FileListTableHeader } from './component/FileListTableHeader';
 import { FileListTableBody } from './component/FileListTableBody';
@@ -24,13 +24,16 @@ const View = () => {
     setFileDescriptions,
     isFileDescriptionsLoaded,
     displayFileDescriptions,
-    addFile,
+    uploadFiles,
     deleteFiles,
   } = useFileDescription();
   const { selected, getSelectedFileIds, toggleSelectFile } = useSelected(fileDescriptions);
   const location = useLocation();
   
   useEffect(() => {
+    uploadFiles(location.state.files);
+    location.state.files = null;
+    
     //@TODO: replace DUMMY_BUCKET_ID with actual bucketId
     viewBucket({ bucketId: DUMMY_BUCKET_ID }).then((res) => {
       const { files } = res;
@@ -52,7 +55,6 @@ const View = () => {
   };
   
   const downloadSelectedFiles = useCallback(async () => {
-    
     setIsLoading(true);
     const selectedFileIds = getSelectedFileIds();
     const downloadUrls = await getDownloadUrls(selectedFileIds);
@@ -61,15 +63,6 @@ const View = () => {
     
     setIsLoading(false);
   }, []);
-  
-  
-  const uploadInitialFiles = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = location.state.files;
-    
-    // 파일 정보 파싱
-    
-    // 파일 업로드 수행
-  };
   
   // TODO: storage 인증키 유효성 검사 함수 구현 (storage가 만료되었는지)
   const isStorageNumberValid = storageNumber > 0;
@@ -122,7 +115,8 @@ const View = () => {
             <tr>
               <td colSpan={6}>
                 <label htmlFor="file_upload" className={styles.file_upload_label}>
-                  <input type="file" id="file_upload" className={styles.file_upload_input} onChange={addFile} />
+                  <input type="file" id="file_upload" className={styles.file_upload_input}
+                         onChange={(e) => uploadFiles(e.target.files)} />
                   Upload File
                 </label>
               </td>
