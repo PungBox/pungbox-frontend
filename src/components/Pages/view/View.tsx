@@ -32,7 +32,6 @@ const View = () => {
   useEffect(() => {
     //@TODO: replace DUMMY_BUCKET_ID with actual bucketId
     viewBucket({ bucketId: DUMMY_BUCKET_ID }).then((res) => {
-      console.log(res);
       const { files } = res;
       displayFileDescriptions(files.map((file) => fileDescriptionFromFetchResult(file)));
       resetToDefaultSortingOrder(fileListConfig.defaultSortingCriteria);
