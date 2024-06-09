@@ -34,10 +34,9 @@ export const getUploadUrls = async ({ files, bucketId }: {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ files }),
+    body: JSON.stringify(JSON.stringify({ files })),
   });
-  const data = await response.json();
-  return data;
+  return await response.json();
 };
 
 export const getDownloadUrls = async (fileIds: string[]): Promise<Record<string, string>> => {
@@ -49,8 +48,7 @@ export const getDownloadUrls = async (fileIds: string[]): Promise<Record<string,
     },
     body: JSON.stringify({ fileIds }),
   });
-  const data = await response.json();
-  return data;
+  return await response.json();
 };
 
 interface ViewBucketResponse {
@@ -89,8 +87,7 @@ export const createBucket = async ({ bucketName, password }: {
     },
     body: JSON.stringify({ bucketName, password }),
   });
-  const data = await response.json();
-  return data;
+  return await response.json();
 };
 
 export const deleteFiles = async (fileIds: string[]): Promise<{ success: boolean }> => {
@@ -102,8 +99,7 @@ export const deleteFiles = async (fileIds: string[]): Promise<{ success: boolean
     },
     body: JSON.stringify({ fileIds }),
   });
-  const data = await response.json();
-  return data;
+  return await response.json();
 };
 
 export const uploadFile = async (file: File, urls: string[], bucketId: string, uploadId: number): Promise<Promise<{
