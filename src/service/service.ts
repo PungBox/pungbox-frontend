@@ -20,10 +20,16 @@ export const getUploadUrls = async ({
 }: {
   files: {
     fileName: string;
-    fileSize: number;
+    size: number;
   }[];
   bucketId: string;
-}): Promise<Record<string, string>> => {
+}): Promise<
+  {
+    fileName: string;
+    urls: string[];
+    uploadId: number;
+  }[]
+> => {
   const endpoint = generateEndpoint({ endpoint: '/file/get-upload-url', params: { bucketId } });
   const response = await fetch(endpoint, {
     method: 'POST',
@@ -49,22 +55,37 @@ export const getDownloadUrls = async (fileIds: string[]): Promise<Record<string,
   return data;
 };
 
+export const getBucketInfo = async (): Promise<{
+  bucketId: string;
+  bucketName: string;
+  expired: boolean;
+  expiration: string;
+}> => {
+  const endpoint = generateEndpoint({ endpoint: '/bucket/get-info' });
+  const response = await fetch(endpoint, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  const data = await response.json();
+  return data;
+};
+
 export const viewBucket = async ({
   bucketId,
 }: {
   bucketId: string;
-}): Promise<
-  {
-    files: {
-      id: string;
-      fileName: string;
-      fileSize: number;
-      createdAt: string;
-      merged: boolean;
-      deleted: boolean;
-    }[];
-  }
-> => {
+}): Promise<{
+  files: {
+    id: string;
+    fileName: string;
+    fileSize: number;
+    createdAt: string;
+    merged: boolean;
+    deleted: boolean;
+  }[];
+}> => {
   const endpoint = generateEndpoint({ endpoint: '/bucket/view', params: { bucketId } });
   const response = await fetch(endpoint, {
     method: 'GET',
@@ -73,7 +94,7 @@ export const viewBucket = async ({
     },
   });
   const data = await response.json();
-  return data.files;
+  return data;
 };
 
 export const createBucket = async ({
@@ -83,7 +104,7 @@ export const createBucket = async ({
   bucketName: string;
   password: string;
 }): Promise<{ bucketId: string }> => {
-  const endpoint = generateEndpoint({ endpoint: '/bucket/create' })
+  const endpoint = generateEndpoint({ endpoint: '/bucket/create' });
   const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
@@ -95,8 +116,8 @@ export const createBucket = async ({
   return data;
 };
 
-export const deleteFiles = async (fileIds: string[]): Promise<{ success: boolean }> => {
-  const endpoint = generateEndpoint({ endpoint: '/file/delete' });
+export const deleteFiles = async (bucketId: string, fileIds: string[]): Promise<{ success: boolean }> => {
+  const endpoint = generateEndpoint({ endpoint: '/file/delete', params: { bucketId } });
   const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
