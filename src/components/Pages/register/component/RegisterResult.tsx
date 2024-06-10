@@ -1,25 +1,25 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ResultContainer from './ResultContainer';
 import styles from '/src/components/Module/Register.module.css';
 
-const RegisterResult = ({ files }: { files: File[] }) => {
-  const url = 'https://www.pungbox.com/box/135790';
-  const accessCode = '135790';
+interface RegisterResultProps {
+  accessCode: string;
+}
+
+const RegisterResult = ({ accessCode }: RegisterResultProps) => {
+  const url = `https://www.pungbox.com/box/${accessCode}`;
   const expirationDate = new Date().toLocaleString();
-  const navigate = useNavigate();
-  
-  function navigateToViewPage() {
-    navigate('/view', { state: { files } });
-  }
-  
+
   return (
     <div className={styles.registerResultContainer}>
       <ResultContainer title="URL for Storage:" content={url} copyable />
       <ResultContainer title="Access Code for Storage:" content={accessCode} copyable />
       <ResultContainer title="Expiration Date:" content={expirationDate} />
-      
-      <button className={styles.gotobutton} onClick={navigateToViewPage}>Go to Storage</button>
+
+      <Link to={`${url}/view`}>
+        <button className={styles.gotobutton}>Go to Storage</button>
+      </Link>
     </div>
   );
 };

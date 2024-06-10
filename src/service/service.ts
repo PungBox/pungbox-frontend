@@ -59,23 +59,6 @@ export const getDownloadUrls = async (fileIds: string[]): Promise<Record<string,
   return JSON.parse(data.body);
 };
 
-export const getBucketInfo = async (): Promise<{
-  bucketId: string;
-  bucketName: string;
-  expired: boolean;
-  expiration: string;
-}> => {
-  const endpoint = generateEndpoint({ endpoint: '/bucket/get-info' });
-  const response = await fetch(endpoint, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  const data = await response.json();
-  return JSON.parse(data.body);
-};
-
 interface ViewBucketResponse {
   id: string;
   fileName: string;
@@ -98,20 +81,18 @@ export const viewBucket = async ({ bucketId }: { bucketId: string }): Promise<{ 
   return JSON.parse(data.body);
 };
 
-export const createBucket = async ({
-  bucketName,
-  password,
-}: {
-  bucketName: string;
-  password: string;
-}): Promise<{ bucketId: string }> => {
+interface CreateBucketResponse {
+  id: string;
+}
+
+export const createBucket = async (password: string): Promise<CreateBucketResponse> => {
   const endpoint = generateEndpoint({ endpoint: '/bucket/create' });
   const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ bucketName, password }),
+    body: JSON.stringify({ password }),
   });
   const data = await response.json();
   return JSON.parse(data.body);

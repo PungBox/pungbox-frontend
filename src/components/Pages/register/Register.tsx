@@ -5,18 +5,13 @@ import { useLocation } from 'react-router-dom';
 
 const Register = () => {
   const [isRegisterDone, setIsRegisterDone] = useState(false);
-  const location = useLocation();
-  
-  return isRegisterDone ? <RegisterResult files={location.state.files} /> :
-    <RegisterForm setIsRegisterDone={setIsRegisterDone} />;
-  
-  // return isLoading ? (
-  //   <div>Loading...</div> // 로딩 중에 보여줄 화면
-  // ) : isRegisterDone ? (
-  //   <RegisterResult />
-  // ) : (
-  //   <RegisterForm setIsRegisterDone={setIsRegisterDone} handleUpload={handleUpload} />
-  // );
+  const [accessCode, setAccessCode] = useState('000000');
+
+  return isRegisterDone ? (
+    <RegisterResult accessCode={accessCode} />
+  ) : (
+    <RegisterForm setIsRegisterDone={setIsRegisterDone} setAccessCode={setAccessCode} />
+  );
 };
 
 export default Register;
