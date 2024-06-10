@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import styles from '/src/components/Module/Register.module.css';
 import { HTMLFormElement, IHTMLFormControlsCollection } from 'happy-dom';
 import { createBucket } from '../../../../service/service';
@@ -36,10 +35,6 @@ const RegisterForm = ({ setIsRegisterDone, setAccessCode }: RegisterResultProps)
     setIsRegisterDone(true);
     setIsLoading(false);
   }
-  
-  const location = useLocation();
-  const { files } = location.state;
-  //TO DO:: Home에서 state로 받아온 files를 사용하여 register 완료후 Get Storage 버튼 누르면 업로드 진행
   
   return (
     <form className={styles.form} method="POST" onSubmit={async (e) => await submit(e)}>
