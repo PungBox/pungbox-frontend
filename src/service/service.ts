@@ -77,9 +77,7 @@ export const viewBucket = async ({
 };
 
 interface CreateBucketResponse {
-  statusCode: number;
-  accessToken: string;
-  refreshToken: string;
+  id: string;
 }
 
 export const createBucket = async (password: string): Promise<CreateBucketResponse> => {
