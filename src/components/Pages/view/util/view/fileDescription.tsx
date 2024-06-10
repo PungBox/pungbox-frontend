@@ -1,4 +1,3 @@
-import { ChangeEvent, useState } from 'react';
 import { FileDescription } from '../../../../../utils/interface';
 import { fileListConfig } from '../../../../../utils/config';
 
@@ -22,51 +21,4 @@ function getNewlySortedFileDescriptions(
   return result;
 }
 
-function useFileDescription() {
-  const [fileDescriptions, setFileDescriptions] = useState([] as FileDescription[]);
-  const [isFileDescriptionsLoaded, setIsFileDescriptionsLoaded] = useState(false);
-
-  function displayFileDescriptions(fileDescriptions: FileDescription[]) {
-    setFileDescriptions(fileDescriptions);
-    setIsFileDescriptionsLoaded(true);
-  }
-
-  function getNewFileDescription(file: File) {
-    return {
-      id: '',
-      fileName: file.name,
-      fileSize: Math.floor(file.size / 1000),
-      merged: false,
-      deleted: false,
-      createdAt: new Date().toISOString(),
-      modifiedAt: new Date().toISOString(),
-    }
-  }
-
-  function addFile(e: ChangeEvent<HTMLInputElement>) {
-    if (e.target.files === null) return;
-    const file = e.target.files[0];
-
-    const newFileDescriptions = fileDescriptions.slice();
-    newFileDescriptions.push(getNewFileDescription(file));
-    setFileDescriptions(newFileDescriptions);
-  }
-
-  function deleteFiles(fileIds: string[]) {
-    const newFileDescriptions = fileDescriptions.slice().filter((file) => {
-      return !fileIds.includes(file.id);
-    });
-    setFileDescriptions(newFileDescriptions);
-  }
-
-  return {
-    fileDescriptions,
-    setFileDescriptions,
-    isFileDescriptionsLoaded,
-    displayFileDescriptions,
-    addFile,
-    deleteFiles,
-  };
-}
-
-export { useFileDescription, getNewlySortedFileDescriptions };
+export { getNewlySortedFileDescriptions };
