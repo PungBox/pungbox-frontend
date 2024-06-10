@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import styles from '/src/components/Module/Register.module.css';
 import { HTMLFormElement, IHTMLFormControlsCollection } from 'happy-dom';
@@ -19,8 +19,11 @@ interface RegisterFormElement extends HTMLFormElement {
 }
 
 const RegisterForm = ({ setIsRegisterDone, setAccessCode }: RegisterResultProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+  
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    setIsLoading(true);
     // TODO: expiration period은 사용되고 있지 않음. 추후 /bucket/create endpoint에 넘길 수 있어야 함
     const formElements = (e.currentTarget as unknown as RegisterFormElement).elements;
     const createBucketResponse = await createBucket(formElements.password.value);
@@ -31,6 +34,7 @@ const RegisterForm = ({ setIsRegisterDone, setAccessCode }: RegisterResultProps)
     const bucketId = createBucketResponse.id;
     setAccessCode(bucketId);
     setIsRegisterDone(true);
+    setIsLoading(false);
   }
   
   const location = useLocation();
@@ -57,7 +61,7 @@ const RegisterForm = ({ setIsRegisterDone, setAccessCode }: RegisterResultProps)
       <br />
       <br />
       
-      <input type="submit" value="Get Storage" />
+      <input type="submit" value={isLoading ? 'Creating Storage...' : 'Get Storage'} disabled={isLoading} />
     </form>
   );
 };
