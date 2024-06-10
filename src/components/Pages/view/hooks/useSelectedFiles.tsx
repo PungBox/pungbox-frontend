@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { FileDescription } from '../../../../utils/interface';
+import { ViewBucketResponse } from 'service/service';
 
-function useSelectedFiles(fileDescriptions: FileDescription[] = []) {
+function useSelectedFiles(fileDescriptions: ViewBucketResponse[] = []) {
   const [selected, setSelected] = useState(
     fileDescriptions.reduce((acc, file) => ({ ...acc, [file.id]: false }), {}) as { [key: string]: boolean },
   );

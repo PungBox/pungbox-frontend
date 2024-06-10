@@ -6,6 +6,7 @@ import {
   getIsDefaultSortingOrderForTheColumnAscending,
   isDefaultSortingOrderAscending,
 } from '../util/view/sortingOrder';
+import { ViewBucketResponse } from 'service/service';
 
 function useSortingOrder() {
   const [sortingCriteria, setSortingCriteria] = useState(fileListConfig.defaultSortingCriteria);
@@ -35,8 +36,8 @@ function useSortingOrder() {
 
   const reSortFileDescriptions = useCallback(
     (
-      fileDescriptions: FileDescription[],
-      setFileDescriptions: React.Dispatch<React.SetStateAction<FileDescription[]>>,
+      fileDescriptions: ViewBucketResponse[],
+      setFileDescriptions: React.Dispatch<React.SetStateAction<ViewBucketResponse[]>>,
     ) => {
       const newFileDescriptions = getNewlySortedFileDescriptions(fileDescriptions, sortingCriteria, isSortingAscending);
       setFileDescriptions(newFileDescriptions);

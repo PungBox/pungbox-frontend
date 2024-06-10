@@ -1,4 +1,5 @@
 import { uploadConfig } from '../utils/config';
+import { isEmpty } from 'lodash';
 
 const generateEndpoint = ({
   endpoint,
@@ -8,7 +9,7 @@ const generateEndpoint = ({
   params?: Record<string, string | number>;
 }) => {
   return `${import.meta.env.VITE_PROD_ENDPOINT}${endpoint}${
-    params
+    !isEmpty(params)
       ? `?${Object.keys(params)
           .map((key) => `${key}=${params[key]}`)
           .join('&')}`
@@ -17,11 +18,10 @@ const generateEndpoint = ({
 };
 
 interface GetUploadUrlsResponse {
-  id: {
-    fileName: string;
-    urls: string[];
-    uploadId: number;
-  };
+  id: string;
+  fileName: string;
+  urls: string[];
+  uploadId: number;
 }
 
 export const getUploadUrls = async ({
@@ -33,7 +33,7 @@ export const getUploadUrls = async ({
     size: number;
   }[];
   bucketId: string;
-}): Promise<GetUploadUrlsResponse> => {
+}): Promise<GetUploadUrlsResponse[]> => {
   const endpoint = generateEndpoint({ endpoint: '/file/get-upload-url', params: { bucketId } });
   const response = await fetch(endpoint, {
     method: 'POST',

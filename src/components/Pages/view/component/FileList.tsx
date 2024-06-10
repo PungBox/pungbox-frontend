@@ -8,7 +8,7 @@ import {
   getUploadedDatetimeExpression,
 } from '../util/fileList';
 
-export const FileList = ({ fileDescriptions, selected, toggleSelectFile }: FileListProps) => {
+export const FileList = ({ fileDescriptions = [], selected, toggleSelectFile }: FileListProps) => {
   return fileDescriptions.map((file) => {
     const splitted = file.fileName.split('.');
     const extension = splitted[splitted.length - 1];
