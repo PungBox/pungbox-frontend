@@ -55,5 +55,9 @@ const authConfig = {
   DIGIT_LENGTH: 6,
 };
 
+const uploadConfig = {
+  FILE_CHUNK_SIZE: 512, // in bytes
+};
+
 export type { HeaderConfig };
-export { fileListConfig, authConfig };
+export { fileListConfig, authConfig, uploadConfig };

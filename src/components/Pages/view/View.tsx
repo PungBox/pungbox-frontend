@@ -1,74 +1,45 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { fetchFileDescriptions } from '../../../utils/dummyData';
+import { useEffect, useMemo } from 'react';
 import { FileListTableHeader } from './component/FileListTableHeader';
 import { FileListTableBody } from './component/FileListTableBody';
-import { fileListConfig } from '../../../utils/config';
-import { useSortingOrder } from './util/view/sortingOrder';
-import { useFileDescription } from './util/view/fileDescription';
-import { useSelected } from './util/view/selected';
-import { downloadFiles } from './util/view/view';
-import Expired from './component/Expired'; 
+import Expired from './component/Expired';
 import styles from '/src/components/Module/View.module.css';
-import { getDownloadUrls, viewBucket } from 'service/service';
-
-const DUMMY_BUCKET_ID = '001bc76f-436f-4a7e-a1a0-e1ed389e9262';
+import { useBucktInfo, useDownloadFiles, useFileDescription, useSelectedFiles, useSortingOrder } from './hooks';
 
 const View = () => {
-  const storageNumber = 192837;
-  const expirationDate = `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`;
-  const [isLoading, setIsLoading] = useState(false);
   const { sortingCriteria, isSortingAscending, resetToDefaultSortingOrder, handleSorting, reSortFileDescriptions } =
     useSortingOrder();
+  const { isLoading: isLoadingBucketInfo, bucketInfo, timeToExpire } = useBucktInfo();
   const {
+    fetchFiles,
+    isLoading: isLoadingFiles,
     fileDescriptions,
     setFileDescriptions,
-    isFileDescriptionsLoaded,
-    displayFileDescriptions,
-    addFile,
+    uploadFiles,
     deleteFiles,
-  } = useFileDescription();
-  const { selected, getSelectedFileIds, toggleSelectFile } = useSelected(fileDescriptions);
+  } = useFileDescription(bucketInfo?.bucketId);
 
-  useEffect(() => {
-    //@TODO: replace DUMMY_BUCKET_ID with actual bucketId
-    viewBucket({ bucketId: DUMMY_BUCKET_ID }).then((res) => {
-      const {files } = res;
-      displayFileDescriptions(files);
-      resetToDefaultSortingOrder(fileListConfig.defaultSortingCriteria);
-    });
-  }, []);
+  const isLoading = useMemo(() => isLoadingBucketInfo || isLoadingFiles, [isLoadingBucketInfo, isLoadingFiles]);
+
+  const { selected, getSelectedFileIds, toggleSelectFile } = useSelectedFiles(fileDescriptions);
+
+  const { downloadFiles, isDownloading } = useDownloadFiles();
 
   useEffect(() => {
     reSortFileDescriptions(fileDescriptions, setFileDescriptions);
   }, [reSortFileDescriptions]);
 
-  const handleRefresh = () => {
-    setIsLoading(true);
-    fetchFileDescriptions().then((fileDescriptions) => {
-      displayFileDescriptions(fileDescriptions);
-      setIsLoading(false);
-    });
-  };
-
-  const downloadSelectedFiles = useCallback(async ()=> {
-    
-    setIsLoading(true);
-    const selectedFileIds = getSelectedFileIds()
-    const downloadUrls = await getDownloadUrls(selectedFileIds)
-
-    Object.values(downloadUrls).forEach((url) => window.open(url));
-    
-    setIsLoading(false);
-  }, [])
-
   // TODO: storage 인증키 유효성 검사 함수 구현 (storage가 만료되었는지)
-  const isStorageNumberValid = storageNumber > 0;
+  const isStorageNumberValid = !bucketInfo.expired;
 
   return (
     <div className={styles.view_panel}>
       <div className={styles.view_panel_header}>
-        <p className={styles.storage_number}>Storage No. {storageNumber}</p>
-        <p className={styles.expiration_date}>expiration date: {expirationDate}</p>
+        <p className={styles.storage_number}>Storage No. {bucketInfo?.bucketId}</p>
+        <p className={styles.expiration_date}>expiration date: {bucketInfo.expiration}</p>
+
+        <p className={styles.expiration_date}>
+          {timeToExpire.days} Days {timeToExpire.hours}h:{timeToExpire.minutes}m: {timeToExpire.seconds}s to expire
+        </p>
       </div>
       {!isStorageNumberValid ? (
         <Expired />
@@ -77,15 +48,19 @@ const View = () => {
           <div className={styles.button_container}>
             <button
               className={styles.download_button}
-              onClick={downloadSelectedFiles}
+              onClick={() => downloadFiles(getSelectedFileIds())}
               disabled={isLoading}
             >
               <span className="material-symbols-outlined">Download</span>
             </button>
-            <button className={styles.delete_button} onClick={() => deleteFiles(getSelectedFileIds())} disabled={isLoading}>
+            <button
+              className={styles.delete_button}
+              onClick={() => deleteFiles(getSelectedFileIds())}
+              disabled={isLoading}
+            >
               <span className="material-symbols-outlined">Delete</span>
             </button>
-            <button className={styles.refresh_button} onClick={handleRefresh} disabled={isLoading}>
+            <button className={styles.refresh_button} onClick={fetchFiles} disabled={isLoading}>
               <span className="material-symbols-outlined">
                 {isLoading ? <div className={styles.loading_animation}></div> : 'Refresh'}
               </span>
@@ -102,7 +77,7 @@ const View = () => {
             <tbody>
               <FileListTableBody
                 fileDescriptions={fileDescriptions}
-                isFileDescriptionsLoaded={isFileDescriptionsLoaded}
+                isLoading={isLoading}
                 selected={selected}
                 toggleSelectFile={toggleSelectFile}
               />
@@ -111,7 +86,12 @@ const View = () => {
               <tr>
                 <td colSpan={6}>
                   <label htmlFor="file_upload" className={styles.file_upload_label}>
-                    <input type="file" id="file_upload" className={styles.file_upload_input} onChange={addFile} />
+                    <input
+                      type="file"
+                      id="file_upload"
+                      className={styles.file_upload_input}
+                      onChange={async (e) => await uploadFiles(e.target.files)}
+                    />
                     Upload File
                   </label>
                 </td>

@@ -1,8 +1,9 @@
 import React from 'react';
 import { FileDescription } from '../../../../utils/interface';
+import { ViewBucketResponse } from 'service/service';
 
 interface FileListProps {
-  fileDescriptions: FileDescription[];
+  fileDescriptions: ViewBucketResponse[];
   selected: { [key: string]: boolean };
   toggleSelectFile: (fileId: string) => void;
 }
@@ -94,16 +95,11 @@ function getUploadedDatetimeExpression(created: string) {
   } catch (RangeError) {
     return null;
   }
-  
+
   let dateExpression = getDateExpression(now, datetime);
   const timeExpression = `${datetime.toLocaleTimeString()}`;
   return `${dateExpression} ${timeExpression}`;
 }
 
 export type { FileListProps };
-export {
-  getIconByFileExtension,
-  getFileNameExpression,
-  getFileSizeExpression,
-  getUploadedDatetimeExpression,
-};
+export { getIconByFileExtension, getFileNameExpression, getFileSizeExpression, getUploadedDatetimeExpression };

@@ -1,39 +1,49 @@
+import { uploadConfig } from '../utils/config';
+import { isEmpty } from 'lodash';
+
 const generateEndpoint = ({
-                            endpoint,
-                            params = {},
-                          }: {
+  endpoint,
+  params = {},
+}: {
   endpoint: string;
   params?: Record<string, string | number>;
 }) => {
   return `${import.meta.env.VITE_PROD_ENDPOINT}${endpoint}${
-    params
+    !isEmpty(params)
       ? `?${Object.keys(params)
-        .map((key) => `${key}=${params[key]}`)
-        .join('&')}`
+          .map((key) => `${key}=${params[key]}`)
+          .join('&')}`
       : ''
   }`;
 };
 
+interface GetUploadUrlsResponse {
+  id: string;
+  fileName: string;
+  urls: string[];
+  uploadId: number;
+}
+
 export const getUploadUrls = async ({
-                                      files,
-                                      bucketId,
-                                    }: {
+  files,
+  bucketId,
+}: {
   files: {
     fileName: string;
-    fileSize: number;
+    size: number;
   }[];
   bucketId: string;
-}): Promise<Record<string, string>> => {
+}): Promise<GetUploadUrlsResponse[]> => {
   const endpoint = generateEndpoint({ endpoint: '/file/get-upload-url', params: { bucketId } });
   const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ files }),
+    body: JSON.stringify(JSON.stringify({ files })),
   });
   const data = await response.json();
-  return data;
+  return JSON.parse(data.body);
 };
 
 export const getDownloadUrls = async (fileIds: string[]): Promise<Record<string, string>> => {
@@ -46,25 +56,20 @@ export const getDownloadUrls = async (fileIds: string[]): Promise<Record<string,
     body: JSON.stringify({ fileIds }),
   });
   const data = await response.json();
-  return data;
+  return JSON.parse(data.body);
 };
 
-export const viewBucket = async ({
-                                   bucketId,
-                                 }: {
-  bucketId: string;
-}): Promise<
-  {
-    files: {
-      id: string;
-      fileName: string;
-      fileSize: number;
-      createdAt: string;
-      merged: boolean;
-      deleted: boolean;
-    }[];
-  }
-> => {
+interface ViewBucketResponse {
+  id: string;
+  fileName: string;
+  fileSize: number;
+  createdAt: string;
+  merged: boolean;
+  deleted: boolean;
+  type: string;
+}
+
+export const viewBucket = async ({ bucketId }: { bucketId: string }): Promise<{ files: ViewBucketResponse[] }> => {
   const endpoint = generateEndpoint({ endpoint: '/bucket/view', params: { bucketId } });
   const response = await fetch(endpoint, {
     method: 'GET',
@@ -73,7 +78,7 @@ export const viewBucket = async ({
     },
   });
   const data = await response.json();
-  return data.files;
+  return JSON.parse(data.body);
 };
 
 interface CreateBucketResponse {
@@ -89,11 +94,12 @@ export const createBucket = async (password: string): Promise<CreateBucketRespon
     },
     body: JSON.stringify({ password }),
   });
-  return await response.json();
+  const data = await response.json();
+  return JSON.parse(data.body);
 };
 
-export const deleteFiles = async (fileIds: string[]): Promise<{ success: boolean }> => {
-  const endpoint = generateEndpoint({ endpoint: '/file/delete' });
+export const deleteFiles = async (bucketId: string, fileIds: string[]): Promise<{ success: boolean }> => {
+  const endpoint = generateEndpoint({ endpoint: '/file/delete', params: { bucketId } });
   const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
@@ -102,5 +108,39 @@ export const deleteFiles = async (fileIds: string[]): Promise<{ success: boolean
     body: JSON.stringify({ fileIds }),
   });
   const data = await response.json();
-  return data;
+  return JSON.parse(data.body);
 };
+
+export const uploadFile = async (
+  file: File,
+  urls: string[],
+  bucketId: string,
+  uploadId: number,
+): Promise<
+  Promise<{
+    success: boolean;
+  }>[]
+> => {
+  const fileChunkCount = Math.ceil(file.size / uploadConfig.FILE_CHUNK_SIZE);
+  const fileChunks = [];
+  for (let i = 0; i < fileChunkCount; i++) {
+    fileChunks.push(
+      file.slice(i * uploadConfig.FILE_CHUNK_SIZE, Math.min(file.size + 1, (i + 1) * uploadConfig.FILE_CHUNK_SIZE)),
+    );
+  }
+  const result = [] as Promise<{ success: boolean }>[];
+  for (let i = 0; i < fileChunks.length; i++) {
+    const fileChunk = fileChunks[i];
+    const response = await fetch(urls[i], {
+      method: 'PUT',
+      headers: {
+        'Content-Type': file.type,
+      },
+      body: fileChunk,
+    });
+    result.push(response.json());
+  }
+  return result;
+};
+
+export type { ViewBucketResponse, GetUploadUrlsResponse };
