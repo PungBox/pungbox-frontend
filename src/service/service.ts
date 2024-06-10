@@ -39,7 +39,7 @@ export const getUploadUrls = async ({
     body: JSON.stringify({ files }),
   });
   const data = await response.json();
-  return data;
+  return JSON.parse(data.body);
 };
 
 export const getDownloadUrls = async (fileIds: string[]): Promise<Record<string, string>> => {
@@ -52,7 +52,7 @@ export const getDownloadUrls = async (fileIds: string[]): Promise<Record<string,
     body: JSON.stringify({ fileIds }),
   });
   const data = await response.json();
-  return data;
+  return JSON.parse(data.body);
 };
 
 export const getBucketInfo = async (): Promise<{
@@ -69,7 +69,7 @@ export const getBucketInfo = async (): Promise<{
     },
   });
   const data = await response.json();
-  return data;
+  return JSON.parse(data.body);
 };
 
 export const viewBucket = async ({
@@ -94,7 +94,7 @@ export const viewBucket = async ({
     },
   });
   const data = await response.json();
-  return data;
+  return JSON.parse(data.body);
 };
 
 export const createBucket = async ({
@@ -113,7 +113,7 @@ export const createBucket = async ({
     body: JSON.stringify({ bucketName, password }),
   });
   const data = await response.json();
-  return data;
+  return JSON.parse(data.body);
 };
 
 export const deleteFiles = async (bucketId: string, fileIds: string[]): Promise<{ success: boolean }> => {
@@ -126,5 +126,5 @@ export const deleteFiles = async (bucketId: string, fileIds: string[]): Promise<
     body: JSON.stringify({ fileIds }),
   });
   const data = await response.json();
-  return data;
+  return JSON.parse(data.body);
 };
