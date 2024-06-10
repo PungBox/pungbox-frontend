@@ -6,6 +6,7 @@ import { createBucket } from '../../../../service/service';
 
 interface RegisterResultProps {
   setIsRegisterDone: React.Dispatch<React.SetStateAction<boolean>>;
+  setAccessCode: React.Dispatch<React.SetStateAction<string>>;
 }
 
 interface RegisterFormElements extends IHTMLFormControlsCollection {
@@ -17,7 +18,7 @@ interface RegisterFormElement extends HTMLFormElement {
   readonly elements: RegisterFormElements;
 }
 
-const RegisterForm = ({ setIsRegisterDone }: RegisterResultProps) => {
+const RegisterForm = ({ setIsRegisterDone, setAccessCode }: RegisterResultProps) => {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     // TODO: expiration period은 사용되고 있지 않음. 추후 /bucket/create endpoint에 넘길 수 있어야 함
@@ -28,6 +29,7 @@ const RegisterForm = ({ setIsRegisterDone }: RegisterResultProps) => {
       return;
     }
     const bucketId = createBucketResponse.id;
+    setAccessCode(bucketId);
     setIsRegisterDone(true);
   }
   
