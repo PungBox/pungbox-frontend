@@ -31,6 +31,7 @@ const RegisterForm = ({ setIsRegisterDone, setAccessCode }: RegisterResultProps)
       return;
     }
     const bucketId = createBucketResponse.id;
+    window.sessionStorage.setItem('bucketId', bucketId);
     setAccessCode(bucketId);
     setIsRegisterDone(true);
     setIsLoading(false);
