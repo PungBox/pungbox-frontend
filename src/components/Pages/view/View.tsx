@@ -4,7 +4,6 @@ import { FileListTableBody } from './component/FileListTableBody';
 import Expired from './component/Expired';
 import styles from '/src/components/Module/View.module.css';
 import { useBucktInfo, useDownloadFiles, useFileDescription, useSelectedFiles, useSortingOrder } from './hooks';
-import { isEmpty } from 'lodash';
 
 const View = () => {
   const { sortingCriteria, isSortingAscending, resetToDefaultSortingOrder, handleSorting, reSortFileDescriptions } =
@@ -20,15 +19,14 @@ const View = () => {
   } = useFileDescription(bucketInfo?.bucketId);
 
   const isLoading = useMemo(() => isLoadingBucketInfo || isLoadingFiles, [isLoadingBucketInfo, isLoadingFiles]);
-  console.log(isLoadingBucketInfo, isLoadingFiles, isLoading);
 
   const { selected, getSelectedFileIds, toggleSelectFile } = useSelectedFiles(fileDescriptions);
 
   const { downloadFiles, isDownloading } = useDownloadFiles();
 
-  // useEffect(() => {
-  //   reSortFileDescriptions(fileDescriptions, setFileDescriptions);
-  // }, [reSortFileDescriptions]);
+  useEffect(() => {
+    reSortFileDescriptions(fileDescriptions, setFileDescriptions);
+  }, [reSortFileDescriptions]);
 
   // TODO: storage 인증키 유효성 검사 함수 구현 (storage가 만료되었는지)
   const isStorageNumberValid = !bucketInfo.expired;
