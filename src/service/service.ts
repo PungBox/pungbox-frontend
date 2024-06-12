@@ -2,17 +2,17 @@ import { uploadConfig } from '../utils/config';
 import { isEmpty } from 'lodash';
 
 const generateEndpoint = ({
-  endpoint,
-  params = {},
-}: {
+                            endpoint,
+                            params = {},
+                          }: {
   endpoint: string;
   params?: Record<string, string | number>;
 }) => {
   return `${import.meta.env.VITE_PROD_ENDPOINT}${endpoint}${
     !isEmpty(params)
       ? `?${Object.keys(params)
-          .map((key) => `${key}=${params[key]}`)
-          .join('&')}`
+        .map((key) => `${key}=${params[key]}`)
+        .join('&')}`
       : ''
   }`;
 };
@@ -25,9 +25,9 @@ interface GetUploadUrlsResponse {
 }
 
 export const getUploadUrls = async ({
-  files,
-  bucketId,
-}: {
+                                      files,
+                                      bucketId,
+                                    }: {
   files: {
     fileName: string;
     size: number;
@@ -141,6 +141,10 @@ export const uploadFile = async (
     result.push(response.json());
   }
   return result;
+};
+
+export const getBucketInfo = async () => {
+  return { bucketId: 'string', bucketName: 'string', expired: false, expiration: 'string' };
 };
 
 export type { ViewBucketResponse, GetUploadUrlsResponse };
