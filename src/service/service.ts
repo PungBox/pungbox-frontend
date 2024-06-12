@@ -147,4 +147,28 @@ export const getBucketInfo = async () => {
   return { bucketId: 'string', bucketName: 'string', expired: false, expiration: 'string' };
 };
 
+interface AuthenticateRequest {
+  bucketId: string;
+  password: string;
+}
+
+export const authenticate = async ({ bucketId, password }: AuthenticateRequest) => {
+  const endpoint = generateEndpoint({ endpoint: '/authenticate' });
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      user_id: bucketId,
+      password: password,
+    }),
+  });
+  const data = await response.json();
+  if (data.statusCode !== 200) {
+    console.error(`Authentication failed. HTTP response status code=${data.statusCode}`);
+  }
+  return JSON.parse(data);
+};
+
 export type { ViewBucketResponse, GetUploadUrlsResponse };
