@@ -74,8 +74,8 @@ const Authenticate = () => {
           />
         </label>
         
-        <button type="submit" value="Submit" className={styles.button}>
-          Go to Storage
+        <button type="submit" value="Submit" className={styles.button} disabled={isLoading}>
+          {(isLoading) ? 'Logging in...' : 'Go to Storage'}
         </button>
       </form>
     </div>
