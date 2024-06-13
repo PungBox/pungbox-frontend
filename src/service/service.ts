@@ -36,7 +36,7 @@ export const getUploadUrls = async ({
 }): Promise<GetUploadUrlsResponse[]> => {
   const endpoint = generateEndpoint({ endpoint: '/file/get-upload-url', params: { bucketId } });
   const response = await fetch(endpoint, {
-    method: 'POST',
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -49,7 +49,7 @@ export const getUploadUrls = async ({
 export const getDownloadUrls = async (fileIds: string[]): Promise<Record<string, string>> => {
   const endpoint = generateEndpoint({ endpoint: '/file/get-download-url' });
   const response = await fetch(endpoint, {
-    method: 'POST',
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
