@@ -75,6 +75,7 @@ export const viewBucket = async ({ bucketId }: { bucketId: string }): Promise<{ 
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
+      'Access-Token': window.localStorage.getItem('accessToken') || '',
     },
   });
   const data = await response.json();
