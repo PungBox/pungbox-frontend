@@ -152,7 +152,14 @@ interface AuthenticateRequest {
   password: string;
 }
 
-export const authenticate = async ({ bucketId, password }: AuthenticateRequest) => {
+interface AuthenticateResponse {
+  statusCode: number;
+  accessToken: string;
+  refreshToken: string;
+}
+
+export const authenticate = async ({ bucketId, password }: AuthenticateRequest)
+  : Promise<AuthenticateResponse | null> => {
   const endpoint = generateEndpoint({ endpoint: '/authenticate' });
   const response = await fetch(endpoint, {
     method: 'POST',
@@ -167,8 +174,9 @@ export const authenticate = async ({ bucketId, password }: AuthenticateRequest) 
   const data = await response.json();
   if (data.statusCode !== 200) {
     console.error(`Authentication failed. HTTP response status code=${data.statusCode}`);
+    return null;
   }
-  return JSON.parse(data);
+  return data;
 };
 
 export type { ViewBucketResponse, GetUploadUrlsResponse };

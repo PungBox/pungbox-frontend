@@ -45,8 +45,11 @@ const Authenticate = () => {
     setIsLoading(true);
     const formElements = (e.currentTarget as unknown as RegisterFormElement).elements;
     const bucketId = getBucketIdFromFormElem(formElements);
-    await authenticate({ bucketId, password: formElements.password.value });
+    const authResponse = await authenticate({ bucketId, password: formElements.password.value });
     setIsLoading(false);
+    if (authResponse === null) return;
+    document.cookie = authResponse.accessToken;
+    document.cookie = authResponse.refreshToken;
     navigate('/view');
   }
   
@@ -75,7 +78,7 @@ const Authenticate = () => {
         </label>
         
         <button type="submit" value="Submit" className={styles.button} disabled={isLoading}>
-          {(isLoading) ? 'Logging in...' : 'Go to Storage'}
+          {(isLoading) ? 'Accessing storage...' : 'Go to Storage'}
         </button>
       </form>
     </div>
