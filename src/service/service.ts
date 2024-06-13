@@ -155,7 +155,6 @@ interface AuthenticateRequest {
 interface AuthenticateResponse {
   statusCode: number;
   accessToken: string;
-  refreshToken: string;
 }
 
 export const authenticate = async ({ bucketId, password }: AuthenticateRequest)

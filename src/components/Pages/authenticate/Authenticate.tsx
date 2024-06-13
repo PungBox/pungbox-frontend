@@ -48,8 +48,7 @@ const Authenticate = () => {
     const authResponse = await authenticate({ bucketId, password: formElements.password.value });
     setIsLoading(false);
     if (authResponse === null) return;
-    document.cookie = authResponse.accessToken;
-    document.cookie = authResponse.refreshToken;
+    window.localStorage.setItem('accessToken', authResponse.accessToken);
     navigate('/view');
   }
   
