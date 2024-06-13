@@ -69,6 +69,18 @@ interface ViewBucketResponse {
   type: string;
 }
 
+export class UnauthorizedException extends Error {
+  constructor(message: string = 'Unauthorized') {
+    super(message);
+  }
+}
+
+class NotFoundException extends Error {
+  constructor(message: string = 'Not Found') {
+    super(message);
+  }
+}
+
 export const viewBucket = async ({ bucketId }: { bucketId: string }): Promise<{ files: ViewBucketResponse[] }> => {
   const endpoint = generateEndpoint({ endpoint: '/bucket/view', params: { bucketId } });
   const response = await fetch(endpoint, {
@@ -79,6 +91,11 @@ export const viewBucket = async ({ bucketId }: { bucketId: string }): Promise<{ 
     },
   });
   const data = await response.json();
+  if (data.statusCode === 401 /*unauthorized*/) {
+    throw new UnauthorizedException();
+  } else if (data.statusCode === 404) {
+    throw new NotFoundException();
+  }
   return JSON.parse(data.body);
 };
 
@@ -95,8 +112,7 @@ export const createBucket = async (password: string): Promise<CreateBucketRespon
     },
     body: JSON.stringify({ password }),
   });
-  const data = await response.json();
-  return JSON.parse(data.body);
+  return await response.json();
 };
 
 export const deleteFiles = async (bucketId: string, fileIds: string[]): Promise<{ success: boolean }> => {
