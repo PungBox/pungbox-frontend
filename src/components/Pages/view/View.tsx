@@ -33,10 +33,11 @@ const View = () => {
       <div className={styles.view_panel_header}>
         <p className={styles.storage_number}>Storage No. {bucketInfo?.bucketId}</p>
         <p className={styles.expiration_date}>expiration date: {bucketInfo.expiration}</p>
-
-        <p className={styles.expiration_date}>
-          {timeToExpire.days} Days {timeToExpire.hours}h:{timeToExpire.minutes}m: {timeToExpire.seconds}s to expire
-        </p>
+        {!bucketInfo?.expired && (
+          <p className={styles.expiration_date}>
+            {timeToExpire.days} Days {timeToExpire.hours}h:{timeToExpire.minutes}m: {timeToExpire.seconds}s to expire
+          </p>
+        )}
       </div>
       {bucketInfo?.expired ? (
         <Expired />
