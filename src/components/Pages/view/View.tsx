@@ -3,12 +3,12 @@ import { FileListTableHeader } from './component/FileListTableHeader';
 import { FileListTableBody } from './component/FileListTableBody';
 import Expired from './component/Expired';
 import styles from '/src/components/Module/View.module.css';
-import { useBucktInfo, useDownloadFiles, useFileDescription, useSelectedFiles, useSortingOrder } from './hooks';
+import { useBucketInfo, useDownloadFiles, useFileDescription, useSelectedFiles, useSortingOrder } from './hooks';
 
 const View = () => {
   const { sortingCriteria, isSortingAscending, resetToDefaultSortingOrder, handleSorting, reSortFileDescriptions } =
     useSortingOrder();
-  const { isLoading: isLoadingBucketInfo, bucketInfo, timeToExpire } = useBucktInfo();
+  const { isLoading: isLoadingBucketInfo, bucketInfo, timeToExpire } = useBucketInfo();
   const {
     fetchFiles,
     isLoading: isLoadingFiles,
