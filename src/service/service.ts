@@ -192,7 +192,12 @@ export const authenticate = async ({ bucketId, password }: AuthenticateRequest)
     console.error(`Authentication failed. HTTP response status code=${data.statusCode}`);
     return null;
   }
+  window.localStorage.setItem('accessToken', data.accessToken);
   return data;
+};
+
+export const signout = async () => {
+  window.localStorage.setItem('accessToken', '');
 };
 
 export type { ViewBucketResponse, GetUploadUrlsResponse };

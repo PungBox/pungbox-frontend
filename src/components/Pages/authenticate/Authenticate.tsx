@@ -48,7 +48,6 @@ const Authenticate = () => {
     const authResponse = await authenticate({ bucketId, password: formElements.password.value });
     setIsLoading(false);
     if (authResponse === null) return;
-    window.localStorage.setItem('accessToken', authResponse.accessToken);
     navigate('/view');
   }
   
