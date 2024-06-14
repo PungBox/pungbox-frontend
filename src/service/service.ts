@@ -1,33 +1,16 @@
 import { uploadConfig } from '../utils/config';
-import { isEmpty } from 'lodash';
+import {
+  AuthenticateRequest,
+  AuthenticateResponse,
+  CreateBucketResponse,
+  GetUploadUrlsResponse,
+  ViewBucketResponse,
+} from './interface';
+import { generateEndpoint } from './util';
+import { NotFoundException, UnauthorizedException } from './exception';
 
-const generateEndpoint = ({
-                            endpoint,
-                            params = {},
-                          }: {
-  endpoint: string;
-  params?: Record<string, string | number>;
-}) => {
-  return `${import.meta.env.VITE_PROD_ENDPOINT}${endpoint}${
-    !isEmpty(params)
-      ? `?${Object.keys(params)
-        .map((key) => `${key}=${params[key]}`)
-        .join('&')}`
-      : ''
-  }`;
-};
 
-interface GetUploadUrlsResponse {
-  id: string;
-  fileName: string;
-  urls: string[];
-  uploadId: number;
-}
-
-export const getUploadUrls = async ({
-                                      files,
-                                      bucketId,
-                                    }: {
+export const getUploadUrls = async ({ files, bucketId }: {
   files: {
     fileName: string;
     size: number;
@@ -59,28 +42,6 @@ export const getDownloadUrls = async (fileIds: string[]): Promise<Record<string,
   return JSON.parse(data.body);
 };
 
-interface ViewBucketResponse {
-  id: string;
-  fileName: string;
-  fileSize: number;
-  createdAt: string;
-  merged: boolean;
-  deleted: boolean;
-  type: string;
-}
-
-export class UnauthorizedException extends Error {
-  constructor(message: string = 'Unauthorized') {
-    super(message);
-  }
-}
-
-class NotFoundException extends Error {
-  constructor(message: string = 'Not Found') {
-    super(message);
-  }
-}
-
 export const viewBucket = async ({ bucketId }: { bucketId: string }): Promise<{ files: ViewBucketResponse[] }> => {
   const endpoint = generateEndpoint({ endpoint: '/bucket/view', params: { bucketId } });
   const response = await fetch(endpoint, {
@@ -98,10 +59,6 @@ export const viewBucket = async ({ bucketId }: { bucketId: string }): Promise<{ 
   }
   return JSON.parse(data.body);
 };
-
-interface CreateBucketResponse {
-  id: string;
-}
 
 export const createBucket = async (password: string): Promise<CreateBucketResponse> => {
   const endpoint = generateEndpoint({ endpoint: '/bucket/create' });
@@ -164,16 +121,6 @@ export const getBucketInfo = async () => {
   return { bucketId: 'string', bucketName: 'string', expired: false, expiration: 'string' };
 };
 
-interface AuthenticateRequest {
-  bucketId: string;
-  password: string;
-}
-
-interface AuthenticateResponse {
-  statusCode: number;
-  accessToken: string;
-}
-
 export const authenticate = async ({ bucketId, password }: AuthenticateRequest)
   : Promise<AuthenticateResponse | null> => {
   const endpoint = generateEndpoint({ endpoint: '/authenticate' });
@@ -199,5 +146,3 @@ export const authenticate = async ({ bucketId, password }: AuthenticateRequest)
 export const signout = async () => {
   window.localStorage.setItem('accessToken', '');
 };
-
-export type { ViewBucketResponse, GetUploadUrlsResponse };
