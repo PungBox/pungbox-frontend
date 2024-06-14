@@ -85,9 +85,15 @@ export const uploadFile = async ({ file, urls, bucketId, uploadId }: UploadFileR
 };
 
 export const getBucketInfo = async (): Promise<GetBucketInfoResponse> => {
-  return await fetchPung({
-    endpoint: '/bucket/get-info',
-  });
+  // return await fetchPung({
+  //   endpoint: '/bucket/get-info',
+  // });
+  return {
+    bucketId: 'string',
+    bucketName: 'string',
+    expired: false,
+    expiration: 'string',
+  };
 };
 
 export const authenticate = async ({ bucketId, password }: AuthenticateRequest): Promise<AuthenticateResponse> => {
@@ -99,7 +105,9 @@ export const authenticate = async ({ bucketId, password }: AuthenticateRequest):
       },
     },
   });
-  window.localStorage.setItem('accessToken', data.accessToken);
+  if (data.accessToken) {
+    window.localStorage.setItem('accessToken', data.accessToken);
+  }
   return data;
 };
 
