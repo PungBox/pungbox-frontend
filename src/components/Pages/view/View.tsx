@@ -28,9 +28,6 @@ const View = () => {
     reSortFileDescriptions(fileDescriptions, setFileDescriptions);
   }, [reSortFileDescriptions]);
 
-  // TODO: storage 인증키 유효성 검사 함수 구현 (storage가 만료되었는지)
-  const isStorageNumberValid = !bucketInfo.expired;
-
   return (
     <div className={styles.view_panel}>
       <div className={styles.view_panel_header}>
@@ -41,7 +38,7 @@ const View = () => {
           {timeToExpire.days} Days {timeToExpire.hours}h:{timeToExpire.minutes}m: {timeToExpire.seconds}s to expire
         </p>
       </div>
-      {!isStorageNumberValid ? (
+      {bucketInfo?.expired ? (
         <Expired />
       ) : (
         <>
