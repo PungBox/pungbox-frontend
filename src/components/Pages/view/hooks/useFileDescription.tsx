@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
-import { getUploadUrls, UnauthorizedException, uploadFile, viewBucket, ViewBucketResponse } from 'service/service';
+import { getUploadUrls, uploadFile, viewBucket } from 'service/service';
+import { UnauthorizedException } from 'service/exception';
+import { ViewBucketResponse } from 'service/interface';
 import { useNavigate } from 'react-router-dom';
 
 function useFileDescription(bucketId: string) {

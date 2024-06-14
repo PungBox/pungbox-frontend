@@ -6,7 +6,7 @@ import {
   GetUploadUrlsResponse,
   ViewBucketResponse,
 } from './interface';
-import { generateEndpoint } from './util';
+import { fetchWithoutAuth, generateEndpoint } from './util';
 import { NotFoundException, UnauthorizedException } from './exception';
 
 
@@ -60,16 +60,24 @@ export const viewBucket = async ({ bucketId }: { bucketId: string }): Promise<{ 
   return JSON.parse(data.body);
 };
 
+// export const createBucket = async (password: string): Promise<CreateBucketResponse> => {
+//   const endpoint = generateEndpoint({ endpoint: '/bucket/create' });
+//   const response = await fetch(endpoint, {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({ password }),
+//   });
+//   return await response.json();
+// };
+
 export const createBucket = async (password: string): Promise<CreateBucketResponse> => {
-  const endpoint = generateEndpoint({ endpoint: '/bucket/create' });
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  return await fetchWithoutAuth({
+    endpoint: '/bucket/create', fetchInit: {
+      body: { password },
     },
-    body: JSON.stringify({ password }),
   });
-  return await response.json();
 };
 
 export const deleteFiles = async (bucketId: string, fileIds: string[]): Promise<{ success: boolean }> => {
