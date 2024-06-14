@@ -1,6 +1,5 @@
 import React from 'react';
-import { FileDescription } from '../../../../utils/interface';
-import { ViewBucketResponse } from 'service/service';
+import { ViewBucketResponse } from 'service/interface';
 
 interface FileListProps {
   fileDescriptions: ViewBucketResponse[];
@@ -95,7 +94,7 @@ function getUploadedDatetimeExpression(created: string) {
   } catch (RangeError) {
     return null;
   }
-
+  
   let dateExpression = getDateExpression(now, datetime);
   const timeExpression = `${datetime.toLocaleTimeString()}`;
   return `${dateExpression} ${timeExpression}`;
