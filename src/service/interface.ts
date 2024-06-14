@@ -17,7 +17,7 @@ export interface GetDownloadUrlRequest {
   fileIds: string[];
 }
 
-export type GetDownloadUrlResponse = Record<string, string>
+export type GetDownloadUrlResponse = Record<string, string>;
 
 export interface ViewBucketRequest {
   bucketId: string;
@@ -35,15 +35,17 @@ export interface ViewBucketResponse {
 
 export interface CreateBucketRequest {
   password: string;
+  durationMin: string;
 }
 
 export interface CreateBucketResponse {
   id: string;
+  expiredAt: string;
 }
 
 export interface DeleteFilesRequest {
-  bucketId: string,
-  fileIds: string[]
+  bucketId: string;
+  fileIds: string[];
 }
 
 export interface DeleteFilesResponse {
@@ -51,10 +53,10 @@ export interface DeleteFilesResponse {
 }
 
 export interface UploadFileRequest {
-  file: File,
-  urls: string[],
-  bucketId: string,
-  uploadId: number,
+  file: File;
+  urls: string[];
+  bucketId: string;
+  uploadId: number;
 }
 
 export interface UploadFileResponse {
@@ -65,7 +67,7 @@ export interface GetBucketInfoResponse {
   bucketId: string;
   bucketName: string;
   expired: boolean;
-  expiration: string;
+  expiredAt: string;
 }
 
 export interface AuthenticateRequest {

@@ -6,11 +6,12 @@ import { useLocation } from 'react-router-dom';
 const Register = () => {
   const [isRegisterDone, setIsRegisterDone] = useState(false);
   const [accessCode, setAccessCode] = useState('000000');
+  const [expiredAt, setExpiredAt] = useState('');
 
   return isRegisterDone ? (
-    <RegisterResult accessCode={accessCode} />
+    <RegisterResult accessCode={accessCode} expiredAt={expiredAt} />
   ) : (
-    <RegisterForm setIsRegisterDone={setIsRegisterDone} setAccessCode={setAccessCode} />
+    <RegisterForm setIsRegisterDone={setIsRegisterDone} setAccessCode={setAccessCode} setExpiredAt={setExpiredAt} />
   );
 };
 

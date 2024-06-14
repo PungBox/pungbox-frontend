@@ -1,49 +1,65 @@
 import { isEmpty } from 'lodash';
 import { HTTPException, UnauthorizedException } from './exception';
 
-const generateEndpoint = ({ endpoint, params = {} }: {
+export const generateEndpoint = ({
+  endpoint,
+  params = {},
+}: {
   endpoint: string;
   params?: Record<string, string | number>;
 }) => {
   return `${import.meta.env.VITE_PROD_ENDPOINT}${endpoint}${
     !isEmpty(params)
       ? `?${Object.keys(params)
-        .map((key) => `${key}=${params[key]}`)
-        .join('&')}`
+          .map((key) => `${key}=${params[key]}`)
+          .join('&')}`
       : ''
   }`;
 };
 
 type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS' | 'HEAD' | 'PATCH';
-type RequestInitLike = { method?: HTTPMethod, headers?: { [key: string]: string }, body?: any };
+type RequestInitLike = { method?: HTTPMethod; headers?: { [key: string]: string }; body?: any };
 
-
-export const fetchPung = async ({ endpoint, params = {}, fetchInit = undefined }: {
-  endpoint: string, params?: {
-    [key: string]: string | number
-  }, fetchInit?: RequestInit | RequestInitLike | undefined,
+export const fetchPung = async ({
+  endpoint,
+  params = {},
+  fetchInit = undefined,
+}: {
+  endpoint: string;
+  params?: {
+    [key: string]: string | number;
+  };
+  fetchInit?: RequestInit | RequestInitLike | undefined;
 }) => {
   const accessToken = window.localStorage.getItem('accessToken');
   const newFetchInit = {
     method: fetchInit?.method || 'POST',
-    headers: fetchInit?.headers || ((accessToken) ? {
-      'Content-Type': 'application/json',
-      'Access-Token': accessToken,
-    } : {
-      'Content-Type': 'application/json',
-    }),
+    headers:
+      fetchInit?.headers ||
+      (accessToken
+        ? {
+            'Content-Type': 'application/json',
+            'Access-Token': accessToken,
+          }
+        : {
+            'Content-Type': 'application/json',
+          }),
     body: JSON.stringify(fetchInit?.body) || undefined,
   };
   const response = await fetch(generateEndpoint({ endpoint, params }), newFetchInit);
   const data = await response.json();
-  
-  if (Math.floor(response.status / 100) <= 3 && (!data.statusCode || (data.statusCode / 100 <= 3))) {
+
+  if (Math.floor(response.status / 100) <= 3 && (!data.statusCode || data.statusCode / 100 <= 3)) {
     return data;
   }
-  
+
   const statusCode = data.statusCode || response.status;
-  console.error(`${newFetchInit.method} ${endpoint} returned status code ${statusCode} ${httpStatusMessage[statusCode]}:\n${JSON.stringify(data)}`);
-  
+  console.error(
+    `${newFetchInit.method} ${endpoint} returned status code ${statusCode} ${
+      httpStatusMessage[statusCode]
+    }:\n${JSON.stringify(data)}`,
+  );
+
   if (response.status === 401 /*unauthorized*/ || response.status === 403 /*Forbidden*/) {
     window.localStorage.setItem('accessToken', '');
     throw new UnauthorizedException();
@@ -89,7 +105,7 @@ export const httpStatusMessage: { [key: string]: string } = {
   415: 'Unsupported Media Type',
   416: 'Range Not Satisfiable',
   417: 'Expectation Failed',
-  418: 'I\'m a teapot',
+  418: "I'm a teapot",
   422: 'Unprocessable Entity',
   423: 'Locked',
   424: 'Failed Dependency',

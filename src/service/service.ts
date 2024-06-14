@@ -16,11 +16,13 @@ import {
   ViewBucketRequest,
   ViewBucketResponse,
 } from './interface';
-import { fetchPung } from './util';
+import { fetchPung, generateEndpoint } from './util';
 
 export const getUploadUrls = async ({ files, bucketId }: GetUploadUrlsRequest): Promise<GetUploadUrlsResponse[]> => {
   return await fetchPung({
-    endpoint: '/file/get-upload-url', params: { bucketId }, fetchInit: {
+    endpoint: '/file/get-upload-url',
+    params: { bucketId },
+    fetchInit: {
       method: 'GET',
       body: { files },
     },
@@ -29,7 +31,8 @@ export const getUploadUrls = async ({ files, bucketId }: GetUploadUrlsRequest): 
 
 export const getDownloadUrls = async ({ fileIds }: GetDownloadUrlRequest): Promise<GetDownloadUrlResponse> => {
   return await fetchPung({
-    endpoint: '/file/get-download-url', fetchInit: {
+    endpoint: '/file/get-download-url',
+    fetchInit: {
       method: 'GET',
       body: { fileIds },
     },
@@ -38,30 +41,39 @@ export const getDownloadUrls = async ({ fileIds }: GetDownloadUrlRequest): Promi
 
 export const viewBucket = async ({ bucketId }: ViewBucketRequest): Promise<{ files: ViewBucketResponse[] }> => {
   return await fetchPung({
-    endpoint: '/bucket/view', params: { bucketId }, fetchInit: {
+    endpoint: '/bucket/view',
+    params: { bucketId },
+    fetchInit: {
       method: 'GET',
     },
   });
 };
 
-export const createBucket = async ({ password }: CreateBucketRequest): Promise<CreateBucketResponse> => {
+export const createBucket = async ({ durationMin, password }: CreateBucketRequest): Promise<CreateBucketResponse> => {
   return await fetchPung({
-    endpoint: '/bucket/create', fetchInit: {
-      body: { password },
+    endpoint: '/bucket/create',
+    fetchInit: {
+      body: { durationMin, password },
     },
   });
 };
 
 export const deleteFiles = async ({ bucketId, fileIds }: DeleteFilesRequest): Promise<DeleteFilesResponse> => {
   return await fetchPung({
-    endpoint: '/file/delete', params: { bucketId }, fetchInit: {
+    endpoint: '/file/delete',
+    params: { bucketId },
+    fetchInit: {
       body: { fileIds },
     },
   });
 };
 
-export const uploadFile = async ({ file, urls, bucketId, uploadId }: UploadFileRequest)
-  : Promise<Promise<UploadFileResponse>[]> => {
+export const uploadFile = async ({
+  file,
+  urls,
+  bucketId,
+  uploadId,
+}: UploadFileRequest): Promise<Promise<UploadFileResponse>[]> => {
   const fileChunkCount = Math.ceil(file.size / uploadConfig.FILE_CHUNK_SIZE);
   const fileChunks = [];
   for (let i = 0; i < fileChunkCount; i++) {
@@ -98,7 +110,8 @@ export const getBucketInfo = async (bucketId: string): Promise<GetBucketInfoResp
 
 export const authenticate = async ({ bucketId, password }: AuthenticateRequest): Promise<AuthenticateResponse> => {
   const data = await fetchPung({
-    endpoint: '/authenticate', fetchInit: {
+    endpoint: '/authenticate',
+    fetchInit: {
       body: {
         user_id: bucketId,
         password: password,
