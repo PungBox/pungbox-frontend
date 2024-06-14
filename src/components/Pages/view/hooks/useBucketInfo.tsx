@@ -1,7 +1,9 @@
+import { useBucketInfoContext } from 'context/BucketInfoProvider';
 import { useEffect, useMemo, useState } from 'react';
 import { getBucketInfo } from 'service/service';
 
 const useBucketInfo = () => {
+  const { bucketInfo: registeredBucketInfo } = useBucketInfoContext();
   const [isLoading, setIsLoading] = useState(false);
   const [bucketInfo, setBucketInfo] = useState({
     bucketId: '',
@@ -22,8 +24,9 @@ const useBucketInfo = () => {
   });
 
   useEffect(() => {
+    if (!registeredBucketInfo.id) return;
     setIsLoading(true);
-    getBucketInfo('001bc76f-436f-4a7e-a1a0-e1ed389e9262').then((res) => {
+    getBucketInfo(registeredBucketInfo.id).then((res) => {
       setBucketInfo({
         bucketId: res.bucketId,
         bucketName: res.bucketName,

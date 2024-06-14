@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import styles from '/src/components/Module/Register.module.css';
 import { HTMLFormElement, IHTMLFormControlsCollection } from 'happy-dom';
 import { createBucket } from '../../../../service/service';
-
-interface RegisterResultProps {
-  setIsRegisterDone: React.Dispatch<React.SetStateAction<boolean>>;
-  setAccessCode: React.Dispatch<React.SetStateAction<string>>;
-  setExpiredAt: React.Dispatch<React.SetStateAction<string>>;
-}
+import { useBucketInfoContext } from 'context/BucketInfoProvider';
 
 interface RegisterFormElements extends IHTMLFormControlsCollection {
   password: HTMLInputElement;
@@ -18,8 +13,10 @@ interface RegisterFormElement extends HTMLFormElement {
   readonly elements: RegisterFormElements;
 }
 
-const RegisterForm = ({ setIsRegisterDone, setAccessCode, setExpiredAt }: RegisterResultProps) => {
+const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+
+  const { setBucketInfo } = useBucketInfoContext();
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -35,10 +32,7 @@ const RegisterForm = ({ setIsRegisterDone, setAccessCode, setExpiredAt }: Regist
       return;
     }
     const { id: bucketId, expiredAt } = createBucketResponse;
-    window.sessionStorage.setItem('bucketId', bucketId);
-    window.sessionStorage.setItem('expiredAt', expiredAt);
-    setAccessCode(bucketId);
-    setIsRegisterDone(true);
+    setBucketInfo({ id: bucketId, expiredAt });
     setIsLoading(false);
   }
 
