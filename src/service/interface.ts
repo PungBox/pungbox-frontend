@@ -1,3 +1,11 @@
+export interface GetUploadUrlsRequest {
+  files: {
+    fileName: string;
+    size: number;
+  }[];
+  bucketId: string;
+}
+
 interface GetUploadUrlsResponse {
   id: string;
   fileName: string;

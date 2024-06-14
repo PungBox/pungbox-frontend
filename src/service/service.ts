@@ -3,43 +3,33 @@ import {
   AuthenticateRequest,
   AuthenticateResponse,
   CreateBucketResponse,
+  GetUploadUrlsRequest,
   GetUploadUrlsResponse,
   ViewBucketResponse,
 } from './interface';
-import { fetchWithoutAuth, generateEndpoint } from './util';
+import { fetchFetch, generateEndpoint } from './util';
 import { NotFoundException, UnauthorizedException } from './exception';
 
-
-export const getUploadUrls = async ({ files, bucketId }: {
-  files: {
-    fileName: string;
-    size: number;
-  }[];
-  bucketId: string;
-}): Promise<GetUploadUrlsResponse[]> => {
-  const endpoint = generateEndpoint({ endpoint: '/file/get-upload-url', params: { bucketId } });
-  const response = await fetch(endpoint, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
+export const getUploadUrls = async ({ files, bucketId }: GetUploadUrlsRequest): Promise<GetUploadUrlsResponse[]> => {
+  return await fetchFetch({
+    endpoint: '/file/get-upload-url', params: { bucketId }, fetchInit: {
+      method: 'GET',
+      body: { files },
     },
-    body: JSON.stringify(JSON.stringify({ files })),
   });
-  const data = await response.json();
-  return JSON.parse(data.body);
 };
 
-export const getDownloadUrls = async (fileIds: string[]): Promise<Record<string, string>> => {
-  const endpoint = generateEndpoint({ endpoint: '/file/get-download-url' });
-  const response = await fetch(endpoint, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
+interface GetDownloadUrlRequest {
+  fileIds: string[];
+}
+
+export const getDownloadUrls = async ({ fileIds }: GetDownloadUrlRequest): Promise<Record<string, string>> => {
+  return await fetchFetch({
+    endpoint: '/file/get-download-url', fetchInit: {
+      method: 'GET',
+      body: { fileIds },
     },
-    body: JSON.stringify({ fileIds }),
   });
-  const data = await response.json();
-  return JSON.parse(data.body);
 };
 
 export const viewBucket = async ({ bucketId }: { bucketId: string }): Promise<{ files: ViewBucketResponse[] }> => {
@@ -60,20 +50,8 @@ export const viewBucket = async ({ bucketId }: { bucketId: string }): Promise<{ 
   return JSON.parse(data.body);
 };
 
-// export const createBucket = async (password: string): Promise<CreateBucketResponse> => {
-//   const endpoint = generateEndpoint({ endpoint: '/bucket/create' });
-//   const response = await fetch(endpoint, {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify({ password }),
-//   });
-//   return await response.json();
-// };
-
 export const createBucket = async (password: string): Promise<CreateBucketResponse> => {
-  return await fetchWithoutAuth({
+  return await fetchFetch({
     endpoint: '/bucket/create', fetchInit: {
       body: { password },
     },
