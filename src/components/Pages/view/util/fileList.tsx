@@ -96,7 +96,7 @@ function getUploadedDatetimeExpression(created: string) {
     return null;
   }
 
-  let dateExpression = getDateExpression(now, datetime);
+  const dateExpression = getDateExpression(now, datetime);
   const timeExpression = `${datetime.toLocaleTimeString()}`;
   return `${dateExpression} ${timeExpression}`;
 }

@@ -6,36 +6,29 @@ import styles from '/src/components/Module/View.module.css';
 import { useBucktInfo, useDownloadFiles, useFileDescription, useSelectedFiles, useSortingOrder } from './hooks';
 
 const View = () => {
-  const { sortingCriteria, isSortingAscending, resetToDefaultSortingOrder, handleSorting, reSortFileDescriptions } =
-    useSortingOrder();
+  const { sortingCriteria, isSortingAscending, handleSorting } = useSortingOrder();
   const { isLoading: isLoadingBucketInfo, bucketInfo, timeToExpire } = useBucktInfo();
   const {
     fetchFiles,
     isLoading: isLoadingFiles,
     fileDescriptions,
-    setFileDescriptions,
     uploadFiles,
     deleteFiles,
   } = useFileDescription(bucketInfo?.bucketId);
 
+  const { selected, getSelectedFileIds, toggleSelectFile } = useSelectedFiles([]);
+  const { downloadFiles } = useDownloadFiles();
+
   const isLoading = useMemo(() => isLoadingBucketInfo || isLoadingFiles, [isLoadingBucketInfo, isLoadingFiles]);
 
-  const { selected, getSelectedFileIds, toggleSelectFile } = useSelectedFiles(fileDescriptions);
-
-  const { downloadFiles, isDownloading } = useDownloadFiles();
-
-  useEffect(() => {
-    reSortFileDescriptions(fileDescriptions, setFileDescriptions);
-  }, [reSortFileDescriptions]);
-
-  // TODO: storage 인증키 유효성 검사 함수 구현 (storage가 만료되었는지)
-  const isStorageNumberValid = !bucketInfo.expired;
+  const isStorageNumberValid = useMemo(() => !bucketInfo.expired, [bucketInfo.expired]);
 
   return (
     <div className={styles.view_panel}>
       <div className={styles.view_panel_header}>
-        <p className={styles.storage_number}>Storage No. {bucketInfo?.bucketId}</p>
-        <p className={styles.expiration_date}>expiration date: {bucketInfo.expiration}</p>
+        <p className={styles.storage_number}>Storage No. {bucketInfo?.bucketCode}</p>
+        <p className={styles.storage_number}>Name. {bucketInfo?.bucketName}</p>
+        <p className={styles.expiration_date}>expiration date: {bucketInfo.expiredAt}</p>
 
         <p className={styles.expiration_date}>
           {timeToExpire.days} Days {timeToExpire.hours}h:{timeToExpire.minutes}m: {timeToExpire.seconds}s to expire

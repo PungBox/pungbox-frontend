@@ -17,6 +17,26 @@ const generateEndpoint = ({
   }`;
 };
 
+export interface GetBucketInfoResponse {
+  bucketId: string;
+  bucketName: string;
+  bucketCode: string;
+  expired?: boolean;
+  expiredAt: string;
+}
+
+export const getBucketInfo = async (bucketId: string): Promise<GetBucketInfoResponse> => {
+  const endpoint = generateEndpoint({ endpoint: '/bucket/info', params: { bucketId } });
+  const response = await fetch(endpoint, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  const data = await response.json();
+  return JSON.parse(data.body);
+};
+
 interface GetUploadUrlsResponse {
   id: string;
   fileName: string;

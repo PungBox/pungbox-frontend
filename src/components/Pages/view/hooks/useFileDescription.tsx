@@ -7,12 +7,12 @@ function useFileDescription(bucketId: string) {
 
   const fetchFiles = useCallback(() => {
     if (!bucketId) return;
+    console.log('?');
     setIsLoading(true);
     viewBucket({ bucketId })
       .then((res) => {
         const { files } = res;
         setFileDescriptions(files);
-        // resetToDefaultSortingOrder(fileListConfig.defaultSortingCriteria);
       })
       .finally(() => {
         setIsLoading(false);
