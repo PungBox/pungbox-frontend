@@ -1,4 +1,5 @@
 import { isEmpty } from 'lodash';
+import { UnauthorizedException } from './exception';
 
 export const generateEndpoint = ({ endpoint, params = {} }: {
   endpoint: string;
@@ -39,10 +40,13 @@ export const fetchPung = async ({ endpoint, params = {}, fetchInit = undefined, 
     return data;
   }
   
+  const statusCode = data.statusCode || response.status;
+  console.error(`${newFetchInit.method} ${endpoint} returned status code ${statusCode} ${httpStatusMessage[statusCode]}:\n${JSON.stringify(data)}`);
+  
   if (response.status === 401 /*unauthorized*/ || response.status === 403 /*Forbidden*/) {
     window.localStorage.setItem('accessToken', '');
+    throw new UnauthorizedException();
   }
-  console.error(`${newFetchInit.method} ${endpoint} returned status code ${data.statusCode || response.status} ${httpStatusMessage[data.statusCode || response.status]}:\n${JSON.stringify(data)}`);
 };
 
 const httpStatusMessage: { [key: string]: string } = {
