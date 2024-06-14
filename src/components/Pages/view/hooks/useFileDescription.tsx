@@ -20,7 +20,7 @@ function useFileDescription(bucketId: string) {
       })
       .catch((e) => {
         if (e instanceof UnauthorizedException) navigate('/authenticate', { state: { referrer: '/view' } });
-        else console.error('Bucket not found');
+        else console.error(JSON.stringify(e));
       })
       .finally(() => {
         setIsLoading(false);
@@ -43,7 +43,7 @@ function useFileDescription(bucketId: string) {
     for (let i = 0; i < files.length; i++) {
       urls.forEach(async ({ id, fileName, urls, uploadId }) => {
         if (fileName === files[i].name) {
-          await uploadFile(files[i], urls, bucketId, uploadId);
+          await uploadFile({ file: files[i], urls, bucketId, uploadId });
         }
       });
     }

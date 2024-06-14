@@ -105,7 +105,7 @@ export const authenticate = async ({ bucketId, password }: AuthenticateRequest):
       },
     },
   });
-  if (data.accessToken) {
+  if (Object.hasOwn(data, 'accessToken')) {
     window.localStorage.setItem('accessToken', data.accessToken);
   }
   return data;

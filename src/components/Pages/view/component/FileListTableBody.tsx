@@ -1,7 +1,7 @@
 import { FileList } from './FileList';
 import { EmptyFileList } from './EmptyFileList';
 import { LoadingFileList } from './LoadingFileList';
-import { ViewBucketResponse } from 'service/service';
+import { ViewBucketResponse } from 'service/interface';
 
 interface FileListTableBodyProps {
   fileDescriptions: ViewBucketResponse[];
@@ -11,11 +11,11 @@ interface FileListTableBodyProps {
 }
 
 export const FileListTableBody = ({
-  fileDescriptions,
-  isLoading,
-  selected,
-  toggleSelectFile,
-}: FileListTableBodyProps) => {
+                                    fileDescriptions,
+                                    isLoading,
+                                    selected,
+                                    toggleSelectFile,
+                                  }: FileListTableBodyProps) => {
   console.log(isLoading, fileDescriptions);
   return isLoading ? (
     <LoadingFileList />

@@ -1,7 +1,5 @@
-import { useState } from 'react';
-import { FileDescription } from '../../../../../utils/interface';
 import { fileListConfig } from '../../../../../utils/config';
-import { ViewBucketResponse } from 'service/service';
+import { ViewBucketResponse } from 'service/interface';
 
 function getNewlySortedFileDescriptions(
   fileDescriptions: ViewBucketResponse[],

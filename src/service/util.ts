@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash';
-import { UnauthorizedException } from './exception';
+import { HTTPException, UnauthorizedException } from './exception';
 
 export const generateEndpoint = ({ endpoint, params = {} }: {
   endpoint: string;
@@ -17,7 +17,8 @@ export const generateEndpoint = ({ endpoint, params = {} }: {
 type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS' | 'HEAD' | 'PATCH';
 type RequestInitLike = { method?: HTTPMethod, headers?: { [key: string]: string }, body?: any };
 
-export const fetchPung = async ({ endpoint, params = {}, fetchInit = undefined, auth = false }: {
+
+export const fetchPung = async ({ endpoint, params = {}, fetchInit = undefined }: {
   endpoint: string, params?: {
     [key: string]: string | number
   }, fetchInit?: RequestInit | RequestInitLike | undefined,
@@ -25,12 +26,12 @@ export const fetchPung = async ({ endpoint, params = {}, fetchInit = undefined, 
   const accessToken = window.localStorage.getItem('accessToken');
   const newFetchInit = {
     method: fetchInit?.method || 'POST',
-    headers: fetchInit?.headers || (accessToken) ? {
+    headers: fetchInit?.headers || ((accessToken) ? {
       'Content-Type': 'application/json',
-      'Access-Token': window.localStorage.getItem('accessToken'),
+      'Access-Token': accessToken,
     } : {
       'Content-Type': 'application/json',
-    },
+    }),
     body: JSON.stringify(fetchInit?.body) || undefined,
   };
   const response = await fetch(generateEndpoint({ endpoint, params }), newFetchInit);
@@ -46,10 +47,12 @@ export const fetchPung = async ({ endpoint, params = {}, fetchInit = undefined, 
   if (response.status === 401 /*unauthorized*/ || response.status === 403 /*Forbidden*/) {
     window.localStorage.setItem('accessToken', '');
     throw new UnauthorizedException();
+  } else {
+    throw new HTTPException(statusCode);
   }
 };
 
-const httpStatusMessage: { [key: string]: string } = {
+export const httpStatusMessage: { [key: string]: string } = {
   100: 'Continue',
   101: 'Switching Protocols',
   102: 'Processing',
