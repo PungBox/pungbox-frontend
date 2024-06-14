@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { getBucketInfo } from 'service/service';
 
-const useBucktInfo = () => {
+const useBucketInfo = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [bucketInfo, setBucketInfo] = useState({
     bucketId: '',
@@ -23,8 +23,13 @@ const useBucktInfo = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    getBucketInfo().then((res) => {
-      setBucketInfo(res);
+    getBucketInfo('001bc76f-436f-4a7e-a1a0-e1ed389e9262').then((res) => {
+      setBucketInfo({
+        bucketId: res.bucketId,
+        bucketName: res.bucketName,
+        expired: !!res.expired,
+        expiration: res.expiredAt,
+      });
       setIsLoading(false);
     });
   }, []);
@@ -47,4 +52,4 @@ const useBucktInfo = () => {
 
   return { isLoading, bucketInfo, timeToExpire };
 };
-export default useBucktInfo;
+export default useBucketInfo;

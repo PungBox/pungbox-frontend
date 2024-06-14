@@ -3,12 +3,12 @@ import { FileListTableHeader } from './component/FileListTableHeader';
 import { FileListTableBody } from './component/FileListTableBody';
 import Expired from './component/Expired';
 import styles from '/src/components/Module/View.module.css';
-import { useBucktInfo, useDownloadFiles, useFileDescription, useSelectedFiles, useSortingOrder } from './hooks';
+import { useBucketInfo, useDownloadFiles, useFileDescription, useSelectedFiles, useSortingOrder } from './hooks';
 
 const View = () => {
   const { sortingCriteria, isSortingAscending, resetToDefaultSortingOrder, handleSorting, reSortFileDescriptions } =
     useSortingOrder();
-  const { isLoading: isLoadingBucketInfo, bucketInfo, timeToExpire } = useBucktInfo();
+  const { isLoading: isLoadingBucketInfo, bucketInfo, timeToExpire } = useBucketInfo();
   const {
     fetchFiles,
     isLoading: isLoadingFiles,
@@ -28,20 +28,18 @@ const View = () => {
     reSortFileDescriptions(fileDescriptions, setFileDescriptions);
   }, [reSortFileDescriptions]);
 
-  // TODO: storage 인증키 유효성 검사 함수 구현 (storage가 만료되었는지)
-  const isStorageNumberValid = !bucketInfo.expired;
-
   return (
     <div className={styles.view_panel}>
       <div className={styles.view_panel_header}>
         <p className={styles.storage_number}>Storage No. {bucketInfo?.bucketId}</p>
         <p className={styles.expiration_date}>expiration date: {bucketInfo.expiration}</p>
-
-        <p className={styles.expiration_date}>
-          {timeToExpire.days} Days {timeToExpire.hours}h:{timeToExpire.minutes}m: {timeToExpire.seconds}s to expire
-        </p>
+        {!bucketInfo?.expired && (
+          <p className={styles.expiration_date}>
+            {timeToExpire.days} Days {timeToExpire.hours}h:{timeToExpire.minutes}m: {timeToExpire.seconds}s to expire
+          </p>
+        )}
       </div>
-      {!isStorageNumberValid ? (
+      {bucketInfo?.expired ? (
         <Expired />
       ) : (
         <>

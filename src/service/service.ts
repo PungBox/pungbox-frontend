@@ -84,16 +84,16 @@ export const uploadFile = async ({ file, urls, bucketId, uploadId }: UploadFileR
   return result;
 };
 
-export const getBucketInfo = async (): Promise<GetBucketInfoResponse> => {
-  // return await fetchPung({
-  //   endpoint: '/bucket/get-info',
-  // });
-  return {
-    bucketId: 'string',
-    bucketName: 'string',
-    expired: false,
-    expiration: 'string',
-  };
+export const getBucketInfo = async (bucketId: string): Promise<GetBucketInfoResponse> => {
+  const endpoint = generateEndpoint({ endpoint: '/bucket/get-info', params: { bucketId } });
+  const response = await fetch(endpoint, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  const data = await response.json();
+  return JSON.parse(data.body);
 };
 
 export const authenticate = async ({ bucketId, password }: AuthenticateRequest): Promise<AuthenticateResponse> => {
