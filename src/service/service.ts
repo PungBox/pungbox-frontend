@@ -2,16 +2,24 @@ import { uploadConfig } from '../utils/config';
 import {
   AuthenticateRequest,
   AuthenticateResponse,
+  CreateBucketRequest,
   CreateBucketResponse,
+  DeleteFilesRequest,
+  DeleteFilesResponse,
+  GetBucketInfoResponse,
+  GetDownloadUrlRequest,
+  GetDownloadUrlResponse,
   GetUploadUrlsRequest,
   GetUploadUrlsResponse,
+  UploadFileRequest,
+  UploadFileResponse,
+  ViewBucketRequest,
   ViewBucketResponse,
 } from './interface';
-import { fetchFetch, generateEndpoint } from './util';
-import { NotFoundException, UnauthorizedException } from './exception';
+import { fetchPung } from './util';
 
 export const getUploadUrls = async ({ files, bucketId }: GetUploadUrlsRequest): Promise<GetUploadUrlsResponse[]> => {
-  return await fetchFetch({
+  return await fetchPung({
     endpoint: '/file/get-upload-url', params: { bucketId }, fetchInit: {
       method: 'GET',
       body: { files },
@@ -19,12 +27,8 @@ export const getUploadUrls = async ({ files, bucketId }: GetUploadUrlsRequest): 
   });
 };
 
-interface GetDownloadUrlRequest {
-  fileIds: string[];
-}
-
-export const getDownloadUrls = async ({ fileIds }: GetDownloadUrlRequest): Promise<Record<string, string>> => {
-  return await fetchFetch({
+export const getDownloadUrls = async ({ fileIds }: GetDownloadUrlRequest): Promise<GetDownloadUrlResponse> => {
+  return await fetchPung({
     endpoint: '/file/get-download-url', fetchInit: {
       method: 'GET',
       body: { fileIds },
@@ -32,55 +36,32 @@ export const getDownloadUrls = async ({ fileIds }: GetDownloadUrlRequest): Promi
   });
 };
 
-export const viewBucket = async ({ bucketId }: { bucketId: string }): Promise<{ files: ViewBucketResponse[] }> => {
-  const endpoint = generateEndpoint({ endpoint: '/bucket/view', params: { bucketId } });
-  const response = await fetch(endpoint, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Token': window.localStorage.getItem('accessToken') || '',
+export const viewBucket = async ({ bucketId }: ViewBucketRequest): Promise<{ files: ViewBucketResponse[] }> => {
+  return await fetchPung({
+    endpoint: '/bucket/view', params: { bucketId }, fetchInit: {
+      method: 'GET',
     },
   });
-  const data = await response.json();
-  if (data.statusCode === 401 /*unauthorized*/) {
-    throw new UnauthorizedException();
-  } else if (data.statusCode === 404) {
-    throw new NotFoundException();
-  }
-  return JSON.parse(data.body);
 };
 
-export const createBucket = async (password: string): Promise<CreateBucketResponse> => {
-  return await fetchFetch({
+export const createBucket = async ({ password }: CreateBucketRequest): Promise<CreateBucketResponse> => {
+  return await fetchPung({
     endpoint: '/bucket/create', fetchInit: {
       body: { password },
     },
   });
 };
 
-export const deleteFiles = async (bucketId: string, fileIds: string[]): Promise<{ success: boolean }> => {
-  const endpoint = generateEndpoint({ endpoint: '/file/delete', params: { bucketId } });
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+export const deleteFiles = async ({ bucketId, fileIds }: DeleteFilesRequest): Promise<DeleteFilesResponse> => {
+  return await fetchPung({
+    endpoint: '/file/delete', params: { bucketId }, fetchInit: {
+      body: { fileIds },
     },
-    body: JSON.stringify({ fileIds }),
   });
-  const data = await response.json();
-  return JSON.parse(data.body);
 };
 
-export const uploadFile = async (
-  file: File,
-  urls: string[],
-  bucketId: string,
-  uploadId: number,
-): Promise<
-  Promise<{
-    success: boolean;
-  }>[]
-> => {
+export const uploadFile = async ({ file, urls, bucketId, uploadId }: UploadFileRequest)
+  : Promise<Promise<UploadFileResponse>[]> => {
   const fileChunkCount = Math.ceil(file.size / uploadConfig.FILE_CHUNK_SIZE);
   const fileChunks = [];
   for (let i = 0; i < fileChunkCount; i++) {
@@ -103,28 +84,21 @@ export const uploadFile = async (
   return result;
 };
 
-export const getBucketInfo = async () => {
-  return { bucketId: 'string', bucketName: 'string', expired: false, expiration: 'string' };
+export const getBucketInfo = async (): Promise<GetBucketInfoResponse> => {
+  return await fetchPung({
+    endpoint: '/bucket/get-info',
+  });
 };
 
-export const authenticate = async ({ bucketId, password }: AuthenticateRequest)
-  : Promise<AuthenticateResponse | null> => {
-  const endpoint = generateEndpoint({ endpoint: '/authenticate' });
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+export const authenticate = async ({ bucketId, password }: AuthenticateRequest): Promise<AuthenticateResponse> => {
+  const data = await fetchPung({
+    endpoint: '/authenticate', fetchInit: {
+      body: {
+        user_id: bucketId,
+        password: password,
+      },
     },
-    body: JSON.stringify({
-      user_id: bucketId,
-      password: password,
-    }),
   });
-  const data = await response.json();
-  if (data.statusCode !== 200) {
-    console.error(`Authentication failed. HTTP response status code=${data.statusCode}`);
-    return null;
-  }
   window.localStorage.setItem('accessToken', data.accessToken);
   return data;
 };
