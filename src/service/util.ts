@@ -1,7 +1,7 @@
 import { isEmpty } from 'lodash';
 import { HTTPException, UnauthorizedException } from './exception';
 
-export const generateEndpoint = ({ endpoint, params = {} }: {
+const generateEndpoint = ({ endpoint, params = {} }: {
   endpoint: string;
   params?: Record<string, string | number>;
 }) => {
