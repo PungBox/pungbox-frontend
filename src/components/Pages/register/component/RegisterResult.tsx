@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import ResultContainer from './ResultContainer';
 import styles from '/src/components/Module/Register.module.css';
 import { useBucketInfoContext } from 'context/BucketInfoProvider';
@@ -10,11 +9,9 @@ interface RegisterResultProps {
 
 const RegisterResult = ({ handleButtonClick }: RegisterResultProps) => {
   const { bucketInfo: registeredBucketInfo } = useBucketInfoContext();
-  const navigate = useNavigate();
   
   // TODO: url을 통해 들어오는 사용자들 대처해야 함 (routing) 이미 auth 완료한 사용자 / auth 완료하지 않은 사용자 구분
   const url = `https://www.pungbox.com/box/${registeredBucketInfo.id}`;
-  
   
   return (
     <div className={styles.registerResultContainer}>
