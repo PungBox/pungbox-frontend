@@ -22,10 +22,8 @@ jobs:
           script: |
             cd ~/pungbox-frontend
             git pull
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-            nvm install v18.20.3
-            nvm use v18.20.3
-            npm install -g pnpm
+            source ~/.nvm/nvm.sh
+            nvm use 18
             pnpm install
             pnpm run build
             sudo kill -9 $(sudo lsof -t -i:80)
