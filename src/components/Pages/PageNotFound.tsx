@@ -11,9 +11,12 @@ const PageNotFound = () => {
   }
   
   return (<>
+    <h1>Page Not Found</h1>
     <img className={styles.mainicon} src={punglogoUrl} alt="uploadFileHere" />
-    <h1>Oops! Something went wrong.</h1>
-    <p>The page you requested is not found.</p>
+    <div className={styles.textcontainer}>
+      <h2>Oops! Something went wrong.</h2>
+      <p>The page you requested is not found.</p>
+    </div>
     <button className={styles.gobackbutton} onClick={goBackToPreviousPage}>Go back</button>
   </>);
 };
