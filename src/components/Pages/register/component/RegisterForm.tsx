@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { SetStateAction, useState } from 'react';
 import styles from '/src/components/Module/Register.module.css';
 import { HTMLFormElement, IHTMLFormControlsCollection } from 'happy-dom';
 import { createBucket } from '../../../../service/service';
@@ -13,11 +13,15 @@ interface RegisterFormElement extends HTMLFormElement {
   readonly elements: RegisterFormElements;
 }
 
-const RegisterForm = () => {
+interface RegisterFormProps {
+  setPassword: React.Dispatch<SetStateAction<string>>;
+}
+
+const RegisterForm = ({ setPassword }: RegisterFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
-
+  
   const { setBucketInfo } = useBucketInfoContext();
-
+  
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setIsLoading(true);
@@ -28,14 +32,16 @@ const RegisterForm = () => {
       password: formElements.password.value,
     });
     if (!Object.hasOwn(createBucketResponse, 'id')) {
-      console.error('Failed to create bucket');
+      alert('Failed to create storage, due to server error');
+      console.error(createBucketResponse);
+      setIsLoading(false);
       return;
     }
     const { id: bucketId, expiredAt } = createBucketResponse;
     setBucketInfo({ id: bucketId, expiredAt });
     setIsLoading(false);
   }
-
+  
   return (
     <form className={styles.form} method="POST" onSubmit={async (e) => await submit(e)}>
       <label htmlFor="password">Password for storage:</label>
@@ -43,7 +49,7 @@ const RegisterForm = () => {
       <input type="password" id="password" name="password" required />
       <br />
       <br />
-
+      
       <label htmlFor="expiration-period">Storage expiration period:</label>
       <br />
       <select id="expiration-period" name="expiration-period" required>
@@ -55,7 +61,7 @@ const RegisterForm = () => {
       </select>
       <br />
       <br />
-
+      
       <input type="submit" value={isLoading ? 'Creating Storage...' : 'Get Storage'} disabled={isLoading} />
     </form>
   );

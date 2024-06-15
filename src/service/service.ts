@@ -69,11 +69,11 @@ export const deleteFiles = async ({ bucketId, fileIds }: DeleteFilesRequest): Pr
 };
 
 export const uploadFile = async ({
-  file,
-  urls,
-  bucketId,
-  uploadId,
-}: UploadFileRequest): Promise<Promise<UploadFileResponse>[]> => {
+                                   file,
+                                   urls,
+                                   bucketId,
+                                   uploadId,
+                                 }: UploadFileRequest): Promise<Promise<UploadFileResponse>[]> => {
   const fileChunkCount = Math.ceil(file.size / uploadConfig.FILE_CHUNK_SIZE);
   const fileChunks = [];
   for (let i = 0; i < fileChunkCount; i++) {
@@ -122,6 +122,11 @@ export const authenticate = async ({ bucketId, password }: AuthenticateRequest):
     window.localStorage.setItem('accessToken', data.accessToken);
   }
   return data;
+};
+
+export const isAuthenticated = () => {
+  const accessToken = window.localStorage.getItem('accessToken');
+  return !(accessToken === null || accessToken === '');
 };
 
 export const signout = async () => {
