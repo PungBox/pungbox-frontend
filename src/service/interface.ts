@@ -1,4 +1,4 @@
-export interface GetUploadUrlsRequest {
+export interface PostUploadUrlsRequest {
   files: {
     fileName: string;
     size: number;

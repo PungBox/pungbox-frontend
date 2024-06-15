@@ -15,7 +15,7 @@ const RegisterResult = () => {
       <ResultContainer title="Access Code for Storage:" content={registeredBucketInfo.id} copyable />
       <ResultContainer title="Expiration Date:" content={registeredBucketInfo.expiredAt} />
 
-      <Link to={`/view?bucketCode=${registeredBucketInfo}`}>
+      <Link to={`/view?bucketCode=${registeredBucketInfo.id}`}>
         <button className={styles.gotobutton}>Go to Storage</button>
       </Link>
     </div>

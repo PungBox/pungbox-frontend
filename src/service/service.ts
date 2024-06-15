@@ -9,7 +9,7 @@ import {
   GetBucketInfoResponse,
   GetDownloadUrlRequest,
   GetDownloadUrlResponse,
-  GetUploadUrlsRequest,
+  PostUploadUrlsRequest,
   GetUploadUrlsResponse,
   UploadFileRequest,
   UploadFileResponse,
@@ -18,12 +18,11 @@ import {
 } from './interface';
 import { fetchPung, generateEndpoint } from './util';
 
-export const getUploadUrls = async ({ files, bucketId }: GetUploadUrlsRequest): Promise<GetUploadUrlsResponse[]> => {
+export const getUploadUrls = async ({ files, bucketId }: PostUploadUrlsRequest): Promise<GetUploadUrlsResponse[]> => {
   return await fetchPung({
     endpoint: '/file/get-upload-url',
     params: { bucketId },
     fetchInit: {
-      method: 'GET',
       body: { files },
     },
   });
