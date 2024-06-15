@@ -31,24 +31,6 @@ function useFileDescription(bucketId: string) {
     fetchFiles();
   }, [fetchFiles]);
 
-  async function uploadFiles(files: FileList | File[] | null) {
-    if (files === null) return;
-    if (files instanceof FileList) files = [...files];
-    const fileNamesAndSizes = files.map((file: File) => {
-      const { name, size } = file;
-      return { fileName: name, size: size };
-    });
-    const urls = await getUploadUrls({ files: fileNamesAndSizes, bucketId });
-
-    for (let i = 0; i < files.length; i++) {
-      urls.forEach(async ({ id, fileName, urls, uploadId }) => {
-        if (fileName === files[i].name) {
-          await uploadFile({ file: files[i], urls, bucketId, uploadId });
-        }
-      });
-    }
-  }
-
   function deleteFiles(fileIds: string[]) {
     const newFileDescriptions = fileDescriptions.slice().filter((file) => {
       return !fileIds.includes(file.id);
@@ -61,7 +43,6 @@ function useFileDescription(bucketId: string) {
     setFileDescriptions,
     isLoading,
     fetchFiles,
-    uploadFiles,
     deleteFiles,
   };
 }

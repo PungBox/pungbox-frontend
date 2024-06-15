@@ -34,7 +34,13 @@ const RegisterForm = () => {
         return;
       }
       const { id: bucketId, expiredAt } = createBucketResponse;
-      setBucketInfo({ id: bucketId, expiredAt });
+
+      const now = new Date();
+      const expirationUtc = new Date(expiredAt);
+
+      const timezoneOffsetMs = now.getTimezoneOffset() * 60 * 1000;
+      const expirationLocal = new Date(expirationUtc.getTime() - timezoneOffsetMs).toString();
+      setBucketInfo({ id: bucketId, expiredAt: expirationLocal });
     } catch (e) {
       console.error('Failed to create bucket', e);
       setHasError(true);

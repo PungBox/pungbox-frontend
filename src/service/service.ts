@@ -19,13 +19,17 @@ import {
 import { fetchPung, generateEndpoint } from './util';
 
 export const getUploadUrls = async ({ files, bucketId }: PostUploadUrlsRequest): Promise<GetUploadUrlsResponse[]> => {
-  return await fetchPung({
+  const response = await fetchPung({
     endpoint: '/file/get-upload-url',
     params: { bucketId },
     fetchInit: {
       body: { files },
     },
   });
+
+  console.log(response);
+  // const data = await response.json();
+  return JSON.parse(response.body);
 };
 
 export const getDownloadUrls = async ({ fileIds }: GetDownloadUrlRequest): Promise<GetDownloadUrlResponse> => {
