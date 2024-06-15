@@ -8,14 +8,14 @@ function useFileDescription(bucketId: string) {
   const [isLoading, setIsLoading] = useState(false);
   const [fileDescriptions, setFileDescriptions] = useState<ViewBucketResponse[]>([]);
   const navigate = useNavigate();
-  
+
   const fetchFiles = useCallback(() => {
     if (!bucketId) return;
     setIsLoading(true);
     viewBucket({ bucketId })
       .then((res) => {
         const { files } = res;
-        setFileDescriptions(files);
+        setFileDescriptions(files || []);
         // resetToDefaultSortingOrder(fileListConfig.defaultSortingCriteria);
       })
       .catch((e) => {
@@ -26,11 +26,11 @@ function useFileDescription(bucketId: string) {
         setIsLoading(false);
       });
   }, [bucketId]);
-  
+
   useEffect(() => {
     fetchFiles();
   }, [fetchFiles]);
-  
+
   async function uploadFiles(files: FileList | File[] | null) {
     if (files === null) return;
     if (files instanceof FileList) files = [...files];
@@ -39,7 +39,7 @@ function useFileDescription(bucketId: string) {
       return { fileName: name, size: size };
     });
     const urls = await getUploadUrls({ files: fileNamesAndSizes, bucketId });
-    
+
     for (let i = 0; i < files.length; i++) {
       urls.forEach(async ({ id, fileName, urls, uploadId }) => {
         if (fileName === files[i].name) {
@@ -48,14 +48,14 @@ function useFileDescription(bucketId: string) {
       });
     }
   }
-  
+
   function deleteFiles(fileIds: string[]) {
     const newFileDescriptions = fileDescriptions.slice().filter((file) => {
       return !fileIds.includes(file.id);
     });
     setFileDescriptions(newFileDescriptions);
   }
-  
+
   return {
     fileDescriptions,
     setFileDescriptions,

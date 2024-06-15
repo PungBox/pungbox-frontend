@@ -71,11 +71,12 @@ export interface GetBucketInfoResponse {
 }
 
 export interface AuthenticateRequest {
-  bucketId: string;
+  bucketCode: string;
   password: string;
 }
 
 export interface AuthenticateResponse {
+  bucketId: string;
   statusCode: number;
   accessToken: string;
 }

@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from 'react';
 
 type BucketInfoType = {
   id: string;
-  expiredAt: string;
+  expiredAt?: string;
 };
 
 export const BucketInfoContext = createContext({

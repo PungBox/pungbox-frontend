@@ -4,11 +4,15 @@ import { FileListTableBody } from './component/FileListTableBody';
 import Expired from './component/Expired';
 import styles from '/src/components/Module/View.module.css';
 import { useBucketInfo, useDownloadFiles, useFileDescription, useSelectedFiles, useSortingOrder } from './hooks';
+import { useSearchParams } from 'react-router-dom';
 
 const View = () => {
+  const [searchParams] = useSearchParams();
+  const bucketCode = searchParams.get('bucketCode');
+  console.log(bucketCode);
   const { sortingCriteria, isSortingAscending, resetToDefaultSortingOrder, handleSorting, reSortFileDescriptions } =
     useSortingOrder();
-  const { isLoading: isLoadingBucketInfo, bucketInfo, timeToExpire } = useBucketInfo();
+  const { isLoading: isLoadingBucketInfo, bucketInfo, timeToExpire } = useBucketInfo(bucketCode);
   const {
     fetchFiles,
     isLoading: isLoadingFiles,
@@ -16,7 +20,7 @@ const View = () => {
     setFileDescriptions,
     uploadFiles,
     deleteFiles,
-  } = useFileDescription(bucketInfo?.bucketId);
+  } = useFileDescription(bucketCode);
 
   const isLoading = useMemo(() => isLoadingBucketInfo || isLoadingFiles, [isLoadingBucketInfo, isLoadingFiles]);
 
@@ -75,7 +79,7 @@ const View = () => {
             <tbody>
               <FileListTableBody
                 fileDescriptions={fileDescriptions}
-                isLoading={isLoading}
+                isLoading={isLoadingFiles}
                 selected={selected}
                 toggleSelectFile={toggleSelectFile}
               />
