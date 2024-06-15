@@ -9,7 +9,7 @@ import useUpadteFiles from './hooks/useUploadFiles';
 
 const View = () => {
   const [searchParams] = useSearchParams();
-  const bucketCode = searchParams.get('bucketCode');
+  const bucketCode = searchParams.get('bucketCode') || '';
   const { sortingCriteria, isSortingAscending, resetToDefaultSortingOrder, handleSorting, reSortFileDescriptions } =
     useSortingOrder();
 
@@ -37,7 +37,7 @@ const View = () => {
   return (
     <div className={styles.view_panel}>
       <div className={styles.view_panel_header}>
-        <p className={styles.storage_number}>Storage No. {bucketInfo?.bucketId}</p>
+        <p className={styles.storage_number}>Storage No. {bucketInfo?.bucketCode}</p>
         <p className={styles.expiration_date}>expiration date: {bucketInfo.expiration}</p>
         {!bucketInfo?.expired && (
           <p className={styles.expiration_date}>

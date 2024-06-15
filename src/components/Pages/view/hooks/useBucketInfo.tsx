@@ -6,6 +6,7 @@ const useBucketInfo = (bucketCode: string) => {
   const [isLoading, setIsLoading] = useState(false);
   const [bucketInfo, setBucketInfo] = useState({
     bucketId: '',
+    bucketCode: '',
     expired: false,
     expiration: '',
   });
@@ -34,6 +35,7 @@ const useBucketInfo = (bucketCode: string) => {
 
       setBucketInfo({
         bucketId: res.bucketId,
+        bucketCode: bucketCode,
         expired: !!res.expired,
         expiration: expirationLocal,
       });

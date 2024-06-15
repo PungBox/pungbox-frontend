@@ -5,7 +5,10 @@ type BucketInfoType = {
   expiredAt?: string;
 };
 
-export const BucketInfoContext = createContext({
+export const BucketInfoContext = createContext<{
+  bucketInfo: BucketInfoType;
+  setBucketInfo: (bucketInfo: BucketInfoType) => void;
+}>({
   bucketInfo: {
     id: '',
     expiredAt: '',

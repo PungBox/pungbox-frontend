@@ -23,7 +23,7 @@ const useUpadteFiles = (bucketId: string) => {
       for (let i = 0; i < files.length; i++) {
         urls.forEach(async ({ id, fileName, urls, uploadId }) => {
           if (fileName === files[i].name) {
-            await uploadFile({ file: files[i], urls, bucketCode, uploadId });
+            await uploadFile({ file: files[i], urls, bucketId, uploadId });
           }
         });
       }

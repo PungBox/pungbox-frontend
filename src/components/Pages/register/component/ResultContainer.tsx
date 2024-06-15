@@ -3,13 +3,14 @@ import styles from '/src/components/Module/Register.module.css';
 
 interface ResultContainerProps {
   title: string;
-  content: string;
+  content?: string;
   copyable?: boolean;
 }
 
 const ResultContainer = ({ title, content, copyable }: ResultContainerProps) => {
   const [isCopied, setIsCopied] = useState(false);
   const copyToClipboard = async () => {
+    if (!content) return;
     setIsCopied(true);
     await navigator.clipboard.writeText(content);
     setTimeout(() => {
