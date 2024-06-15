@@ -31,7 +31,6 @@ const RegisterResult = ({ password }: RegisterResultProps) => {
       <ResultContainer title="Access Code for Storage:" content={registeredBucketInfo.id} copyable />
       <ResultContainer title="Expiration Date:" content={registeredBucketInfo.expiredAt} />
       
-      
       <button className={styles.gotobutton} onClick={async () => handleGoToStorageButtonClick}>Go to Storage</button>
     </div>
   );
