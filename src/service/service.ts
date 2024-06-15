@@ -118,6 +118,7 @@ export const authenticate = async ({ bucketCode, password }: AuthenticateRequest
     },
   });
   if (Object.hasOwn(data, 'accessToken')) {
+    console.log('accessToken', data.accessToken);
     window.localStorage.setItem('accessToken', data.accessToken);
   }
   return data;

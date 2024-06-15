@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import styles from '/src/components/Module/Sidebar.module.css'; 
+import styles from '/src/components/Module/Sidebar.module.css';
 import openfolderUrl from '/src/assets/images/icon-open-folder.png';
 import searchUrl from '/src/assets/images/icon-search.png';
 import questionUrl from '/src/assets/images/icon-question.png';
+import { useBucketInfoContext } from 'context/BucketInfoProvider';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -12,7 +13,8 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, toggleSidebar }) => {
   const [isMobile, setIsMobile] = useState(false);
-  
+  const { bucketInfo: registeredBucketInfo } = useBucketInfoContext();
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768); // 여기서 768은 원하는 임계값입니다.
@@ -30,7 +32,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, toggleSidebar }) => {
   const getLinkByAlt = (alt: string) => {
     switch (alt) {
       case 'Open Folder':
-        return '/view';
+        return `/view?bucketCode=${registeredBucketInfo.id}`;
       case 'Search':
         return '/authenticate';
       case 'About Us':
@@ -39,7 +41,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, toggleSidebar }) => {
         return '/';
     }
   };
-  
+
   return (
     <div className={`${styles.sidebar} ${sidebarOpen ? styles.open : ''}`}>
       <div className={styles.frame}>
