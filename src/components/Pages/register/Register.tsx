@@ -2,16 +2,12 @@ import React, { useState } from 'react';
 import RegisterForm from './component/RegisterForm';
 import RegisterResult from './component/RegisterResult';
 import { useLocation } from 'react-router-dom';
+import { useBucketInfoContext } from 'context/BucketInfoProvider';
 
 const Register = () => {
-  const [isRegisterDone, setIsRegisterDone] = useState(false);
-  const [accessCode, setAccessCode] = useState('000000');
+  const { bucketInfo: registeredBucketInfo } = useBucketInfoContext();
 
-  return isRegisterDone ? (
-    <RegisterResult accessCode={accessCode} />
-  ) : (
-    <RegisterForm setIsRegisterDone={setIsRegisterDone} setAccessCode={setAccessCode} />
-  );
+  return registeredBucketInfo.id ? <RegisterResult /> : <RegisterForm />;
 };
 
 export default Register;
