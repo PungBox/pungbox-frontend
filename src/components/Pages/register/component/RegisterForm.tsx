@@ -39,6 +39,7 @@ const RegisterForm = ({ setPassword }: RegisterFormProps) => {
     }
     const { id: bucketId, expiredAt } = createBucketResponse;
     setBucketInfo({ id: bucketId, expiredAt });
+    setPassword(formElements.password.value);
     setIsLoading(false);
   }
   
