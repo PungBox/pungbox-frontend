@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAccessCodeInput } from './util/accessCodeInput';
 import { authConfig, authConfig as config } from '../../../utils/config';
 import styles from '/src/components/Module/Authenticate.module.css';
-import { authenticate } from '../../../service/service';
+import { authenticate, isAuthenticated, signout } from '../../../service/service';
 import { HTMLFormElement, IHTMLFormControlsCollection } from 'happy-dom';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -42,6 +42,13 @@ const Authenticate = () => {
   const { accessCode: accessCodeFromUrl } = useParams();
   
   useEffect(() => {
+    if (!isAuthenticated()) return;
+    if (window.confirm('To access new storage, you must disconnect the existing storage.\nAre you sure you want to disconnect from current storage?')) {
+      signout();
+    } else {
+      navigate(-1);
+    }
+    
     if (accessCodeFromUrl === undefined) return;
     if (accessCodeFromUrl.length !== authConfig.DIGIT_LENGTH) {
       console.error('Access code given in the url is not valid');

@@ -129,6 +129,6 @@ export const isAuthenticated = () => {
   return !(accessToken === null || accessToken === '');
 };
 
-export const signout = async () => {
+export const signout = () => {
   window.localStorage.setItem('accessToken', '');
 };

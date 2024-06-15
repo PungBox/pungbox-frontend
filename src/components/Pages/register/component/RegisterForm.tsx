@@ -1,8 +1,9 @@
-import React, { SetStateAction, useState } from 'react';
+import React, { SetStateAction, useEffect, useState } from 'react';
 import styles from '/src/components/Module/Register.module.css';
 import { HTMLFormElement, IHTMLFormControlsCollection } from 'happy-dom';
-import { createBucket } from '../../../../service/service';
+import { createBucket, isAuthenticated, signout } from '../../../../service/service';
 import { useBucketInfoContext } from 'context/BucketInfoProvider';
+import { useNavigate } from 'react-router-dom';
 
 interface RegisterFormElements extends IHTMLFormControlsCollection {
   password: HTMLInputElement;
@@ -19,8 +20,17 @@ interface RegisterFormProps {
 
 const RegisterForm = ({ setPassword }: RegisterFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
-  
+  const navigate = useNavigate();
   const { setBucketInfo } = useBucketInfoContext();
+  
+  useEffect(() => {
+    if (!isAuthenticated()) return;
+    if (window.confirm('To access new storage, you must disconnect the existing storage.\nAre you sure you want to disconnect from current storage?')) {
+      signout();
+    } else {
+      navigate(-1);
+    }
+  }, []);
   
   async function submit(e: React.FormEvent) {
     e.preventDefault();

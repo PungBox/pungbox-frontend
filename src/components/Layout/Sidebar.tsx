@@ -46,9 +46,9 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, toggleSidebar }) => {
     }
   };
   
-  async function confirmLogout() {
+  function confirmLogout() {
     if (window.confirm('Are you sure you want to disconnect from current folder?')) {
-      await signout();
+      signout();
       navigate('/');
     }
   }
