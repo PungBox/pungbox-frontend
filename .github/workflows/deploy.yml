@@ -22,8 +22,6 @@ jobs:
           script: |
             cd ~/pungbox-frontend
             git pull
-            source ~/.nvm/nvm.sh
-            nvm use 18
             pnpm install
             pnpm run build
             sudo kill -9 $(sudo lsof -t -i:80)
