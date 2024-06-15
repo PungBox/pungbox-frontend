@@ -9,8 +9,6 @@ interface RegisterResultProps {
 
 const RegisterResult = ({ handleButtonClick }: RegisterResultProps) => {
   const { bucketInfo: registeredBucketInfo } = useBucketInfoContext();
-  
-  // TODO: url을 통해 들어오는 사용자들 대처해야 함 (routing) 이미 auth 완료한 사용자 / auth 완료하지 않은 사용자 구분
   const url = `https://www.pungbox.com/box/${registeredBucketInfo.id}`;
   
   return (
