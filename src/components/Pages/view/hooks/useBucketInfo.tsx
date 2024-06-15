@@ -49,6 +49,11 @@ const useBucketInfo = (bucketCode: string) => {
       const now = new Date();
       const expiration = new Date(bucketInfo.expiration);
       const diff = expiration.getTime() - now.getTime();
+      if (diff <= 0) {
+        setBucketInfo((prev) => ({ ...prev, expired: true }));
+        clearInterval(intervalId);
+        return;
+      }
       setTimeToExpire({
         days: Math.floor(diff / (1000 * 60 * 60 * 24)),
         hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
