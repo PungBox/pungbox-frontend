@@ -8,6 +8,7 @@ import Authenticate from './Pages/authenticate/Authenticate';
 import Aboutus from './Pages/AboutUs';
 import BucketInfoProvider from 'context/BucketInfoProvider';
 import { isAuthenticated } from '../service/service';
+import PageNotFound from './Pages/PageNotFound';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/authenticate" element={<Authenticate />} />
             <Route path="/aboutus" element={<Aboutus />} />
             <Route path="/box/:accessCode" element={isAuthenticated() ? <View /> : <Authenticate />} />
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
         </Layout>
       </Router>

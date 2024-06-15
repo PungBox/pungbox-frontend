@@ -4,6 +4,8 @@ import { FileListTableBody } from './component/FileListTableBody';
 import Expired from './component/Expired';
 import styles from '/src/components/Module/View.module.css';
 import { useBucketInfo, useDownloadFiles, useFileDescription, useSelectedFiles, useSortingOrder } from './hooks';
+import { isAuthenticated } from '../../../service/service';
+import { useNavigate } from 'react-router-dom';
 
 const View = () => {
   const { sortingCriteria, isSortingAscending, resetToDefaultSortingOrder, handleSorting, reSortFileDescriptions } =
@@ -17,17 +19,25 @@ const View = () => {
     uploadFiles,
     deleteFiles,
   } = useFileDescription(bucketInfo?.bucketId);
-
+  const navigate = useNavigate();
+  
   const isLoading = useMemo(() => isLoadingBucketInfo || isLoadingFiles, [isLoadingBucketInfo, isLoadingFiles]);
-
+  
   const { selected, getSelectedFileIds, toggleSelectFile } = useSelectedFiles(fileDescriptions);
-
+  
   const { downloadFiles, isDownloading } = useDownloadFiles();
-
+  
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      window.alert('You don\'t have access to this storage. Please enter your access code and password.');
+      navigate('/authenticate');
+    }
+  }, []);
+  
   useEffect(() => {
     reSortFileDescriptions(fileDescriptions, setFileDescriptions);
   }, [reSortFileDescriptions]);
-
+  
   return (
     <div className={styles.view_panel}>
       <div className={styles.view_panel_header}>
@@ -66,34 +76,34 @@ const View = () => {
           </div>
           <table className={styles.file_list_table}>
             <thead>
-              <FileListTableHeader
-                handleSorting={handleSorting}
-                sortingCriteria={sortingCriteria}
-                isSortingAscending={isSortingAscending}
-              />
+            <FileListTableHeader
+              handleSorting={handleSorting}
+              sortingCriteria={sortingCriteria}
+              isSortingAscending={isSortingAscending}
+            />
             </thead>
             <tbody>
-              <FileListTableBody
-                fileDescriptions={fileDescriptions}
-                isLoading={isLoading}
-                selected={selected}
-                toggleSelectFile={toggleSelectFile}
-              />
+            <FileListTableBody
+              fileDescriptions={fileDescriptions}
+              isLoading={isLoading}
+              selected={selected}
+              toggleSelectFile={toggleSelectFile}
+            />
             </tbody>
             <tfoot>
-              <tr>
-                <td colSpan={6}>
-                  <label htmlFor="file_upload" className={styles.file_upload_label}>
-                    <input
-                      type="file"
-                      id="file_upload"
-                      className={styles.file_upload_input}
-                      onChange={async (e) => await uploadFiles(e.target.files)}
-                    />
-                    Upload File
-                  </label>
-                </td>
-              </tr>
+            <tr>
+              <td colSpan={6}>
+                <label htmlFor="file_upload" className={styles.file_upload_label}>
+                  <input
+                    type="file"
+                    id="file_upload"
+                    className={styles.file_upload_input}
+                    onChange={async (e) => await uploadFiles(e.target.files)}
+                  />
+                  Upload File
+                </label>
+              </td>
+            </tr>
             </tfoot>
           </table>
         </>
