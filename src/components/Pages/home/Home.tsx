@@ -92,7 +92,7 @@ const Home = () => {
         {/* 드래그 앤 드롭 영역 */}
         <input type="file" id="fileUpload" style={{ display: 'none' }} multiple={true} onChange={onChangeFiles} />
         <label className={`${styles.dropzone} ${isDragging ? 'active' : ''}`} htmlFor="fileUpload" ref={dragRef}>
-          <img className={styles.uploadicon} src={uploadUrl} />
+          <img className={styles.uploadicon} src={uploadUrl} alt="uploadFileHere" />
           <span>Click or Drop files here to upload</span>
         </label>
         
