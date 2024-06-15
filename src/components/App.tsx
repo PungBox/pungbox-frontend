@@ -19,6 +19,7 @@ function App() {
             <Route path="/view" element={<View />} />
             <Route path="/authenticate" element={<Authenticate />} />
             <Route path="/aboutus" element={<Aboutus />} />
+            <Route path="/box/:accessCode" element={<Authenticate />} />
           </Routes>
         </Layout>
       </Router>
