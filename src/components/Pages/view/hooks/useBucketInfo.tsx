@@ -2,8 +2,7 @@ import { useBucketInfoContext } from 'context/BucketInfoProvider';
 import { useEffect, useMemo, useState } from 'react';
 import { getBucketInfo } from 'service/service';
 
-const useBucketInfo = () => {
-  const { bucketInfo: registeredBucketInfo } = useBucketInfoContext();
+const useBucketInfo = (bucketCode: string) => {
   const [isLoading, setIsLoading] = useState(false);
   const [bucketInfo, setBucketInfo] = useState({
     bucketId: '',
@@ -24,18 +23,25 @@ const useBucketInfo = () => {
   });
 
   useEffect(() => {
-    if (!registeredBucketInfo.id) return;
+    console.log(bucketCode);
+    if (!bucketCode) return;
     setIsLoading(true);
-    getBucketInfo(registeredBucketInfo.id).then((res) => {
+    getBucketInfo(bucketCode).then((res) => {
+      const now = new Date();
+      const expirationUtc = new Date(res.expiredAt);
+
+      const timezoneOffsetMs = now.getTimezoneOffset() * 60 * 1000;
+      const expirationLocal = new Date(expirationUtc.getTime() - timezoneOffsetMs).toString();
+
       setBucketInfo({
         bucketId: res.bucketId,
         bucketName: res.bucketName,
         expired: !!res.expired,
-        expiration: res.expiredAt,
+        expiration: expirationLocal,
       });
       setIsLoading(false);
     });
-  }, []);
+  }, [bucketCode]);
 
   useEffect(() => {
     if (bucketInfo.expired) return;

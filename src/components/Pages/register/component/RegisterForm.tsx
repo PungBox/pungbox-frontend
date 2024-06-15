@@ -15,6 +15,7 @@ interface RegisterFormElement extends HTMLFormElement {
 
 const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   const { setBucketInfo } = useBucketInfoContext();
 
@@ -23,16 +24,21 @@ const RegisterForm = () => {
     setIsLoading(true);
     // TODO: expiration period은 사용되고 있지 않음. 추후 /bucket/create endpoint에 넘길 수 있어야 함
     const formElements = (e.currentTarget as unknown as RegisterFormElement).elements;
-    const createBucketResponse = await createBucket({
-      durationMin: formElements['expiration-period'].value,
-      password: formElements.password.value,
-    });
-    if (!Object.hasOwn(createBucketResponse, 'id')) {
-      console.error('Failed to create bucket');
-      return;
+    try {
+      const createBucketResponse = await createBucket({
+        durationMin: formElements['expiration-period'].value,
+        password: formElements.password.value,
+      });
+      if (!Object.hasOwn(createBucketResponse, 'id')) {
+        console.error('Failed to create bucket');
+        return;
+      }
+      const { id: bucketId, expiredAt } = createBucketResponse;
+      setBucketInfo({ id: bucketId, expiredAt });
+    } catch (e) {
+      console.error('Failed to create bucket', e);
+      setHasError(true);
     }
-    const { id: bucketId, expiredAt } = createBucketResponse;
-    setBucketInfo({ id: bucketId, expiredAt });
     setIsLoading(false);
   }
 
@@ -56,7 +62,11 @@ const RegisterForm = () => {
       <br />
       <br />
 
-      <input type="submit" value={isLoading ? 'Creating Storage...' : 'Get Storage'} disabled={isLoading} />
+      <input
+        type="submit"
+        value={hasError ? 'Error occured while creating a storage' : isLoading ? 'Creating Storage...' : 'Get Storage'}
+        disabled={isLoading || hasError}
+      />
     </form>
   );
 };

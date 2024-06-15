@@ -108,12 +108,12 @@ export const getBucketInfo = async (bucketId: string): Promise<GetBucketInfoResp
   return JSON.parse(data.body);
 };
 
-export const authenticate = async ({ bucketId, password }: AuthenticateRequest): Promise<AuthenticateResponse> => {
+export const authenticate = async ({ bucketCode, password }: AuthenticateRequest): Promise<AuthenticateResponse> => {
   const data = await fetchPung({
     endpoint: '/authenticate',
     fetchInit: {
       body: {
-        user_id: bucketId,
+        user_id: bucketCode,
         password: password,
       },
     },

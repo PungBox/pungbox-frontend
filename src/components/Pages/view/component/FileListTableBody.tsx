@@ -11,12 +11,11 @@ interface FileListTableBodyProps {
 }
 
 export const FileListTableBody = ({
-                                    fileDescriptions,
-                                    isLoading,
-                                    selected,
-                                    toggleSelectFile,
-                                  }: FileListTableBodyProps) => {
-  console.log(isLoading, fileDescriptions);
+  fileDescriptions,
+  isLoading,
+  selected,
+  toggleSelectFile,
+}: FileListTableBodyProps) => {
   return isLoading ? (
     <LoadingFileList />
   ) : fileDescriptions?.length === 0 ? (
