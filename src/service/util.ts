@@ -32,18 +32,22 @@ export const fetchPung = async ({
   fetchInit?: RequestInit | RequestInitLike | undefined;
 }) => {
   const accessToken = window.localStorage.getItem('accessToken');
+  console.log('accessToken', accessToken);
+  const headers =
+    fetchInit?.headers ||
+    (accessToken
+      ? {
+          'Content-Type': 'application/json',
+          'Access-Token': accessToken,
+        }
+      : {
+          'Content-Type': 'application/json',
+        });
+  console.log(headers);
   const newFetchInit = {
     method: fetchInit?.method || 'POST',
-    headers:
-      fetchInit?.headers ||
-      (accessToken
-        ? {
-            'Content-Type': 'application/json',
-            'Access-Token': accessToken,
-          }
-        : {
-            'Content-Type': 'application/json',
-          }),
+    headers,
+
     body: JSON.stringify(fetchInit?.body) || undefined,
   };
   const response = await fetch(generateEndpoint({ endpoint, params }), newFetchInit);
@@ -60,12 +64,12 @@ export const fetchPung = async ({
     }:\n${JSON.stringify(data)}`,
   );
 
-  if (response.status === 401 /*unauthorized*/ || response.status === 403 /*Forbidden*/) {
-    window.localStorage.setItem('accessToken', '');
-    throw new UnauthorizedException();
-  } else {
-    throw new HTTPException(statusCode);
-  }
+  // if (response.status === 401 /*unauthorized*/ || response.status === 403 /*Forbidden*/) {
+  //   window.localStorage.setItem('accessToken', '');
+  //   throw new UnauthorizedException();
+  // } else {
+  //   throw new HTTPException(statusCode);
+  // }
 };
 
 export const httpStatusMessage: { [key: string]: string } = {

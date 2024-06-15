@@ -1,4 +1,4 @@
-export interface GetUploadUrlsRequest {
+export interface PostUploadUrlsRequest {
   files: {
     fileName: string;
     size: number;
@@ -71,11 +71,12 @@ export interface GetBucketInfoResponse {
 }
 
 export interface AuthenticateRequest {
-  bucketId: string;
+  bucketCode: string;
   password: string;
 }
 
 export interface AuthenticateResponse {
+  bucketId: string;
   statusCode: number;
   accessToken: string;
 }

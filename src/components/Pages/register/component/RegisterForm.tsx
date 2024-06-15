@@ -20,6 +20,7 @@ interface RegisterFormProps {
 
 const RegisterForm = ({ setPassword }: RegisterFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const navigate = useNavigate();
   const { setBucketInfo } = useBucketInfoContext();
   
@@ -35,20 +36,31 @@ const RegisterForm = ({ setPassword }: RegisterFormProps) => {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setIsLoading(true);
-    // TODO: expiration period은 사용되고 있지 않음. 추후 /bucket/create endpoint에 넘길 수 있어야 함
     const formElements = (e.currentTarget as unknown as RegisterFormElement).elements;
-    const createBucketResponse = await createBucket({
-      durationMin: formElements['expiration-period'].value,
-      password: formElements.password.value,
-    });
-    if (!Object.hasOwn(createBucketResponse, 'id')) {
-      alert('Failed to create storage, due to server error');
-      console.error(createBucketResponse);
-      setIsLoading(false);
-      return;
+    
+    try {
+      const createBucketResponse = await createBucket({
+        durationMin: formElements['expiration-period'].value,
+        password: formElements.password.value,
+      });
+      if (!Object.hasOwn(createBucketResponse, 'id')) {
+        console.error('Failed to create bucket', createBucketResponse);
+        setIsLoading(false);
+        return;
+      }
+      const { id: bucketId, expiredAt } = createBucketResponse;
+
+      const now = new Date();
+      const expirationUtc = new Date(expiredAt);
+
+      const timezoneOffsetMs = now.getTimezoneOffset() * 60 * 1000;
+      const expirationLocal = new Date(expirationUtc.getTime() - timezoneOffsetMs).toString();
+      setBucketInfo({ id: bucketId, expiredAt: expirationLocal });
+    } catch (e) {
+      console.error('Failed to create bucket', e);
+      setHasError(true);
     }
-    const { id: bucketId, expiredAt } = createBucketResponse;
-    setBucketInfo({ id: bucketId, expiredAt });
+    
     setPassword(formElements.password.value);
     setIsLoading(false);
   }
@@ -72,8 +84,12 @@ const RegisterForm = ({ setPassword }: RegisterFormProps) => {
       </select>
       <br />
       <br />
-      
-      <input type="submit" value={isLoading ? 'Creating Storage...' : 'Get Storage'} disabled={isLoading} />
+
+      <input
+        type="submit"
+        value={hasError ? 'Error occured while creating a storage' : isLoading ? 'Creating Storage...' : 'Get Storage'}
+        disabled={isLoading || hasError}
+      />
     </form>
   );
 };

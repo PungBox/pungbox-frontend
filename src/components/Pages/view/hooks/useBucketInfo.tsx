@@ -2,12 +2,11 @@ import { useBucketInfoContext } from 'context/BucketInfoProvider';
 import { useEffect, useMemo, useState } from 'react';
 import { getBucketInfo } from 'service/service';
 
-const useBucketInfo = () => {
-  const { bucketInfo: registeredBucketInfo } = useBucketInfoContext();
+const useBucketInfo = (bucketCode: string) => {
   const [isLoading, setIsLoading] = useState(false);
   const [bucketInfo, setBucketInfo] = useState({
     bucketId: '',
-    bucketName: '',
+    bucketCode: '',
     expired: false,
     expiration: '',
   });
@@ -24,18 +23,25 @@ const useBucketInfo = () => {
   });
 
   useEffect(() => {
-    if (!registeredBucketInfo.id) return;
+    console.log(bucketCode);
+    if (!bucketCode) return;
     setIsLoading(true);
-    getBucketInfo(registeredBucketInfo.id).then((res) => {
+    getBucketInfo(bucketCode).then((res) => {
+      const now = new Date();
+      const expirationUtc = new Date(res.expiredAt);
+
+      const timezoneOffsetMs = now.getTimezoneOffset() * 60 * 1000;
+      const expirationLocal = new Date(expirationUtc.getTime() - timezoneOffsetMs).toString();
+
       setBucketInfo({
         bucketId: res.bucketId,
-        bucketName: res.bucketName,
+        bucketCode: bucketCode,
         expired: !!res.expired,
-        expiration: res.expiredAt,
+        expiration: expirationLocal,
       });
       setIsLoading(false);
     });
-  }, []);
+  }, [bucketCode]);
 
   useEffect(() => {
     if (bucketInfo.expired) return;
@@ -43,6 +49,11 @@ const useBucketInfo = () => {
       const now = new Date();
       const expiration = new Date(bucketInfo.expiration);
       const diff = expiration.getTime() - now.getTime();
+      if (diff <= 0) {
+        setBucketInfo((prev) => ({ ...prev, expired: true }));
+        clearInterval(intervalId);
+        return;
+      }
       setTimeToExpire({
         days: Math.floor(diff / (1000 * 60 * 60 * 24)),
         hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),

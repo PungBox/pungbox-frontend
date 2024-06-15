@@ -9,7 +9,7 @@ import {
   GetBucketInfoResponse,
   GetDownloadUrlRequest,
   GetDownloadUrlResponse,
-  GetUploadUrlsRequest,
+  PostUploadUrlsRequest,
   GetUploadUrlsResponse,
   UploadFileRequest,
   UploadFileResponse,
@@ -18,15 +18,18 @@ import {
 } from './interface';
 import { fetchPung, generateEndpoint } from './util';
 
-export const getUploadUrls = async ({ files, bucketId }: GetUploadUrlsRequest): Promise<GetUploadUrlsResponse[]> => {
-  return await fetchPung({
+export const getUploadUrls = async ({ files, bucketId }: PostUploadUrlsRequest): Promise<GetUploadUrlsResponse[]> => {
+  const response = await fetchPung({
     endpoint: '/file/get-upload-url',
     params: { bucketId },
     fetchInit: {
-      method: 'GET',
       body: { files },
     },
   });
+
+  console.log(response);
+  // const data = await response.json();
+  return JSON.parse(response.body);
 };
 
 export const getDownloadUrls = async ({ fileIds }: GetDownloadUrlRequest): Promise<GetDownloadUrlResponse> => {
@@ -96,8 +99,8 @@ export const uploadFile = async ({
   return result;
 };
 
-export const getBucketInfo = async (bucketId: string): Promise<GetBucketInfoResponse> => {
-  const endpoint = generateEndpoint({ endpoint: '/bucket/get-info', params: { bucketId } });
+export const getBucketInfo = async (bucketCode: string): Promise<GetBucketInfoResponse> => {
+  const endpoint = generateEndpoint({ endpoint: '/bucket/get-info', params: { bucketCode } });
   const response = await fetch(endpoint, {
     method: 'GET',
     headers: {
@@ -108,17 +111,18 @@ export const getBucketInfo = async (bucketId: string): Promise<GetBucketInfoResp
   return JSON.parse(data.body);
 };
 
-export const authenticate = async ({ bucketId, password }: AuthenticateRequest): Promise<AuthenticateResponse> => {
+export const authenticate = async ({ bucketCode, password }: AuthenticateRequest): Promise<AuthenticateResponse> => {
   const data = await fetchPung({
     endpoint: '/authenticate',
     fetchInit: {
       body: {
-        user_id: bucketId,
+        user_id: bucketCode,
         password: password,
       },
     },
   });
   if (Object.hasOwn(data, 'accessToken')) {
+    console.log('accessToken', data.accessToken);
     window.localStorage.setItem('accessToken', data.accessToken);
   }
   return data;

@@ -37,6 +37,12 @@ const headers: HeaderConfig[] = [
     sortable: true,
     ascending: false,
   },
+  {
+    name: 'merged',
+    displayName: 'Available?',
+    sortable: false,
+    ascending: false,
+  },
 ];
 
 const mappings: { [key: string]: 'fileName' | 'fileSize' | 'createdAt' } = {

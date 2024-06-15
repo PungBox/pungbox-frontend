@@ -7,17 +7,18 @@ import questionUrl from '/src/assets/images/icon-question.png';
 import plusUrl from '/src/assets/images/icon-plus.png';
 import connectionUrl from '/src/assets/images/icon-cloud-connection.png';
 import { isAuthenticated, signout } from '../../service/service';
+import { useBucketInfoContext } from 'context/BucketInfoProvider';
 
 interface SidebarProps {
   sidebarOpen: boolean;
   toggleSidebar: () => void;
 }
 
-
 const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, toggleSidebar }) => {
   const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
-  
+  const { bucketInfo: registeredBucketInfo } = useBucketInfoContext();
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768); // 여기서 768은 원하는 임계값입니다.
@@ -32,11 +33,10 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, toggleSidebar }) => {
     };
   }, []);
   
-  
   const getLinkByAlt = (alt: string) => {
     switch (alt) {
       case 'Open Folder':
-        return '/view';
+        return `/view?bucketCode=${registeredBucketInfo.id}`;
       case 'Search':
         return '/authenticate';
       case 'About Us':
