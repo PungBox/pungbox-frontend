@@ -99,8 +99,8 @@ export const uploadFile = async ({
   return result;
 };
 
-export const getBucketInfo = async (bucketId: string): Promise<GetBucketInfoResponse> => {
-  const endpoint = generateEndpoint({ endpoint: '/bucket/get-info', params: { bucketId } });
+export const getBucketInfo = async (bucketCode: string): Promise<GetBucketInfoResponse> => {
+  const endpoint = generateEndpoint({ endpoint: '/bucket/get-info', params: { bucketCode } });
   const response = await fetch(endpoint, {
     method: 'GET',
     headers: {

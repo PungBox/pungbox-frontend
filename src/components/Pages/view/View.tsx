@@ -22,7 +22,7 @@ const View = () => {
     fileDescriptions,
     setFileDescriptions,
     deleteFiles,
-  } = useFileDescription(bucketCode);
+  } = useFileDescription(bucketInfo.bucketId);
 
   const isLoading = useMemo(() => isLoadingBucketInfo || isLoadingFiles, [isLoadingBucketInfo, isLoadingFiles]);
 
