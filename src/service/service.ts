@@ -53,12 +53,17 @@ export const viewBucket = async ({ bucketId }: ViewBucketRequest): Promise<{ fil
 };
 
 export const createBucket = async ({ durationMin, password }: CreateBucketRequest): Promise<CreateBucketResponse> => {
-  return await fetchPung({
+  const data = await fetchPung({
     endpoint: '/bucket/create',
     fetchInit: {
       body: { durationMin, password },
     },
   });
+  if (Object.hasOwn(data, 'accessToken')) {
+    console.log('accessToken', data.accessToken);
+    window.localStorage.setItem('accessToken', data.accessToken);
+  }
+  return data;
 };
 
 export const deleteFiles = async ({ bucketId, fileIds }: DeleteFilesRequest): Promise<DeleteFilesResponse> => {
