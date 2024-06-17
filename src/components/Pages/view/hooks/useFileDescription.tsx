@@ -32,19 +32,11 @@ function useFileDescription(bucketId: string) {
     fetchFiles();
   }, [fetchFiles]);
 
-  function deleteFiles(fileIds: string[]) {
-    const newFileDescriptions = fileDescriptions.slice().filter((file) => {
-      return !fileIds.includes(file.id);
-    });
-    setFileDescriptions(newFileDescriptions);
-  }
-
   return {
     fileDescriptions,
     setFileDescriptions,
     isLoading,
     fetchFiles,
-    deleteFiles,
   };
 }
 

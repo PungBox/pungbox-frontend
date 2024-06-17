@@ -6,6 +6,7 @@ import styles from '/src/components/Module/View.module.css';
 import { useBucketInfo, useDownloadFiles, useFileDescription, useSelectedFiles, useSortingOrder } from './hooks';
 import { useSearchParams } from 'react-router-dom';
 import useUpadteFiles from './hooks/useUploadFiles';
+import useDeleteFiles from './hooks/useDeleteFiles';
 
 const View = () => {
   const [searchParams] = useSearchParams();
@@ -21,13 +22,13 @@ const View = () => {
     isLoading: isLoadingFiles,
     fileDescriptions,
     setFileDescriptions,
-    deleteFiles,
   } = useFileDescription(bucketInfo.bucketId);
 
   const isLoading = useMemo(() => isLoadingBucketInfo || isLoadingFiles, [isLoadingBucketInfo, isLoadingFiles]);
 
   const { selected, getSelectedFileIds, toggleSelectFile } = useSelectedFiles(fileDescriptions);
 
+  const { deleteFiles, isDeleting } = useDeleteFiles({ setFileDescriptions });
   const { downloadFiles, isDownloading } = useDownloadFiles();
 
   useEffect(() => {
@@ -59,7 +60,7 @@ const View = () => {
             </button>
             <button
               className={styles.delete_button}
-              onClick={() => deleteFiles(getSelectedFileIds())}
+              onClick={() => deleteFiles({ bucketId: bucketInfo.bucketId, fileIds: getSelectedFileIds() })}
               disabled={isLoading}
             >
               <span className="material-symbols-outlined">Delete</span>

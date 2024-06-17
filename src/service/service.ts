@@ -65,7 +65,8 @@ export const createBucket = async ({ durationMin, password }: CreateBucketReques
   return data;
 };
 
-export const deleteFiles = async ({ bucketId, fileIds }: DeleteFilesRequest): Promise<DeleteFilesResponse> => {
+export const deleteFilesAPI = async ({ bucketId, fileIds }: DeleteFilesRequest): Promise<DeleteFilesResponse> => {
+  console.log('deleteFilesAPI', { bucketId, fileIds });
   return await fetchPung({
     endpoint: '/file/delete',
     params: { bucketId },

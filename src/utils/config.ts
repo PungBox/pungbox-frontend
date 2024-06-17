@@ -21,19 +21,19 @@ const headers: HeaderConfig[] = [
   },
   {
     name: 'name',
-    displayName: 'name',
+    displayName: 'Name',
     sortable: true,
     ascending: true,
   },
   {
     name: 'size',
-    displayName: 'size',
+    displayName: 'Size',
     sortable: true,
     ascending: false,
   },
   {
     name: 'date',
-    displayName: 'upload date',
+    displayName: 'Uploaded Date',
     sortable: true,
     ascending: false,
   },
