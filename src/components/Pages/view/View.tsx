@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { FileListTableHeader } from './component/FileListTableHeader';
 import { FileListTableBody } from './component/FileListTableBody';
 import Expired from './component/Expired';
@@ -11,8 +11,7 @@ import useDeleteFiles from './hooks/useDeleteFiles';
 const View = () => {
   const [searchParams] = useSearchParams();
   const bucketCode = searchParams.get('bucketCode') || '';
-  const { sortingCriteria, isSortingAscending, resetToDefaultSortingOrder, handleSorting, reSortFileDescriptions } =
-    useSortingOrder();
+  const { sortingCriteria, isSortingAscending, handleSorting, reSortFileDescriptions } = useSortingOrder();
 
   const { isLoading: isLoadingBucketInfo, bucketInfo, timeToExpire } = useBucketInfo(bucketCode);
 
@@ -26,7 +25,7 @@ const View = () => {
 
   const isLoading = useMemo(() => isLoadingBucketInfo || isLoadingFiles, [isLoadingBucketInfo, isLoadingFiles]);
 
-  const { selected, getSelectedFileIds, toggleSelectFile } = useSelectedFiles(fileDescriptions);
+  const { selected, selectedFileIds, toggleSelectFile } = useSelectedFiles(fileDescriptions);
 
   const { deleteFiles, isDeleting } = useDeleteFiles({ setFileDescriptions });
   const { downloadFiles, isDownloading } = useDownloadFiles();
@@ -49,21 +48,25 @@ const View = () => {
       {bucketInfo?.expired ? (
         <Expired />
       ) : (
-        <>
+        <div>
           <div className={styles.button_container}>
             <button
               className={styles.download_button}
-              onClick={() => downloadFiles(getSelectedFileIds())}
-              disabled={isLoading}
+              onClick={() => downloadFiles({ bucketId: bucketInfo.bucketId, fileIds: selectedFileIds })}
+              disabled={isDownloading || !selectedFileIds?.length}
             >
-              <span className="material-symbols-outlined">Download</span>
+              <span className="material-symbols-outlined">
+                {isDownloading ? <div className={styles.loading_animation}></div> : 'Download'}
+              </span>
             </button>
             <button
               className={styles.delete_button}
-              onClick={() => deleteFiles({ bucketId: bucketInfo.bucketId, fileIds: getSelectedFileIds() })}
-              disabled={isLoading}
+              onClick={() => deleteFiles({ bucketId: bucketInfo.bucketId, fileIds: selectedFileIds })}
+              disabled={isLoading || !selectedFileIds?.length}
             >
-              <span className="material-symbols-outlined">Delete</span>
+              <span className="material-symbols-outlined">
+                {isDeleting ? <div className={styles.loading_animation}></div> : 'Delete'}
+              </span>
             </button>
             <button className={styles.refresh_button} onClick={fetchFiles} disabled={isLoading}>
               <span className="material-symbols-outlined">
@@ -104,7 +107,7 @@ const View = () => {
               </tr>
             </tfoot>
           </table>
-        </>
+        </div>
       )}
     </div>
   );

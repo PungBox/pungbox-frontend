@@ -14,6 +14,7 @@ export interface GetUploadUrlsResponse {
 }
 
 export interface GetDownloadUrlRequest {
+  bucketId: string;
   fileIds: string[];
 }
 

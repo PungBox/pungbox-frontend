@@ -1,5 +1,4 @@
-import { useBucketInfoContext } from 'context/BucketInfoProvider';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getBucketInfo } from 'service/service';
 
 const useBucketInfo = (bucketCode: string) => {

@@ -31,14 +31,18 @@ export const getUploadUrls = async ({ files, bucketId }: PostUploadUrlsRequest):
   return JSON.parse(response.body);
 };
 
-export const getDownloadUrls = async ({ fileIds }: GetDownloadUrlRequest): Promise<GetDownloadUrlResponse> => {
-  return await fetchPung({
+export const getDownloadUrls = async ({
+  bucketId,
+  fileIds,
+}: GetDownloadUrlRequest): Promise<GetDownloadUrlResponse> => {
+  const res = await fetchPung({
     endpoint: '/file/get-download-url',
+    params: { bucketId },
     fetchInit: {
-      method: 'GET',
       body: { fileIds },
     },
   });
+  return JSON.parse(res.body);
 };
 
 export const viewBucket = async ({ bucketId }: ViewBucketRequest): Promise<{ files: ViewBucketResponse[] }> => {
