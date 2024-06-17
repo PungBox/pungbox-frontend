@@ -5,7 +5,7 @@ import Expired from './component/Expired';
 import styles from '/src/components/Module/View.module.css';
 import { useBucketInfo, useDownloadFiles, useFileDescription, useSelectedFiles, useSortingOrder } from './hooks';
 import { useSearchParams } from 'react-router-dom';
-import useUpadteFiles from './hooks/useUploadFiles';
+import useUploadFiles from './hooks/useUploadFiles';
 import useDeleteFiles from './hooks/useDeleteFiles';
 
 const View = () => {
@@ -15,7 +15,7 @@ const View = () => {
 
   const { isLoading: isLoadingBucketInfo, bucketInfo, timeToExpire } = useBucketInfo(bucketCode);
 
-  const { isUploading, hasError, uploadFiles } = useUpadteFiles(bucketInfo.bucketId);
+  const { isUploading, hasError, uploadFiles } = useUploadFiles();
   const {
     fetchFiles,
     isLoading: isLoadingFiles,
@@ -99,7 +99,9 @@ const View = () => {
                       id="file_upload"
                       className={styles.file_upload_input}
                       disabled={isLoading || isUploading}
-                      onChange={async (e) => await uploadFiles(e.target.files)}
+                      onChange={async (e) =>
+                        await uploadFiles({ bucketId: bucketInfo.bucketId, files: e.target.files })
+                      }
                     />
                     {hasError ? 'Error Occured while uploading files' : isUploading ? 'Uploading ...' : 'Upload File'}
                   </label>

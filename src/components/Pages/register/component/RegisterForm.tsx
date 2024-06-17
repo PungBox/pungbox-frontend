@@ -4,6 +4,7 @@ import { HTMLFormElement, IHTMLFormControlsCollection } from 'happy-dom';
 import { createBucket } from '../../../../service/service';
 import { useBucketInfoContext } from 'context/BucketInfoProvider';
 import { useLocation } from 'react-router-dom';
+import useUploadFiles from 'components/Pages/view/hooks/useUploadFiles';
 
 interface RegisterFormElements extends IHTMLFormControlsCollection {
   password: HTMLInputElement;
@@ -19,9 +20,8 @@ const RegisterForm = () => {
   const [hasError, setHasError] = useState(false);
 
   const { state } = useLocation();
-  console.log(state);
-
   const { setBucketInfo } = useBucketInfoContext();
+  const { uploadFiles } = useUploadFiles();
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -29,24 +29,26 @@ const RegisterForm = () => {
     // TODO: expiration period은 사용되고 있지 않음. 추후 /bucket/create endpoint에 넘길 수 있어야 함
     const formElements = (e.currentTarget as unknown as RegisterFormElement).elements;
     try {
-      console.log(formElements);
       const createBucketResponse = await createBucket({
         durationMin: formElements['expiration-period'].value,
         password: formElements.password.value,
         files: state?.files.map(({ object }: { object: File }) => ({ fileName: object.name, size: object.size })),
       });
-      if (!Object.hasOwn(createBucketResponse, 'id')) {
+      if (!Object.hasOwn(createBucketResponse, 'bucketId')) {
         console.error('Failed to create bucket');
         return;
       }
-      const { id: bucketId, expiredAt } = createBucketResponse;
+
+      const { bucketId, bucketCode, expiredAt } = createBucketResponse;
 
       const now = new Date();
       const expirationUtc = new Date(expiredAt);
 
       const timezoneOffsetMs = now.getTimezoneOffset() * 60 * 1000;
       const expirationLocal = new Date(expirationUtc.getTime() - timezoneOffsetMs).toString();
-      setBucketInfo({ id: bucketId, expiredAt: expirationLocal });
+      setBucketInfo({ bucketId, bucketCode, expiredAt: expirationLocal });
+
+      await uploadFiles({ bucketId, files: state?.files.map(({ object }: { object: File }) => object) });
     } catch (e) {
       console.error('Failed to create bucket', e);
       setHasError(true);

@@ -44,7 +44,8 @@ export interface CreateBucketRequest {
 }
 
 export interface CreateBucketResponse {
-  id: string;
+  bucketId: string;
+  bucketCode: string;
   expiredAt: string;
 }
 
