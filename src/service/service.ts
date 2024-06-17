@@ -42,13 +42,14 @@ export const getDownloadUrls = async ({ fileIds }: GetDownloadUrlRequest): Promi
 };
 
 export const viewBucket = async ({ bucketId }: ViewBucketRequest): Promise<{ files: ViewBucketResponse[] }> => {
-  return await fetchPung({
+  const res = await fetchPung({
     endpoint: '/bucket/view',
     params: { bucketId },
     fetchInit: {
       method: 'GET',
     },
   });
+  return JSON.parse(res.body);
 };
 
 export const createBucket = async ({ durationMin, password }: CreateBucketRequest): Promise<CreateBucketResponse> => {

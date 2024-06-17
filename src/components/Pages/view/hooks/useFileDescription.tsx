@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { getUploadUrls, uploadFile, viewBucket } from 'service/service';
+import { viewBucket } from 'service/service';
 import { UnauthorizedException } from 'service/exception';
 import { ViewBucketResponse } from 'service/interface';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +14,7 @@ function useFileDescription(bucketId: string) {
     setIsLoading(true);
     viewBucket({ bucketId })
       .then((res) => {
+        console.log(res);
         const { files } = res;
         setFileDescriptions(files || []);
         // resetToDefaultSortingOrder(fileListConfig.defaultSortingCriteria);
