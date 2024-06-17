@@ -10,7 +10,7 @@ export interface GetUploadUrlsResponse {
   id: string;
   fileName: string;
   urls: string[];
-  uploadId: number;
+  uploadId: string;
 }
 
 export interface GetDownloadUrlRequest {
@@ -56,12 +56,14 @@ export interface UploadFileRequest {
   file: File;
   urls: string[];
   bucketId: string;
-  uploadId: number;
+  uploadId: string;
 }
 
 export interface UploadFileResponse {
-  success: boolean;
+  ETag: string | undefined;
+  PartNumber: number;
 }
+[];
 
 export interface GetBucketInfoResponse {
   bucketId: string;

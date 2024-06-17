@@ -31,7 +31,7 @@ export const FileList = ({ fileDescriptions = [], selected, toggleSelectFile }: 
             {file.merged ? (
               <span style={{ backgroundColor: 'greenYellow', color: 'white' }}>Available</span>
             ) : (
-              <span style={{ backgroundColor: 'tomato', color: 'white' }}>'Unavailable'</span>
+              <span style={{ backgroundColor: 'tomato', color: 'white' }}>Unavailable</span>
             )}
           </td>
         </tr>

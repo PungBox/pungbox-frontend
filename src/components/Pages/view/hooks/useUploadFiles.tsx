@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getUploadUrls, uploadFile } from 'service/service';
+import { completeMultipartUpload, getUploadUrls, uploadFile } from 'service/service';
 
 const useUpadteFiles = (bucketId: string) => {
   const [isUploading, setIsUploading] = useState(false);
@@ -18,12 +18,12 @@ const useUpadteFiles = (bucketId: string) => {
     try {
       const urls = await getUploadUrls({ files: fileNamesAndSizes, bucketId });
 
-      console.log(urls);
       if (!urls) return;
       for (let i = 0; i < files.length; i++) {
         urls.forEach(async ({ id, fileName, urls, uploadId }) => {
           if (fileName === files[i].name) {
-            await uploadFile({ file: files[i], urls, bucketId, uploadId });
+            const parts = await uploadFile({ file: files[i], urls, bucketId, uploadId });
+            completeMultipartUpload({ uploadId, bucketId, fileId: id, parts });
           }
         });
       }

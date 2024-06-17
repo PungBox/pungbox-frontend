@@ -23,7 +23,6 @@ const useBucketInfo = (bucketCode: string) => {
   });
 
   useEffect(() => {
-    console.log(bucketCode);
     if (!bucketCode) return;
     setIsLoading(true);
     getBucketInfo(bucketCode).then((res) => {
