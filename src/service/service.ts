@@ -70,7 +70,6 @@ export const createBucket = async ({ durationMin, password }: CreateBucketReques
 };
 
 export const deleteFilesAPI = async ({ bucketId, fileIds }: DeleteFilesRequest): Promise<DeleteFilesResponse> => {
-  console.log('deleteFilesAPI', { bucketId, fileIds });
   return await fetchPung({
     endpoint: '/file/delete',
     params: { bucketId },
@@ -82,7 +81,7 @@ export const deleteFilesAPI = async ({ bucketId, fileIds }: DeleteFilesRequest):
 
 export const uploadFile = async ({ file, urls }: UploadFileRequest): Promise<UploadFileResponse[]> => {
   const fileChunkCount = Math.ceil(file.size / uploadConfig.FILE_CHUNK_SIZE);
-  const fileChunks = [];
+  const fileChunks: Blob[] = [];
 
   // Split the file into chunks
   for (let i = 0; i < fileChunkCount; i++) {

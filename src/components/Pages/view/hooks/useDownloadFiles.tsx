@@ -4,7 +4,6 @@ import { getDownloadUrls } from 'service/service';
 const useDownloadFiles = () => {
   const [isDownloading, setIsDownloading] = useState(false);
   const downloadFiles = async ({ bucketId, fileIds }: { bucketId: string; fileIds: string[] }) => {
-    console.log(fileIds);
     setIsDownloading(true);
     const urls = await getDownloadUrls({ bucketId, fileIds });
     Object.values(urls).forEach((url) => window.open(url));

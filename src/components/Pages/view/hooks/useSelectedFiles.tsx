@@ -11,13 +11,10 @@ function useSelectedFiles(fileDescriptions: ViewBucketResponse[] = []) {
   }, [fileDescriptions]);
 
   const selectedFileIds = useMemo(() => {
-    console.log(selected);
     return Object.keys(selected).filter((key) => (selected[key] ? key : false));
   }, [selected]);
 
   const toggleSelectFile = (fileId: string) => {
-    console.log(fileId);
-
     setSelected((prev) => ({ ...prev, [fileId]: !prev[fileId] }));
   };
 
