@@ -37,6 +37,10 @@ export interface ViewBucketResponse {
 export interface CreateBucketRequest {
   password: string;
   durationMin: string;
+  files: {
+    fileName: string;
+    size: number;
+  };
 }
 
 export interface CreateBucketResponse {

@@ -1,139 +1,146 @@
 .outercontainer {
-    height: 500px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    /* border: 1px solid #ff0000; */
+  height: 500px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid #ff0000; */
 }
 
 .innercontainer {
-    height: 300px;
-    width: 90%;
-    min-width: 300px;
-    padding-left: 20px;
-    padding-right: 20px;
-    margin-bottom: 30px;
-    border: 2px dashed #d25d5d7e;
+  height: 300px;
+  width: 90%;
+  min-width: 300px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-bottom: 30px;
+  border: 2px dashed #d25d5d7e;
 }
 
 .dropzone {
-    width: 100%;
-    height: 200px;
-    border: 2px dashed #CCCCCC;
-    border-radius: 4px;
-    cursor: pointer;
-    margin: 20px auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transition: background-color 0.3s, border-color 0.3s;
+  width: 100%;
+  height: 200px;
+  border: 2px dashed #cccccc;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s;
 }
 
 .dropzone:global(.active) {
-    background-color: rgba(0, 0, 0, 0.1);
-    border-color: #333;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-color: #333;
 }
 
 .dropzone.active {
-    background-color: rgba(0, 0, 0, 0.1);
-    border-color: #333;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-color: #333;
 }
 
 .dropzone:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-    border-color: #333;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-color: #333;
 }
 
 .uploadbutton {
-    --bg: #d25d5d;
-    --text-color: #fff;
-    position: relative;
-    width: 150px;
-    height: 50px;
-    border: none;
-    background: var(--bg);
-    color: var(--text-color);
-    padding: 1em;
-    font-weight: bold;
-    text-transform: uppercase;
-    transition: 0.2s;
-    border-radius: 5px;
-    opacity: 0.8;
-    letter-spacing: 1px;
-    box-shadow: #c0392b 0px 7px 2px, #000 0px 8px 5px;
+  --bg: #d25d5d;
+  --text-color: #fff;
+  position: relative;
+  width: fit-content;
+  height: 50px;
+  border: none;
+  background: var(--bg);
+  color: var(--text-color);
+  padding: 1em;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: 0.2s;
+  border-radius: 5px;
+  opacity: 0.8;
+  letter-spacing: 1px;
+  box-shadow:
+    #c0392b 0px 7px 2px,
+    #000 0px 8px 5px;
 }
 
 .uploadbutton:hover {
-    opacity: 1;
-    top: 2px;
-    box-shadow: #c0392b 0px 3px 2px, #000 0px 3px 5px;
+  opacity: 1;
+  top: 2px;
+  box-shadow:
+    #c0392b 0px 3px 2px,
+    #000 0px 3px 5px;
 }
 
 .uploadbutton.active {
-    top: 3px;
+  top: 3px;
 }
 
 .uploadicon {
-    width: 96px;
-    height: 96px;
-    opacity: 0.30;
+  width: 96px;
+  height: 96px;
+  opacity: 0.3;
 }
 
 .dragdropFiles {
-    margin-top: 1rem;
+  margin-top: 1rem;
 }
 
-.dragdropFiles>div {
-    width: 300px;
-    padding: 8px;
-    padding-left: 10px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    background-color: #cdcdcd;
-    padding: 7px;
-    padding-right: 10px;
-    font-size: 1rem;
-    border-radius: 15px;
-    white-space: pre-wrap;
+.dragdropFiles > div {
+  width: 300px;
+  padding: 8px;
+  padding-left: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #cdcdcd;
+  padding: 7px;
+  padding-right: 10px;
+  font-size: 1rem;
+  border-radius: 15px;
+  white-space: pre-wrap;
 }
-
 
 .dragdropFilesFilter {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .dragdropFilesFilter:hover {
-    opacity: 0.3;
+  opacity: 0.3;
 }
 
-.dragdropFilesFilter span{
-    font-style: bold;
-    font-size: larger;
+.dragdropFilesFilter span {
+  font-style: bold;
+  font-size: larger;
 }
 
 .filelistbutton {
-    min-width: 130px;
-    display: flex;
-    background-color: #e9e9e9;
-    border: none;
-    padding: 5px;
-    font-size: 1rem;
-    border-radius: 15px;
-    color: rgb(205, 108, 108);
-    transition: all 0.3s, color 0.3s;
-    cursor: pointer;
+  min-width: 130px;
+  display: flex;
+  background-color: #e9e9e9;
+  border: none;
+  padding: 5px;
+  font-size: 1rem;
+  border-radius: 15px;
+  color: rgb(205, 108, 108);
+  transition:
+    all 0.3s,
+    color 0.3s;
+  cursor: pointer;
 }
 
-
 .filelistbutton:hover {
-    background: #e17575;
-    color: white;
-    box-shadow: 0 0 5px #e17575,
-              0 0 25px #e17575,
-              0 0 50px #e17575,
-              0 0 100px #e17575;
+  background: #e17575;
+  color: white;
+  box-shadow:
+    0 0 5px #e17575,
+    0 0 25px #e17575,
+    0 0 50px #e17575,
+    0 0 100px #e17575;
 }

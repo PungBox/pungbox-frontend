@@ -1,9 +1,9 @@
-import React, { ChangeEvent, useState, useEffect, useRef } from 'react';
+import React, { ChangeEvent, useState, useRef } from 'react';
 import useDragAndDrop from '../../../utils/component/UseDragDrop';
 import styles from '/src/components/Module/Home.module.css';
 import iconExpand from '/src/assets/images/icon_expand.svg';
 import iconCollapse from '/src/assets/images/icon_collapse.svg';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import uploadUrl from '/src/assets/images/icon-cloud-database.png';
 
 interface IFileTypes {
@@ -43,7 +43,7 @@ const Home = () => {
 
   const nextFileId = useRef<number>(0);
 
-  const onChangeFiles = async (e: ChangeEvent<HTMLInputElement> | any) => {
+  const onChangeFiles = async (e: ChangeEvent<HTMLInputElement>) => {
     let selectFiles: File[] = [];
     let tempFiles: IFileTypes[] = files;
 
@@ -121,7 +121,7 @@ const Home = () => {
 
       <div style={{ textAlign: 'center' }}>
         <button className={styles.uploadbutton} onClick={handleUpload}>
-          <span>UPLOAD FILE</span>
+          <span>Create A Bucket & Upload Files</span>
         </button>
       </div>
     </div>

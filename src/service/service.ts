@@ -56,11 +56,15 @@ export const viewBucket = async ({ bucketId }: ViewBucketRequest): Promise<{ fil
   return JSON.parse(res.body);
 };
 
-export const createBucket = async ({ durationMin, password }: CreateBucketRequest): Promise<CreateBucketResponse> => {
+export const createBucket = async ({
+  durationMin,
+  password,
+  files,
+}: CreateBucketRequest): Promise<CreateBucketResponse> => {
   const data = await fetchPung({
     endpoint: '/bucket/create',
     fetchInit: {
-      body: { durationMin, password },
+      body: { durationMin, password, files },
     },
   });
   if (Object.hasOwn(data, 'accessToken')) {
