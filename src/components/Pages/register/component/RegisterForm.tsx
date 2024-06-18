@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { SetStateAction, useEffect, useState } from 'react';
 import styles from '/src/components/Module/Register.module.css';
 import { HTMLFormElement, IHTMLFormControlsCollection } from 'happy-dom';
-import { createBucket } from '../../../../service/service';
+import { createBucket, isAuthenticated, signout } from '../../../../service/service';
 import { useBucketInfoContext } from 'context/BucketInfoProvider';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import useUploadFiles from 'components/Pages/view/hooks/useUploadFiles';
 
 interface RegisterFormElements extends IHTMLFormControlsCollection {
@@ -15,19 +15,36 @@ interface RegisterFormElement extends HTMLFormElement {
   readonly elements: RegisterFormElements;
 }
 
-const RegisterForm = () => {
+interface RegisterFormProps {
+  setPassword: React.Dispatch<SetStateAction<string>>;
+}
+
+const RegisterForm = ({ setPassword }: RegisterFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
-
+  const navigate = useNavigate();
   const { state } = useLocation();
   const { setBucketInfo } = useBucketInfoContext();
   const { uploadFiles } = useUploadFiles();
 
+  useEffect(() => {
+    if (!isAuthenticated()) return;
+    if (
+      window.confirm(
+        'To access new storage, you must disconnect the existing storage.\nAre you sure you want to disconnect from current storage?',
+      )
+    ) {
+      signout();
+    } else {
+      navigate(-1);
+    }
+  }, []);
+
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setIsLoading(true);
-    // TODO: expiration period은 사용되고 있지 않음. 추후 /bucket/create endpoint에 넘길 수 있어야 함
     const formElements = (e.currentTarget as unknown as RegisterFormElement).elements;
+
     try {
       const createBucketResponse = await createBucket({
         durationMin: formElements['expiration-period'].value,
@@ -36,6 +53,7 @@ const RegisterForm = () => {
       });
       if (!Object.hasOwn(createBucketResponse, 'bucketId')) {
         console.error('Failed to create bucket');
+        setIsLoading(false);
         return;
       }
 
@@ -53,6 +71,8 @@ const RegisterForm = () => {
       console.error('Failed to create bucket', e);
       setHasError(true);
     }
+
+    setPassword(formElements.password.value);
     setIsLoading(false);
   }
 

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAccessCodeInput } from './util/accessCodeInput';
-import { authConfig as config } from '../../../utils/config';
+import { authConfig, authConfig as config } from '../../../utils/config';
 import styles from '/src/components/Module/Authenticate.module.css';
-import { authenticate } from '../../../service/service';
+import { authenticate, isAuthenticated, signout } from '../../../service/service';
 import { HTMLFormElement, IHTMLFormControlsCollection } from 'happy-dom';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useBucketInfoContext } from 'context/BucketInfoProvider';
 
 interface RegisterFormElements extends IHTMLFormControlsCollection {
@@ -39,11 +39,29 @@ function getBucketCodeFromFormElem(formElements: RegisterFormElements): string {
 const Authenticate = () => {
   const { inputsRef, undoDigitInput, accessCodeInput } = useAccessCodeInput();
   const [isLoading, setIsLoading] = useState(false);
-
-  const { setBucketInfo } = useBucketInfoContext();
-
   const navigate = useNavigate();
-
+  const { accessCode: accessCodeFromUrl } = useParams();
+  const { setBucketInfo } = useBucketInfoContext();
+  
+  useEffect(() => {
+    if (!isAuthenticated()) return;
+    if (window.confirm('To access new storage, you must disconnect the existing storage.\nAre you sure you want to disconnect from current storage?')) {
+      signout();
+    } else {
+      navigate(-1);
+    }
+    
+    if (accessCodeFromUrl === undefined) return;
+    if (accessCodeFromUrl.length !== authConfig.DIGIT_LENGTH) {
+      console.error('Access code given in the url is not valid');
+      return;
+    }
+    inputsRef.current.forEach((ref, i) => {
+      if (ref.type === 'text' && ref.id.startsWith('digit')) ref.value = accessCodeFromUrl[i];
+      if (ref.id === 'password') ref.focus();
+    });
+  }, []);
+  
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setIsLoading(true);

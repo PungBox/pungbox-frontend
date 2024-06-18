@@ -4,9 +4,10 @@ import { FileListTableBody } from './component/FileListTableBody';
 import Expired from './component/Expired';
 import styles from '/src/components/Module/View.module.css';
 import { useBucketInfo, useDownloadFiles, useFileDescription, useSelectedFiles, useSortingOrder } from './hooks';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import useUploadFiles from './hooks/useUploadFiles';
 import useDeleteFiles from './hooks/useDeleteFiles';
+import { isAuthenticated } from 'service/service';
 
 const View = () => {
   const [searchParams] = useSearchParams();
@@ -22,6 +23,7 @@ const View = () => {
     fileDescriptions,
     setFileDescriptions,
   } = useFileDescription(bucketInfo.bucketId);
+  const navigate = useNavigate();
 
   const isLoading = useMemo(() => isLoadingBucketInfo || isLoadingFiles, [isLoadingBucketInfo, isLoadingFiles]);
 
@@ -29,6 +31,13 @@ const View = () => {
 
   const { deleteFiles, isDeleting } = useDeleteFiles({ setFileDescriptions });
   const { downloadFiles, isDownloading } = useDownloadFiles();
+
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      window.alert("You don't have access to this storage. Please enter your access code and password.");
+      navigate('/authenticate');
+    }
+  }, []);
 
   useEffect(() => {
     reSortFileDescriptions(fileDescriptions, setFileDescriptions);

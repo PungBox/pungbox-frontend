@@ -183,6 +183,11 @@ export const authenticate = async ({ bucketCode, password }: AuthenticateRequest
   return data;
 };
 
-export const signout = async () => {
+export const isAuthenticated = () => {
+  const accessToken = window.localStorage.getItem('accessToken');
+  return !(accessToken === null || accessToken === '');
+};
+
+export const signout = () => {
   window.localStorage.setItem('accessToken', '');
 };

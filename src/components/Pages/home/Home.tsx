@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useRef } from 'react';
+import React, { ChangeEvent, useRef, useState } from 'react';
 import useDragAndDrop from '../../../utils/component/UseDragDrop';
 import styles from '/src/components/Module/Home.module.css';
 import iconExpand from '/src/assets/images/icon_expand.svg';
@@ -6,7 +6,7 @@ import iconCollapse from '/src/assets/images/icon_collapse.svg';
 import { useNavigate } from 'react-router-dom';
 import uploadUrl from '/src/assets/images/icon-cloud-database.png';
 
-interface IFileTypes {
+export interface IFileTypes {
   id: number;
   object: File;
 }
@@ -42,7 +42,6 @@ const Home = () => {
   };
 
   const nextFileId = useRef<number>(0);
-
   const onChangeFiles = async (e: ChangeEvent<HTMLInputElement>) => {
     let selectFiles: File[] = [];
     let tempFiles: IFileTypes[] = files;
@@ -92,7 +91,7 @@ const Home = () => {
         {/* 드래그 앤 드롭 영역 */}
         <input type="file" id="fileUpload" style={{ display: 'none' }} multiple={true} onChange={onChangeFiles} />
         <label className={`${styles.dropzone} ${isDragging ? 'active' : ''}`} htmlFor="fileUpload" ref={dragRef}>
-          <img className={styles.uploadicon} src={uploadUrl} />
+          <img className={styles.uploadicon} src={uploadUrl} alt="uploadFileHere" />
           <span>Click or Drop files here to upload</span>
         </label>
 
