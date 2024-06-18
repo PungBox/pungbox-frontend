@@ -12,7 +12,7 @@ const Register = () => {
   const navigate = useNavigate();
   const location = useLocation();
   let files: IFileTypes[] = [];
-  
+
   useEffect(() => {
     try {
       files = location.state.files;
@@ -25,19 +25,21 @@ const Register = () => {
       return;
     }
   }, []);
-  
+
   const handleGoToStorageButtonClick = async () => {
-    await authenticate({ bucketId: registeredBucketInfo.id, password });
+    await authenticate({ bucketCode: registeredBucketInfo.bucketCode, password });
     if (isAuthenticated()) {
       navigate('/view', { state: { files } });
     } else {
       window.alert('Failed to authenticate');
     }
   };
-  
-  return registeredBucketInfo.id ?
-    <RegisterResult handleButtonClick={handleGoToStorageButtonClick} /> :
-    <RegisterForm setPassword={setPassword} />;
+
+  return registeredBucketInfo.bucketCode ? (
+    <RegisterResult handleButtonClick={handleGoToStorageButtonClick} />
+  ) : (
+    <RegisterForm setPassword={setPassword} />
+  );
 };
 
 export default Register;

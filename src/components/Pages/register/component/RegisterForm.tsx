@@ -3,7 +3,8 @@ import styles from '/src/components/Module/Register.module.css';
 import { HTMLFormElement, IHTMLFormControlsCollection } from 'happy-dom';
 import { createBucket, isAuthenticated, signout } from '../../../../service/service';
 import { useBucketInfoContext } from 'context/BucketInfoProvider';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import useUploadFiles from 'components/Pages/view/hooks/useUploadFiles';
 
 interface RegisterFormElements extends IHTMLFormControlsCollection {
   password: HTMLInputElement;
@@ -23,48 +24,59 @@ const RegisterForm = ({ setPassword }: RegisterFormProps) => {
   const [hasError, setHasError] = useState(false);
   const navigate = useNavigate();
   const { setBucketInfo } = useBucketInfoContext();
-  
+
   useEffect(() => {
     if (!isAuthenticated()) return;
-    if (window.confirm('To access new storage, you must disconnect the existing storage.\nAre you sure you want to disconnect from current storage?')) {
+    if (
+      window.confirm(
+        'To access new storage, you must disconnect the existing storage.\nAre you sure you want to disconnect from current storage?',
+      )
+    ) {
       signout();
     } else {
       navigate(-1);
     }
   }, []);
-  
+
+  const { state } = useLocation();
+  const { uploadFiles } = useUploadFiles();
+
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setIsLoading(true);
     const formElements = (e.currentTarget as unknown as RegisterFormElement).elements;
-    
+
     try {
       const createBucketResponse = await createBucket({
         durationMin: formElements['expiration-period'].value,
         password: formElements.password.value,
+        files: state?.files.map(({ object }: { object: File }) => ({ fileName: object.name, size: object.size })),
       });
-      if (!Object.hasOwn(createBucketResponse, 'id')) {
-        console.error('Failed to create bucket', createBucketResponse);
+      if (!Object.hasOwn(createBucketResponse, 'bucketId')) {
+        console.error('Failed to create bucket');
         setIsLoading(false);
         return;
       }
-      const { id: bucketId, expiredAt } = createBucketResponse;
+
+      const { bucketId, bucketCode, expiredAt } = createBucketResponse;
 
       const now = new Date();
       const expirationUtc = new Date(expiredAt);
 
       const timezoneOffsetMs = now.getTimezoneOffset() * 60 * 1000;
       const expirationLocal = new Date(expirationUtc.getTime() - timezoneOffsetMs).toString();
-      setBucketInfo({ id: bucketId, expiredAt: expirationLocal });
+      setBucketInfo({ bucketId, bucketCode, expiredAt: expirationLocal });
+
+      await uploadFiles({ bucketId, files: state?.files.map(({ object }: { object: File }) => object) });
     } catch (e) {
       console.error('Failed to create bucket', e);
       setHasError(true);
     }
-    
+
     setPassword(formElements.password.value);
     setIsLoading(false);
   }
-  
+
   return (
     <form className={styles.form} method="POST" onSubmit={async (e) => await submit(e)}>
       <label htmlFor="password">Password for storage:</label>
@@ -72,7 +84,7 @@ const RegisterForm = ({ setPassword }: RegisterFormProps) => {
       <input type="password" id="password" name="password" required />
       <br />
       <br />
-      
+
       <label htmlFor="expiration-period">Storage expiration period:</label>
       <br />
       <select id="expiration-period" name="expiration-period" required>

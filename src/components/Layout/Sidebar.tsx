@@ -36,7 +36,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, toggleSidebar }) => {
   const getLinkByAlt = (alt: string) => {
     switch (alt) {
       case 'Open Folder':
-        return `/view?bucketCode=${registeredBucketInfo.id}`;
+        return `/view?bucketCode=${registeredBucketInfo.bucketCode}`;
       case 'Search':
         return '/authenticate';
       case 'About Us':
