@@ -42,7 +42,6 @@ const Home = () => {
   };
 
   const nextFileId = useRef<number>(0);
-
   const onChangeFiles = async (e: ChangeEvent<HTMLInputElement>) => {
     let selectFiles: File[] = [];
     let tempFiles: IFileTypes[] = files;

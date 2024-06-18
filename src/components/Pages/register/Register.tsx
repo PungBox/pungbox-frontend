@@ -29,7 +29,7 @@ const Register = () => {
   const handleGoToStorageButtonClick = async () => {
     await authenticate({ bucketCode: registeredBucketInfo.bucketCode, password });
     if (isAuthenticated()) {
-      navigate('/view', { state: { files } });
+      navigate(`/view?bucketCode=${registeredBucketInfo.bucketCode}`, { state: { files } });
     } else {
       window.alert('Failed to authenticate');
     }

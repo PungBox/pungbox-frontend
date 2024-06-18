@@ -23,7 +23,9 @@ const RegisterForm = ({ setPassword }: RegisterFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const navigate = useNavigate();
+  const { state } = useLocation();
   const { setBucketInfo } = useBucketInfoContext();
+  const { uploadFiles } = useUploadFiles();
 
   useEffect(() => {
     if (!isAuthenticated()) return;
@@ -37,9 +39,6 @@ const RegisterForm = ({ setPassword }: RegisterFormProps) => {
       navigate(-1);
     }
   }, []);
-
-  const { state } = useLocation();
-  const { uploadFiles } = useUploadFiles();
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
