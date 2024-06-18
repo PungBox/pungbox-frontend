@@ -16,7 +16,12 @@ const RegisterResult = ({ handleButtonClick }: RegisterResultProps) => {
       <ResultContainer title="Access Code for Storage:" content={registeredBucketInfo.bucketCode} copyable />
       <ResultContainer title="Expiration Date:" content={registeredBucketInfo.expiredAt} />
 
-      <button className={styles.gotobutton} onClick={async () => handleButtonClick}>
+      <button
+        className={styles.gotobutton}
+        onClick={async () => {
+          await handleButtonClick();
+        }}
+      >
         Go to Storage
       </button>
     </div>
