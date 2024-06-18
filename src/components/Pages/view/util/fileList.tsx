@@ -64,15 +64,15 @@ function getFileNameExpression(fileName: string) {
   return fileName.length <= 30 ? fileName : fileName.substring(0, 27) + '...';
 }
 
-function getFileSizeExpression(fileSize: number) {
+function getFileSizeExpression(fileSize: number): string {
   if (fileSize < 1e3) {
-    return `${fileSize} KB`;
+    return `${fileSize} B`;
   } else if (fileSize < 1e6) {
-    return `${Math.floor(fileSize / 1e2) / 10} MB`;
+    return `${(fileSize / 1e3).toFixed(1)} KB`;
   } else if (fileSize < 1e9) {
-    return `${Math.floor(fileSize / 1e5) / 10} GB`;
+    return `${(fileSize / 1e6).toFixed(1)} MB`;
   } else {
-    return `${Math.floor(fileSize / 1e8) / 10} TB`;
+    return `${(fileSize / 1e9).toFixed(1)} GB`;
   }
 }
 
