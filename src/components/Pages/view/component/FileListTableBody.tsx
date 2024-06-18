@@ -1,3 +1,4 @@
+import React from 'react';
 import { FileList } from './FileList';
 import { EmptyFileList } from './EmptyFileList';
 import { LoadingFileList } from './LoadingFileList';

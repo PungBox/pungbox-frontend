@@ -10,10 +10,11 @@ export interface GetUploadUrlsResponse {
   id: string;
   fileName: string;
   urls: string[];
-  uploadId: number;
+  uploadId: string;
 }
 
 export interface GetDownloadUrlRequest {
+  bucketId: string;
   fileIds: string[];
 }
 
@@ -36,10 +37,15 @@ export interface ViewBucketResponse {
 export interface CreateBucketRequest {
   password: string;
   durationMin: string;
+  files: {
+    fileName: string;
+    size: number;
+  };
 }
 
 export interface CreateBucketResponse {
-  id: string;
+  bucketId: string;
+  bucketCode: string;
   expiredAt: string;
 }
 
@@ -56,12 +62,14 @@ export interface UploadFileRequest {
   file: File;
   urls: string[];
   bucketId: string;
-  uploadId: number;
+  uploadId: string;
 }
 
 export interface UploadFileResponse {
-  success: boolean;
+  ETag: string | undefined;
+  PartNumber: number;
 }
+[];
 
 export interface GetBucketInfoResponse {
   bucketId: string;

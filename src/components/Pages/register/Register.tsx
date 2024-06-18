@@ -29,13 +29,13 @@ const Register = () => {
   const handleGoToStorageButtonClick = async () => {
     await authenticate({ bucketId: registeredBucketInfo.id, password });
     if (isAuthenticated()) {
-      navigate('/view', { state: { files } });
+      navigate(`/view?bucketCode=${registeredBucketInfo.bucketCode}`, { state: { files } });
     } else {
       window.alert('Failed to authenticate');
     }
   };
   
-  return registeredBucketInfo.id ?
+  return registeredBucketInfo.bucketId ?
     <RegisterResult handleButtonClick={handleGoToStorageButtonClick} /> :
     <RegisterForm setPassword={setPassword} />;
 };

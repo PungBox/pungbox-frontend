@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { getUploadUrls, uploadFile, viewBucket } from 'service/service';
+import { viewBucket } from 'service/service';
 import { UnauthorizedException } from 'service/exception';
 import { ViewBucketResponse } from 'service/interface';
 import { useNavigate } from 'react-router-dom';
@@ -31,19 +31,11 @@ function useFileDescription(bucketId: string) {
     fetchFiles();
   }, [fetchFiles]);
 
-  function deleteFiles(fileIds: string[]) {
-    const newFileDescriptions = fileDescriptions.slice().filter((file) => {
-      return !fileIds.includes(file.id);
-    });
-    setFileDescriptions(newFileDescriptions);
-  }
-
   return {
     fileDescriptions,
     setFileDescriptions,
     isLoading,
     fetchFiles,
-    deleteFiles,
   };
 }
 

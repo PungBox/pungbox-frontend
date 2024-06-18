@@ -9,12 +9,12 @@ interface RegisterResultProps {
 
 const RegisterResult = ({ handleButtonClick }: RegisterResultProps) => {
   const { bucketInfo: registeredBucketInfo } = useBucketInfoContext();
-  const url = `https://www.pungbox.com/box/${registeredBucketInfo.id}`;
-  
+  const url = `https://www.pungbox.com/box/${registeredBucketInfo.bucketCode}`;
+
   return (
     <div className={styles.registerResultContainer}>
       <ResultContainer title="URL for Storage:" content={url} copyable />
-      <ResultContainer title="Access Code for Storage:" content={registeredBucketInfo.id} copyable />
+      <ResultContainer title="Access Code for Storage:" content={registeredBucketInfo.bucketCode} copyable />
       <ResultContainer title="Expiration Date:" content={registeredBucketInfo.expiredAt} />
       
       <button className={styles.gotobutton} onClick={async () => handleButtonClick}>Go to Storage</button>

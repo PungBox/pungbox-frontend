@@ -1,5 +1,4 @@
 import { isEmpty } from 'lodash';
-import { HTTPException, UnauthorizedException } from './exception';
 
 export const generateEndpoint = ({
   endpoint,
@@ -18,7 +17,7 @@ export const generateEndpoint = ({
 };
 
 type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS' | 'HEAD' | 'PATCH';
-type RequestInitLike = { method?: HTTPMethod; headers?: { [key: string]: string }; body?: any };
+type RequestInitLike = { method?: HTTPMethod; headers?: { [key: string]: string }; body?: unknown };
 
 export const fetchPung = async ({
   endpoint,
@@ -32,7 +31,6 @@ export const fetchPung = async ({
   fetchInit?: RequestInit | RequestInitLike | undefined;
 }) => {
   const accessToken = window.localStorage.getItem('accessToken');
-  console.log('accessToken', accessToken);
   const headers =
     fetchInit?.headers ||
     (accessToken
@@ -43,7 +41,6 @@ export const fetchPung = async ({
       : {
           'Content-Type': 'application/json',
         });
-  console.log(headers);
   const newFetchInit = {
     method: fetchInit?.method || 'POST',
     headers,

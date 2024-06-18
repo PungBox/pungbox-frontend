@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { FileListTableHeader } from './component/FileListTableHeader';
 import { FileListTableBody } from './component/FileListTableBody';
 import Expired from './component/Expired';
@@ -6,30 +6,31 @@ import styles from '/src/components/Module/View.module.css';
 import { useBucketInfo, useDownloadFiles, useFileDescription, useSelectedFiles, useSortingOrder } from './hooks';
 import { isAuthenticated } from '../../../service/service';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import useUpadteFiles from './hooks/useUploadFiles';
+import useUploadFiles from './hooks/useUploadFiles';
+import useDeleteFiles from './hooks/useDeleteFiles';
 
 const View = () => {
   const [searchParams] = useSearchParams();
   const bucketCode = searchParams.get('bucketCode') || '';
-  const { sortingCriteria, isSortingAscending, resetToDefaultSortingOrder, handleSorting, reSortFileDescriptions } =
-    useSortingOrder();
+  const { sortingCriteria, isSortingAscending, handleSorting, reSortFileDescriptions } = useSortingOrder();
 
   const { isLoading: isLoadingBucketInfo, bucketInfo, timeToExpire } = useBucketInfo(bucketCode);
 
-  const { isUploading, hasError, uploadFiles } = useUpadteFiles(bucketInfo.bucketId);
+  const { isUploading, hasError, uploadFiles } = useUploadFiles();
   const {
     fetchFiles,
     isLoading: isLoadingFiles,
     fileDescriptions,
     setFileDescriptions,
-    deleteFiles,
   } = useFileDescription(bucketInfo.bucketId);
   const navigate = useNavigate();
   
-  const isLoading = useMemo(() => isLoadingBucketInfo || isLoadingFiles, [isLoadingBucketInfo, isLoadingFiles]);
-  
-  const { selected, getSelectedFileIds, toggleSelectFile } = useSelectedFiles(fileDescriptions);
-  
+  const isLoading = useMemo(() => isLoadingBucketInfo || isLoadingFiles, [isLoadingBucketInfo, isLoadingFiles]);  
+
+  const { selected, selectedFileIds, toggleSelectFile } = useSelectedFiles(fileDescriptions);
+
+  const { deleteFiles, isDeleting } = useDeleteFiles({ setFileDescriptions });
+
   const { downloadFiles, isDownloading } = useDownloadFiles();
   
   useEffect(() => {
@@ -57,21 +58,25 @@ const View = () => {
       {bucketInfo?.expired ? (
         <Expired />
       ) : (
-        <>
+        <div>
           <div className={styles.button_container}>
             <button
               className={styles.download_button}
-              onClick={() => downloadFiles(getSelectedFileIds())}
-              disabled={isLoading}
+              onClick={() => downloadFiles({ bucketId: bucketInfo.bucketId, fileIds: selectedFileIds })}
+              disabled={isDownloading || !selectedFileIds?.length}
             >
-              <span className="material-symbols-outlined">Download</span>
+              <span className="material-symbols-outlined">
+                {isDownloading ? <div className={styles.loading_animation}></div> : 'Download'}
+              </span>
             </button>
             <button
               className={styles.delete_button}
-              onClick={() => deleteFiles(getSelectedFileIds())}
-              disabled={isLoading}
+              onClick={() => deleteFiles({ bucketId: bucketInfo.bucketId, fileIds: selectedFileIds })}
+              disabled={isLoading || !selectedFileIds?.length}
             >
-              <span className="material-symbols-outlined">Delete</span>
+              <span className="material-symbols-outlined">
+                {isDeleting ? <div className={styles.loading_animation}></div> : 'Delete'}
+              </span>
             </button>
             <button className={styles.refresh_button} onClick={fetchFiles} disabled={isLoading}>
               <span className="material-symbols-outlined">
@@ -104,7 +109,9 @@ const View = () => {
                       id="file_upload"
                       className={styles.file_upload_input}
                       disabled={isLoading || isUploading}
-                      onChange={async (e) => await uploadFiles(e.target.files)}
+                      onChange={async (e) =>
+                        await uploadFiles({ bucketId: bucketInfo.bucketId, files: e.target.files })
+                      }
                     />
                     {hasError ? 'Error Occured while uploading files' : isUploading ? 'Uploading ...' : 'Upload File'}
                   </label>
@@ -112,7 +119,7 @@ const View = () => {
               </tr>
             </tfoot>
           </table>
-        </>
+        </div>
       )}
     </div>
   );

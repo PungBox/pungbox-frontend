@@ -1,7 +1,8 @@
-import { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 type BucketInfoType = {
-  id: string;
+  bucketId: string;
+  bucketCode: string;
   expiredAt?: string;
 };
 
@@ -10,17 +11,19 @@ export const BucketInfoContext = createContext<{
   setBucketInfo: (bucketInfo: BucketInfoType) => void;
 }>({
   bucketInfo: {
-    id: '',
+    bucketId: '',
+    bucketCode: '',
     expiredAt: '',
   },
-  setBucketInfo: (bucketInfo: BucketInfoType) => {},
+  setBucketInfo: (bucketInfo: BucketInfoType) => Promise.resolve(bucketInfo),
 });
 
 export const useBucketInfoContext = () => useContext(BucketInfoContext);
 
 const BucketInfoProvider = ({ children }: { children: React.ReactNode }) => {
   const [bucketInfo, setBucketInfo] = useState<BucketInfoType>({
-    id: '',
+    bucketId: '',
+    bucketCode: '',
     expiredAt: '',
   });
 

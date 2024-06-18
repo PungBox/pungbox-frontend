@@ -1,5 +1,4 @@
-import { useBucketInfoContext } from 'context/BucketInfoProvider';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getBucketInfo } from 'service/service';
 
 const useBucketInfo = (bucketCode: string) => {
@@ -23,7 +22,6 @@ const useBucketInfo = (bucketCode: string) => {
   });
 
   useEffect(() => {
-    console.log(bucketCode);
     if (!bucketCode) return;
     setIsLoading(true);
     getBucketInfo(bucketCode).then((res) => {

@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useRef, useState } from 'react';
+import React, { ChangeEvent, useState, useRef } from 'react';
 import useDragAndDrop from '../../../utils/component/UseDragDrop';
 import styles from '/src/components/Module/Home.module.css';
 import iconExpand from '/src/assets/images/icon_expand.svg';
@@ -42,8 +43,7 @@ const Home = () => {
   };
   
   const nextFileId = useRef<number>(0);
-  
-  const onChangeFiles = async (e: ChangeEvent<HTMLInputElement> | any) => {
+  const onChangeFiles = async (e: ChangeEvent<HTMLInputElement>) => {
     let selectFiles: File[] = [];
     let tempFiles: IFileTypes[] = files;
     
@@ -121,7 +121,7 @@ const Home = () => {
       
       <div style={{ textAlign: 'center' }}>
         <button className={styles.uploadbutton} onClick={handleUpload}>
-          <span>UPLOAD FILE</span>
+          <span>Create A Bucket & Upload Files</span>
         </button>
       </div>
     </div>

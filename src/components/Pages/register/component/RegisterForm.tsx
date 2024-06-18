@@ -3,7 +3,8 @@ import styles from '/src/components/Module/Register.module.css';
 import { HTMLFormElement, IHTMLFormControlsCollection } from 'happy-dom';
 import { createBucket, isAuthenticated, signout } from '../../../../service/service';
 import { useBucketInfoContext } from 'context/BucketInfoProvider';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import useUploadFiles from 'components/Pages/view/hooks/useUploadFiles';
 
 interface RegisterFormElements extends IHTMLFormControlsCollection {
   password: HTMLInputElement;
@@ -22,7 +23,9 @@ const RegisterForm = ({ setPassword }: RegisterFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const navigate = useNavigate();
+  const { state } = useLocation();
   const { setBucketInfo } = useBucketInfoContext();
+  const { uploadFiles } = useUploadFiles();
   
   useEffect(() => {
     if (!isAuthenticated()) return;
@@ -42,20 +45,25 @@ const RegisterForm = ({ setPassword }: RegisterFormProps) => {
       const createBucketResponse = await createBucket({
         durationMin: formElements['expiration-period'].value,
         password: formElements.password.value,
+        files: state?.files.map(({ object }: { object: File }) => ({ fileName: object.name, size: object.size })),
       });
-      if (!Object.hasOwn(createBucketResponse, 'id')) {
-        console.error('Failed to create bucket', createBucketResponse);
+      
+      if (!Object.hasOwn(createBucketResponse, 'bucketId')) {
+        console.error('Failed to create bucket');
         setIsLoading(false);
         return;
       }
-      const { id: bucketId, expiredAt } = createBucketResponse;
+
+      const { bucketId, bucketCode, expiredAt } = createBucketResponse;
 
       const now = new Date();
       const expirationUtc = new Date(expiredAt);
 
       const timezoneOffsetMs = now.getTimezoneOffset() * 60 * 1000;
       const expirationLocal = new Date(expirationUtc.getTime() - timezoneOffsetMs).toString();
-      setBucketInfo({ id: bucketId, expiredAt: expirationLocal });
+      setBucketInfo({ bucketId, bucketCode, expiredAt: expirationLocal });
+
+      await uploadFiles({ bucketId, files: state?.files.map(({ object }: { object: File }) => object) });
     } catch (e) {
       console.error('Failed to create bucket', e);
       setHasError(true);

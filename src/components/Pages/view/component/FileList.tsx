@@ -29,9 +29,13 @@ export const FileList = ({ fileDescriptions = [], selected, toggleSelectFile }: 
           <td>{getUploadedDatetimeExpression(file.createdAt)}</td>
           <td>
             {file.merged ? (
-              <span style={{ backgroundColor: 'greenYellow', color: 'white' }}>Available</span>
+              <span style={{ padding: '2px 4px', borderRadius: '4px', backgroundColor: 'green', color: 'white' }}>
+                Available
+              </span>
             ) : (
-              <span style={{ backgroundColor: 'tomato', color: 'white' }}>'Unavailable'</span>
+              <span style={{ padding: '2px 4px', borderRadius: '4px', backgroundColor: 'tomato', color: 'white' }}>
+                Unavailable
+              </span>
             )}
           </td>
         </tr>

@@ -70,7 +70,7 @@ const Authenticate = () => {
     const authResponse = await authenticate({ bucketCode, password: formElements.password.value });
     setIsLoading(false);
     if (authResponse === null) return;
-    setBucketInfo({ id: bucketCode });
+    setBucketInfo({ bucketCode, bucketId: authResponse.bucketId });
     navigate({ pathname: '/view', search: `?bucketCode=${bucketCode}` });
   }
 
