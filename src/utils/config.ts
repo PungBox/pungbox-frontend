@@ -62,7 +62,7 @@ const authConfig = {
 };
 
 const uploadConfig = {
-  FILE_CHUNK_SIZE: 500000, // in bytes
+  FILE_CHUNK_SIZE: 5242880, // in bytes
 };
 
 export type { HeaderConfig };
